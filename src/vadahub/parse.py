@@ -7,6 +7,7 @@ from concurrent.futures import TimeoutError as FutureTimeout
 from contextlib import closing
 from datetime import date
 import codecs
+import math
 from pathlib import Path
 import re
 import threading
@@ -74,6 +75,8 @@ def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_cr
                 raise SchemaError('TXT 매핑 인코딩 오류') from None
         selected_encoding = encoding
         if selected_encoding is None and name + '.cpg' in archive.namelist():
+            if archive.getinfo(name + '.cpg').file_size > 4096:
+                raise SchemaError('CPG 인코딩 이름 4KiB 상한 초과')
             try:
                 selected_encoding = archive.read(name + '.cpg').decode('ascii').strip()
             except UnicodeDecodeError:
@@ -91,77 +94,88 @@ def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_cr
             # driver와 VFS는 검증한 로컬 ZIP/SHP로 제한한다.
             with gdal.OpenEx('/vsizip/' + path.resolve().as_posix() + '/' + name + '.shp', gdal.OF_VECTOR,
                              allowed_drivers=['ESRI Shapefile'], open_options=['ENCODING=' + selected_encoding]) as dataset:
-                native_layer = dataset.GetLayer(0)
-                definition = native_layer.GetLayerDefn()
-                fields = {definition.GetFieldDefn(i).GetName() for i in range(definition.GetFieldCount())}
-                mapping = _field_mapping(text, fields)
-                expected = native_layer.GetFeatureCount()
-                if expected < 0 or expected > max_features:
-                    raise SchemaError('SHP 레코드 수량 상한/미확정')
-                reference = native_layer.GetSpatialRef()
-                if has_prj and reference is None:
-                    raise UnknownCrsError('.prj가 있으나 GDAL이 CRS를 읽지 못했습니다')
-                reference = reference.Clone() if reference is not None else None
-                evidence = 'archive_prj' if reference is not None else None
-                if source_crs is not None:
-                    if not re.fullmatch('EPSG:[0-9]+', source_crs) and not source_crs.startswith(('GEOGCS[','PROJCS[','GEOGCRS[','PROJCRS[','COMPOUNDCRS[')):
-                        raise UnknownCrsError('CRS는 EPSG 코드 또는 WKT여야 합니다')
-                    supplied = osr.SpatialReference()
-                    try:
-                        supplied.SetFromUserInput(source_crs)
-                    except RuntimeError:
-                        raise UnknownCrsError('호출자 CRS를 해석하지 못했습니다') from None
-                    if reference is not None and not reference.IsSame(supplied):
-                        raise UnknownCrsError('SHP .prj와 호출자 CRS가 충돌합니다')
-                    reference = supplied
-                    evidence = 'caller:' + source_crs
-                transform = None
-                wkt = None
-                if reference is not None:
-                    reference.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
-                    wkt = reference.ExportToWkt()
-                    target = osr.SpatialReference()
-                    target.ImportFromEPSG(4326)
-                    target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
-                    transform = osr.CoordinateTransformation(reference, target)
-                seen: set[str] = set()
-                actual = 0
-                while True:
-                    if stop.is_set():
-                        return
-                    gdal.ErrorReset()
-                    feature = native_layer.GetNextFeature()
-                    if feature is None:
+                native_layer = definition = feature = geometry = converted = reference = supplied = target = transform = None
+                try:
+                    native_layer = dataset.GetLayer(0)
+                    definition = native_layer.GetLayerDefn()
+                    fields = {definition.GetFieldDefn(i).GetName() for i in range(definition.GetFieldCount())}
+                    mapping = _field_mapping(text, fields)
+                    expected = native_layer.GetFeatureCount()
+                    if expected < 0 or expected > max_features:
+                        raise SchemaError('SHP 레코드 수량 상한/미확정')
+                    reference = native_layer.GetSpatialRef()
+                    if has_prj and reference is None:
+                        raise UnknownCrsError('.prj가 있으나 GDAL이 CRS를 읽지 못했습니다')
+                    reference = reference.Clone() if reference is not None else None
+                    evidence = 'archive_prj' if reference is not None else None
+                    if source_crs is not None:
+                        if not re.fullmatch('EPSG:[0-9]+', source_crs) and not source_crs.startswith(('GEOGCS[','PROJCS[','GEOGCRS[','PROJCRS[','COMPOUNDCRS[')):
+                            raise UnknownCrsError('CRS는 EPSG 코드 또는 WKT여야 합니다')
+                        supplied = osr.SpatialReference()
+                        try:
+                            supplied.SetFromUserInput(source_crs)
+                        except RuntimeError:
+                            raise UnknownCrsError('호출자 CRS를 해석하지 못했습니다') from None
+                        if reference is not None and not reference.IsSame(supplied):
+                            raise UnknownCrsError('SHP .prj와 호출자 CRS가 충돌합니다')
+                        reference = supplied
+                        evidence = 'caller:' + source_crs
+                    transform = None
+                    wkt = None
+                    if reference is not None:
+                        reference.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
+                        wkt = reference.ExportToWkt()
+                        target = osr.SpatialReference()
+                        target.ImportFromEPSG(4326)
+                        target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
+                        transform = osr.CoordinateTransformation(reference, target)
+                    seen: set[str] = set()
+                    actual = 0
+                    while True:
+                        if stop.is_set():
+                            return
+                        gdal.ErrorReset()
+                        feature = native_layer.GetNextFeature()
+                        if feature is None:
+                            if gdal.GetLastErrorType() >= gdal.CE_Warning:
+                                raise SchemaError('GDAL 반복 종료 오류')
+                            break
+                        raw = feature.items()
+                        attrs = {mapping[key]: _value(mapping[key], value) for key, value in raw.items()}
+                        id_field = 'gid' if attrs.get('gid') is not None else 'ogr_fid'
+                        record_id = str(attrs['gid'] if id_field == 'gid' else feature.GetFID())
+                        if record_id in seen:
+                            raise SchemaError('SHP 레코드 식별자 중복')
+                        seen.add(record_id)
+                        geometry = feature.GetGeometryRef()
+                        raw_wkb = wgs84 = geometry_type = None
+                        if geometry is not None and not geometry.IsEmpty():
+                            if geometry.WkbSize() > 16 * 1024 * 1024 or not geometry.IsValid():
+                                raise SchemaError('geometry 크기 상한 또는 유효성 오류')
+                            raw_wkb = bytes(geometry.ExportToWkb())
+                            geometry_type = geometry.GetGeometryName()
+                            if transform is not None:
+                                converted = geometry.Clone()
+                                if converted.Transform(transform) != 0 or not converted.IsValid():
+                                    raise UnknownCrsError('WGS84 좌표변환 실패')
+                                bounds = converted.GetEnvelope()
+                                if (not all(math.isfinite(value) for value in bounds)
+                                        or bounds[0] < -180 or bounds[1] > 180
+                                        or bounds[2] < -90 or bounds[3] > 90):
+                                    raise UnknownCrsError('WGS84 좌표 범위가 유효하지 않습니다')
+                                wgs84 = bytes(converted.ExportToWkb())
                         if gdal.GetLastErrorType() >= gdal.CE_Warning:
-                            raise SchemaError('GDAL 반복 종료 오류')
-                        break
-                    raw = feature.items()
-                    attrs = {mapping[key]: _value(mapping[key], value) for key, value in raw.items()}
-                    id_field = 'gid' if attrs.get('gid') is not None else 'ogr_fid'
-                    record_id = str(attrs['gid'] if id_field == 'gid' else feature.GetFID())
-                    if record_id in seen:
-                        raise SchemaError('SHP 레코드 식별자 중복')
-                    seen.add(record_id)
-                    geometry = feature.GetGeometryRef()
-                    raw_wkb = wgs84 = geometry_type = None
-                    if geometry is not None and not geometry.IsEmpty():
-                        if geometry.WkbSize() > 16 * 1024 * 1024 or not geometry.IsValid():
-                            raise SchemaError('geometry 크기 상한 또는 유효성 오류')
-                        raw_wkb = bytes(geometry.ExportToWkb())
-                        geometry_type = geometry.GetGeometryName()
-                        if transform is not None:
-                            converted = geometry.Clone()
-                            if converted.Transform(transform) != 0 or not converted.IsValid():
-                                raise UnknownCrsError('WGS84 좌표변환 실패')
-                            wgs84 = bytes(converted.ExportToWkb())
-                    if gdal.GetLastErrorType() >= gdal.CE_Warning:
-                        raise SchemaError('GDAL 디코딩/공간 처리 경고')
-                    actual += 1
-                    yield SpatialFeature(layer, record_id, id_field, MappingProxyType(raw), MappingProxyType(attrs),
-                                         raw_wkb, geometry_type, wkt, evidence, wgs84, checksum,
-                                         receipt.collected_at if receipt else None)
-                if actual != expected:
-                    raise SchemaError('SHP 선언 수량과 실제 반복 수량이 다릅니다')
+                            raise SchemaError('GDAL 디코딩/공간 처리 경고')
+                        actual += 1
+                        yield SpatialFeature(layer, record_id, id_field, MappingProxyType(raw), MappingProxyType(attrs),
+                                             raw_wkb, geometry_type, wkt, evidence, wgs84, checksum,
+                                             receipt.collected_at if receipt else None)
+                    if actual != expected:
+                        raise SchemaError('SHP 선언 수량과 실제 반복 수량이 다릅니다')
+                finally:
+                    # dataset보다 자식 wrapper를 먼저 같은 worker에서 해제한다.
+                    converted = geometry = feature = definition = native_layer = None
+                    transform = target = supplied = reference = None
     except RuntimeError:
         raise SchemaError('GDAL이 SHP/CRS를 읽지 못했습니다') from None
 
@@ -214,6 +228,10 @@ async def iter_file(path: str | Path, *, layer: DatasetLayer, source_crs: str | 
             if batch and not send(batch):
                 return
         except Exception as exc:
+            # traceback frame의 native wrapper를 worker 안에서 해제한다.
+            exc.__traceback__ = None
+            exc.__cause__ = None
+            exc.__context__ = None
             send(exc)
         finally:
             send(None)

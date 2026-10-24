@@ -20,7 +20,7 @@ from vadahub.parse import _field_mapping, _value
 LAYER=DatasetLayer('52','2019-12-10','500048','piltg_rute_l','도선항로','OPEN','ALL',True,True)
 
 
-def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, null=False):
+def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, null=False, point='POINT (126 37)'):
     directory=tmp_path/'source'; directory.mkdir(exist_ok=True)
     path=directory/(LAYER.table_name+'.shp')
     ref=None
@@ -36,7 +36,7 @@ def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, nu
             feature=ogr.Feature(layer.GetLayerDefn())
             for name,value in [('c1',1 if duplicate else i+1),('c3','001'),('c4','선착장'),('c5','20261301' if bad_date else '20261024')]:
                 feature.SetField(name,value)
-            if not null: feature.SetGeometry(ogr.CreateGeometryFromWkt('POINT (126 37)'))
+            if not null: feature.SetGeometry(ogr.CreateGeometryFromWkt(point))
             layer.CreateFeature(feature)
             feature=None
         layer=None; ds=None
@@ -71,6 +71,20 @@ async def test_prj_axis_order_and_conflict(tmp_path):
         with pytest.raises(UnknownCrsError): await c.load_file(path,layer=LAYER,source_crs='not a crs')
 
 
+async def test_wgs84_bounds_and_clean_worker_error(tmp_path):
+    path=archive(tmp_path,srid=4326,point='POINT (126 95)')
+    async with VadaHubFileClient() as c:
+        with pytest.raises(UnknownCrsError) as caught:
+            await c.load_file(path,layer=LAYER)
+    trace=caught.value.__traceback__
+    names=[]
+    while trace is not None:
+        names.append(trace.tb_frame.f_code.co_name)
+        trace=trace.tb_next
+    assert '_iter_sync' not in names and 'worker' not in names
+    assert caught.value.__cause__ is None and caught.value.__context__ is None
+
+
 async def test_explicit_crs_receipt_and_remote_load(tmp_path,monkeypatch):
     path=archive(tmp_path,null=True)
     checksum,members=inspect_archive(path,ArchiveLimits(),LAYER.table_name)
@@ -88,7 +102,22 @@ async def test_explicit_crs_receipt_and_remote_load(tmp_path,monkeypatch):
 async def test_bad_records_never_silently_drop(tmp_path,kwargs):
     path=archive(tmp_path,**kwargs)
     async with VadaHubFileClient() as c:
-        with pytest.raises(SchemaError): await c.load_file(path,layer=LAYER)
+        with pytest.raises(SchemaError) as caught: await c.load_file(path,layer=LAYER)
+    trace=caught.value.__traceback__
+    while trace is not None:
+        assert trace.tb_frame.f_code.co_name not in ('_iter_sync', 'worker')
+        trace=trace.tb_next
+
+
+async def test_oversized_cpg_rejected_before_read(tmp_path):
+    path=archive(tmp_path)
+    with zipfile.ZipFile(path) as z:
+        members={name:z.read(name) for name in z.namelist()}
+    members[LAYER.table_name+'.cpg']=b'A'*4097
+    with zipfile.ZipFile(path,'w') as z:
+        for name,data in members.items(): z.writestr(name,data)
+    async with VadaHubFileClient() as c:
+        with pytest.raises(SchemaError,match='CPG'): await c.load_file(path,layer=LAYER)
 
 
 async def test_feature_cap_early_close_and_native_same_thread(tmp_path,monkeypatch):
