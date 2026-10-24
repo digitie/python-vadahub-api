@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import asyncio
+from datetime import date, datetime, timezone
 from dataclasses import replace
 import json
 import re
@@ -17,6 +18,7 @@ from ._ratelimit import AsyncTokenBucket
 from .exceptions import AccessDeniedError, DownloadUnavailableError, NetworkError, RateLimitError, SchemaError
 from .models import PageSnapshot
 from .models import CatalogKind, Dataset, DatasetLayer, LibraryResource, DocumentPreview, TablePreview, WebTablePage
+from .models import WaveMeasure, WaveStatistics
 from . import _catalog
 
 _SPACE_PATH = "/renew/spaceData/index.do"
@@ -103,6 +105,16 @@ class VadaHubClient:
     async def aclose(self) -> None:
         """진행 중 operation 종료를 기다린 뒤 소유 자원을 멱등 정리한다."""
         await self._browser.aclose()
+
+    async def get_wave3min_statistics(self, grid_code: str, *, start_date: date, end_date: date,
+                                      measure: WaveMeasure = 'height') -> WaveStatistics:
+        """3분 공간격자 파랑의 날짜별 공개 웹 통계. 양끝 포함 최대7일·격자1개."""
+        from .wave import get_wave3min_statistics
+        try:
+            async with asyncio.timeout(self._browser.timeout):
+                return await get_wave3min_statistics(self, grid_code, start_date=start_date, end_date=end_date, measure=measure)
+        except TimeoutError as exc:
+            raise NetworkError('파랑 통계 전체 작업의 시간 제한을 초과했습니다') from exc
 
     async def get_page_snapshot(self, page: Literal["space_data"] = "space_data") -> PageSnapshot:
         """공간자료 공개 페이지의 접근·제목·구조를 검증한다."""
