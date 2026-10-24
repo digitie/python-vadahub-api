@@ -11,3 +11,4 @@
 | T007A | 2026-10-24, [PR #7](https://github.com/digitie/python-vadahub-api/pull/7), `0f76224c58a48b88fd40e1d35dc733f6fb2ec494` | [증빙](validation/t007a.md); 독립 리뷰2, unit219/94.51%, 5종 안내/PDF/통계216행/ZIP12멤버/보관live1, 최종CI 통과 |
 | T007A2 | 2026-10-24, [PR #8](https://github.com/digitie/python-vadahub-api/pull/8), `dc977f1b8ec3b495a44987ef8e4d3b9c109dd3ea` | [증빙](validation/t007a2.md); 독립 리뷰2, unit250/94.30%, 실제66안내·49조회성공·API144ZIP/GDAL live2, 최종CI 통과. T007A2E 미해결 |
 | T007B | 2026-10-24, [PR #9](https://github.com/digitie/python-vadahub-api/pull/9), `d6ea2ea905957b99a906b31f2b9d17201229c32d` | [증빙](validation/t007b.md); 독립 리뷰2, unit274/94.66%, 새9ZIP/GDAL2897행 live2(skip0), 최종CI7개 통과 |
+| T008 | 2026-10-24, [PR #10](https://github.com/digitie/python-vadahub-api/pull/10), `bc92785ae688fddb7f2ecea52679a2e2b7282eaa` | [증빙](validation/t008.md); 독립 리뷰2/P2수정, unit274/94.66%, Windows core·완전격리WSL wheel설치, 실제6ZIP857행/관광529행/API124필터·예제 통과, 최종CI7개 통과. 외부제약T005E/T007A2E는 미해결 |
