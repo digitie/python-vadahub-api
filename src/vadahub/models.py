@@ -80,6 +80,7 @@ class SpatialFeature:
     wgs84_wkb: bytes | None
     source_sha256: str
     source_collected_at: datetime | None = None
+    geometry_valid: bool | None = None
 
 
 @dataclass(frozen=True, slots=True)

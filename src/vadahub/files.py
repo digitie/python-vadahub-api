@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import shutil
 import tempfile
-from typing import Any
+from typing import Any, Literal
 from collections.abc import AsyncGenerator
 
 from playwright.async_api import Download, Response, Dialog, Page, Locator
@@ -46,35 +46,38 @@ class VadaHubFileClient(VadaHubClient):
 
     def iter_file(self, path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                   encoding: str | None = None, batch_size: int = 64, max_features: int = 1000000,
-                  limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None) -> AsyncGenerator[SpatialFeature, None]:
+                  limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None,
+                  invalid_geometry: Literal['raise','preserve'] = 'raise') -> AsyncGenerator[SpatialFeature, None]:
         """로컬 ZIP을 동일 GDAL 파서로 읽는다. 조기 종료 시 aclose/aclosing을 사용한다."""
         return parse.iter_file(path, layer=layer, source_crs=source_crs, encoding=encoding,
-                               batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt)
+                               batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)
 
     async def load_file(self, path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                         encoding: str | None = None, max_features: int = 1000000,
-                        limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None) -> list[SpatialFeature]:
+                        limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None,
+                        invalid_geometry: Literal['raise','preserve'] = 'raise') -> list[SpatialFeature]:
         """로컬 원문 전체를 명시적으로 메모리에 적재한다."""
         return [item async for item in self.iter_file(path, layer=layer, source_crs=source_crs,
-                encoding=encoding, max_features=max_features, limits=limits, receipt=receipt)]
+                encoding=encoding, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)]
 
     async def iter(self, layer: DatasetLayer, *, source_crs: str | None = None, encoding: str | None = None,
                    batch_size: int = 64, max_features: int = 1000000,
-                   limits: ArchiveLimits = ArchiveLimits()) -> AsyncGenerator[SpatialFeature, None]:
+                   limits: ArchiveLimits = ArchiveLimits(),invalid_geometry: Literal['raise','preserve'] = 'raise') -> AsyncGenerator[SpatialFeature, None]:
         """공개 ZIP→bounded GDAL iterator. 임시 원문은 generator 종료 후 정리한다."""
         from contextlib import aclosing
         with tempfile.TemporaryDirectory(prefix='vadahub-load-') as directory:
             receipt = await self.download(layer, Path(directory) / 'source.zip', limits=limits)
             async with aclosing(self.iter_file(receipt.local_path, layer=receipt.layer, source_crs=source_crs,
-                    encoding=encoding, batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt)) as stream:
+                    encoding=encoding, batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)) as stream:
                 async for item in stream:
                     yield item
 
     async def load(self, layer: DatasetLayer, *, source_crs: str | None = None, encoding: str | None = None,
-                   max_features: int = 1000000, limits: ArchiveLimits = ArchiveLimits()) -> list[SpatialFeature]:
+                   max_features: int = 1000000, limits: ArchiveLimits = ArchiveLimits(),
+                   invalid_geometry: Literal['raise','preserve'] = 'raise') -> list[SpatialFeature]:
         """공개 ZIP 전체 적재. 원문 보관은 download 또는 후속 store를 사용한다."""
         return [item async for item in self.iter(layer, source_crs=source_crs, encoding=encoding,
-                                                max_features=max_features, limits=limits)]
+                                                max_features=max_features, limits=limits,invalid_geometry=invalid_geometry)]
 
     async def download(self, layer: DatasetLayer, destination: str | Path, *,
                        limits: ArchiveLimits = ArchiveLimits()) -> ArchiveReceipt:
