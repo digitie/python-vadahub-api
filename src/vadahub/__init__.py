@@ -15,6 +15,7 @@ from .models import SpatialFeature
 from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, EndpointMatch, MappedRoute,
                       route_endpoints, ports_from_features, port_from_transport, map_route)
 from .storage import LocalArchiveStore, StoredArchive
+from .models import CatalogKind, LibraryResource, LibraryArchiveReceipt, DocumentPreview, TablePreview
 
 __all__ = [
     "AccessDeniedError", "AsyncTokenBucket", "ClientClosedError", "NetworkError",
@@ -26,4 +27,5 @@ __all__ = [
     "PortReference", "EndpointCrosswalk", "RouteEndpoints", "EndpointMatch", "MappedRoute",
     "route_endpoints", "ports_from_features", "port_from_transport", "map_route",
     "LocalArchiveStore", "StoredArchive",
+    "CatalogKind", "LibraryResource", "LibraryArchiveReceipt", "DocumentPreview", "TablePreview",
 ]

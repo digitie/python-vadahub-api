@@ -5,7 +5,16 @@ from typing import Any
 
 from ._browser import BASE_URL
 from .exceptions import SchemaError
-from .models import Dataset, DatasetLayer
+from .models import CatalogKind, Dataset, DatasetLayer, LibraryResource
+
+CATALOG_PATHS: dict[CatalogKind, tuple[str, str, str]] = {
+    'space': ('/renew/spaceData/index.do','/renew/spaceData/list.do','/renew/spaceData/detail.do'),
+    'documents': ('/renew/docData/index.do','/renew/docData/list.do','/renew/docData/detail.do'),
+    'statistics': ('/renew/statsData/index.do','/renew/statsData/list.do','/renew/statsData/detail.do'),
+    'api_original': ('/bigdata/openApiRenew/index.do','/bigdata/openApiRenew/list.do','/bigdata/openApiRenew/detail.do'),
+    'api_analysis': ('/bigdata/openApiRenew/indexAnal.do','/bigdata/openApiRenew/listAnal.do','/bigdata/openApiRenew/detail.do'),
+    'api_map': ('/bigdata/openApiRenew/indexMap.do','/bigdata/openApiRenew/listMap.do','/bigdata/openApiRenew/detail.do'),
+}
 
 
 def text(value: Any) -> str:
@@ -48,13 +57,24 @@ def rows(payload: Any) -> list[dict[str, Any]]:
     return result
 
 
-def parse_dataset(row: dict[str, Any]) -> Dataset:
+def parse_dataset(row: dict[str, Any], catalog: CatalogKind = 'space') -> Dataset:
     meta, hist = identifier(row.get('metaSn')), history(row.get('histDe'))
     description = row.get('factorCn12')
     if description is not None and not isinstance(description, str):
         raise SchemaError('잘못된 자료 설명 타입입니다')
+    api_id = identifier(row.get('odtaId')) if catalog.startswith('api_') else None
+    request = row.get('odtaReqstUrl')
+    if request is not None and not isinstance(request,str):
+        raise SchemaError('잘못된 OpenAPI 안내 URL')
+    formats = row.get('extsnType')
+    if formats is not None and not isinstance(formats,str):
+        raise SchemaError('잘못된 OpenAPI 포맷')
+    # 공개 UI goOpnDetail의 140/142 안내는 별도 backing meta로 이동한다.
+    detail_meta = {'140':'5247','142':'5248'}.get(api_id or '',meta) if catalog.startswith('api_') else meta
+    suffix = f'&odtaId={api_id}' if api_id else ''
     return Dataset(meta, hist, text(row.get('metaNm')), description or '',
-                   f'{BASE_URL}/renew/spaceData/detail.do?metaSn={meta}&histDe={hist}')
+                   f'{BASE_URL}{CATALOG_PATHS[catalog][2]}?metaSn={detail_meta}&histDe={hist}{suffix}',
+                   catalog, api_id, request if request and request != '-' else None, formats)
 
 
 def flag(value: Any) -> bool:
@@ -73,3 +93,18 @@ def parse_layer(row: dict[str, Any], meta: str, hist: str) -> DatasetLayer:
                         text(row.get('bsisDtaNm')), text(row.get('serviceAuthCd')),
                         text(row.get('opnScopeSe')), flag(row.get('gridOpenYn')),
                         flag(row.get('dwldPosblYn')))
+
+
+def parse_resource(row: dict[str, Any], dataset: Dataset) -> LibraryResource:
+    if identifier(row.get('metaSn')) != dataset.dataset_id or history(row.get('histDe')) != dataset.history_date:
+        raise SchemaError('다른 meta의 자료실 resource입니다')
+    kind = row.get('atrbSpceSe')
+    if not isinstance(kind,str):
+        raise SchemaError('자료 속성 구분이 없습니다')
+    source_format = row.get('orginlTableNm')
+    if source_format is not None and not isinstance(source_format,str):
+        raise SchemaError('자료 포맷 형식 오류')
+    return LibraryResource(dataset,identifier(row.get('bsisDtaSn')),text(row.get('bsisDtaNm')),
+                           text(row.get('relateDtaNm')),source_format,kind,
+                           text(row.get('serviceAuthCd')),text(row.get('opnScopeSe')),
+                           flag(row.get('gridOpenYn')),flag(row.get('dwldPosblYn')),flag(row.get('maskingYn')))

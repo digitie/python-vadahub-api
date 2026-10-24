@@ -23,7 +23,7 @@ class ArchiveLimits:
                 raise ValueError('ZIP 제한은 양의 정수여야 합니다')
 
 
-def inspect_archive(path: Path, limits: ArchiveLimits, table: str | None = None) -> tuple[str, tuple[tuple[str, str], ...]]:
+def inspect_archive(path: Path, limits: ArchiveLimits, table: str | None = None, *, allow_directories: bool = False) -> tuple[str, tuple[tuple[str, str], ...]]:
     if not 0 < path.stat().st_size <= limits.archive_bytes:
         raise ArchiveError('ZIP 원문 크기 제한 초과 또는 빈 파일')
     try:
@@ -38,7 +38,7 @@ def inspect_archive(path: Path, limits: ArchiveLimits, table: str | None = None)
                 parts = PurePosixPath(name)
                 if (not name or '\\' in member.orig_filename or ':' in name or parts.is_absolute() or '..' in parts.parts
                         or name.casefold() in seen or member.flag_bits & 1
-                        or stat.S_ISLNK(member.external_attr >> 16) or member.is_dir()):
+                        or stat.S_ISLNK(member.external_attr >> 16) or (member.is_dir() and not allow_directories)):
                     raise ArchiveError('안전하지 않은 ZIP 멤버/중복/암호화')
                 seen.add(name.casefold())
                 total += member.file_size
