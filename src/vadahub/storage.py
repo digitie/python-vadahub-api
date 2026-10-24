@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, replace
-from datetime import datetime
+from datetime import date, datetime
 import hashlib
 import json
 import math
@@ -21,17 +21,32 @@ from ._catalog import identifier, history
 from ._io import run_io
 from .exceptions import ArchiveError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer, Dataset, LibraryResource, LibraryArchiveReceipt
+from .models import TerminalFileReceipt
+from ._terminal_file import SOURCE_URL as TERMINAL_URL, inspect_terminal
+
+Receipt = ArchiveReceipt | LibraryArchiveReceipt | TerminalFileReceipt
+Scope = DatasetLayer | LibraryResource | TerminalFileReceipt
 
 
 @dataclass(frozen=True, slots=True)
 class StoredArchive:
     """원문 경로와 payload 지문. ZIP timestamp 차이와 내용 변경을 구분한다."""
-    receipt: ArchiveReceipt | LibraryArchiveReceipt
+    receipt: Receipt
     content_fingerprint: str
     object_key: str
 
 
-def _key(layer: DatasetLayer | LibraryResource) -> str:
+def _key(layer: Scope) -> str:
+    if isinstance(layer, TerminalFileReceipt):
+        from .terminal import _attachment
+        from .exceptions import AccessDeniedError
+        if layer.source != 'data.go.kr:15148558' or layer.source_url != TERMINAL_URL or layer.content_date != date(2014, 12, 31):
+            raise ArchiveError('공식 터미널 보관 출처/버전 오류')
+        try:
+            _attachment(layer.download_url, final=True)
+        except (AccessDeniedError, SchemaError):
+            raise ArchiveError('공식 터미널 다운로드 출처 오류') from None
+        return 'official/data-go/15148558/' + layer.content_date.isoformat()
     if isinstance(layer,LibraryResource):
         dataset = layer.dataset
         if dataset.catalog not in ('documents','statistics'):
@@ -52,14 +67,16 @@ def _fingerprint(members: tuple[tuple[str, str], ...]) -> str:
     return hashlib.sha256(json.dumps(sorted(members),separators=(',', ':'),ensure_ascii=True).encode()).hexdigest()
 
 
-def _receipt_key(receipt: ArchiveReceipt | LibraryArchiveReceipt) -> str:
+def _receipt_key(receipt: Receipt) -> str:
+    if isinstance(receipt, TerminalFileReceipt): return _key(receipt)
     return _key(receipt.layer if isinstance(receipt,ArchiveReceipt) else receipt.resource)
 
 
-def _serialize(receipt: ArchiveReceipt | LibraryArchiveReceipt) -> dict:
+def _serialize(receipt: Receipt) -> dict:
     item = asdict(receipt)
     item['collected_at'] = receipt.collected_at.isoformat()
     item.pop('local_path')
+    if isinstance(receipt, TerminalFileReceipt): item['content_date'] = receipt.content_date.isoformat()
     return item
 
 
@@ -128,6 +145,18 @@ class LocalArchiveStore:
         try:
             if not isinstance(item,dict) or item.get('schema_version') != '1':
                 raise ArchiveError('receipt schema 오류')
+            if item.get('source') == 'data.go.kr:15148558':
+                collected = datetime.fromisoformat(item['collected_at'])
+                size = item['byte_size']
+                if (collected.tzinfo is None or collected.utcoffset() is None or isinstance(size, bool)
+                        or not isinstance(size, int) or size <= 0):
+                    raise ArchiveError('공식 터미널 receipt 시점/크기 오류')
+                checksum = _sha(item['sha256'])
+                terminal = TerminalFileReceipt(item['source_url'], item['download_url'], collected, checksum,
+                    size, Path('source.csv'), content_date=date.fromisoformat(item['content_date']))
+                object_key = 'objects/' + _key(terminal) + '/' + checksum
+                terminal = replace(terminal, local_path=self.root/object_key/'source.csv')
+                return StoredArchive(terminal, checksum, object_key)
             scope: DatasetLayer | LibraryResource
             if 'resource' in item:
                 raw = dict(item['resource'])
@@ -161,22 +190,30 @@ class LocalArchiveStore:
         if sidecar and self._decode(_json(receipt.local_path.parent/'receipt.json',1024*1024)) != stored:
             raise ArchiveError('manifest와 object receipt 불일치')
         try:
+            if isinstance(receipt, TerminalFileReceipt):
+                checksum, size = inspect_terminal(receipt.local_path)
+                if checksum != receipt.sha256 or size != receipt.byte_size:
+                    raise ArchiveError('보관 터미널 CSV 해시/크기 불일치')
+                return
             checksum,members = inspect_archive(receipt.local_path,self.limits,
                                                 receipt.layer.table_name if isinstance(receipt,ArchiveReceipt) else None,
                                                 allow_directories=isinstance(receipt,LibraryArchiveReceipt))
         except OSError:
             raise ArchiveError('보관 원문 누락/읽기 오류') from None
+        except SchemaError:
+            raise ArchiveError('보관 터미널 CSV 형식 오류') from None
         if (checksum != receipt.sha256 or members != receipt.member_sha256
                 or receipt.local_path.stat().st_size != receipt.byte_size):
             raise ArchiveError('보관 원문/receipt 해시·멤버·크기 불일치')
 
-    def _prepare(self, stage: Path, receipt: ArchiveReceipt | LibraryArchiveReceipt) -> None:
+    def _prepare(self, stage: Path, receipt: Receipt) -> None:
         self._decode(_serialize(receipt))
         stage.mkdir(parents=True,exist_ok=False)
         if receipt.local_path.stat().st_size > self.limits.archive_bytes:
             raise ArchiveError('원문 보관 크기 상한 초과')
         copied = 0
-        with receipt.local_path.open('rb') as source, (stage/'archive.zip').open('xb') as output:
+        filename = 'source.csv' if isinstance(receipt, TerminalFileReceipt) else 'archive.zip'
+        with receipt.local_path.open('rb') as source, (stage/filename).open('xb') as output:
             while block := source.read(1024*1024):
                 copied += len(block)
                 if copied > min(receipt.byte_size,self.limits.archive_bytes):
@@ -184,8 +221,9 @@ class LocalArchiveStore:
                 output.write(block)
             output.flush()
             os.fsync(output.fileno())
-        candidate = replace(receipt,local_path=stage/'archive.zip')
-        self._verify(StoredArchive(candidate,_fingerprint(candidate.member_sha256),''))
+        candidate = replace(receipt,local_path=stage/filename)
+        fingerprint = candidate.sha256 if isinstance(candidate, TerminalFileReceipt) else _fingerprint(candidate.member_sha256)
+        self._verify(StoredArchive(candidate,fingerprint,''))
         _atomic_json(stage/'receipt.json',_serialize(candidate))
 
     def _commit(self, stage: Path) -> StoredArchive:
@@ -209,7 +247,7 @@ class LocalArchiveStore:
                 _atomic_json(self.root/'manifest.json',manifest)
             return stored
 
-    async def put(self, receipt: ArchiveReceipt | LibraryArchiveReceipt) -> StoredArchive:
+    async def put(self, receipt: Receipt) -> StoredArchive:
         """원문을 다시 검증해 보관한다. 같은 scope+SHA면 기존 버전·수집시점을 반환한다."""
         stage = self.root/'.staging'/uuid.uuid4().hex
         try:
@@ -218,7 +256,7 @@ class LocalArchiveStore:
         finally:
             await run_io(shutil.rmtree,stage,True)
 
-    def _versions(self, layer: DatasetLayer | LibraryResource) -> tuple[StoredArchive, ...]:
+    def _versions(self, layer: Scope) -> tuple[StoredArchive, ...]:
         with self._lock():
             data = self._read_manifest()
             values = tuple(self._decode(item) for item in data['entries'].get(_key(layer),[]))
@@ -226,7 +264,7 @@ class LocalArchiveStore:
                 self._verify(stored,sidecar=True)
             return values
 
-    async def versions(self, layer: DatasetLayer | LibraryResource) -> tuple[StoredArchive, ...]:
+    async def versions(self, layer: Scope) -> tuple[StoredArchive, ...]:
         """삽입 순서의 버전을 해시 검증 후 반환한다. 자동 최신 시점 추정 없음."""
         return await run_io(self._versions,layer)
 

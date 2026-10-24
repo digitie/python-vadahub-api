@@ -17,6 +17,8 @@ from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, Endpoint
 from .storage import LocalArchiveStore, StoredArchive
 from .models import CatalogKind, LibraryResource, LibraryArchiveReceipt, DocumentPreview, TablePreview, WebTablePage
 from .models import WaveMeasure, WaveStatistic, WaveStatistics
+from .models import TerminalFileReceipt, PassengerTerminal
+from .terminal import OfficialTerminalClient, terminal_to_port
 from .tourism import (TOURISM_SOURCES, TourismSource, TourismLayer, TourismPlace,
                       tourism_source, tourism_from_feature, search_tourism)
 
@@ -35,4 +37,5 @@ __all__ = [
     "TOURISM_SOURCES", "TourismSource", "TourismLayer", "TourismPlace",
     "tourism_source", "tourism_from_feature", "search_tourism",
     "WaveMeasure", "WaveStatistic", "WaveStatistics",
+    "TerminalFileReceipt", "PassengerTerminal", "OfficialTerminalClient", "terminal_to_port",
 ]
