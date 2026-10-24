@@ -16,7 +16,7 @@ from vadahub import (ArchiveError, ArchiveLimits, AsyncTokenBucket, Dataset, Dat
 from vadahub import _catalog
 from vadahub._archive import inspect_archive
 from vadahub._io import run_io
-from vadahub.files import _publish
+from vadahub.files import _stage
 
 META = {'metaSn':52,'histDe':'2019-12-10','metaNm':'도선항로','factorCn12':'설명'}
 ROW = {'metaSn':52,'histDe':'2019-12-10','bsisDtaSn':500048,'relateDtaNm':'piltg_rute_l',
@@ -145,19 +145,17 @@ def test_archive_preflight(tmp_path,names,limits):
     with pytest.raises(ArchiveError): inspect_archive(p,limits)
 
 
-def test_archive_hash_sidecar_and_publish_preserves_existing(tmp_path):
+def test_archive_hash_sidecar_and_stage_never_publishes(tmp_path):
     source=tmp_path/'source.zip'; make_zip(source)
     checksum,members=inspect_archive(source,ArchiveLimits(),LAYER.table_name)
     assert checksum==hashlib.sha256(source.read_bytes()).hexdigest() and len(members)==4
-    target=tmp_path/'target.zip'
-    assert _publish(source,target,LAYER.table_name,ArchiveLimits())[0]==checksum
-    before=target.read_bytes()
-    with pytest.raises(FileExistsError): _publish(source,target,LAYER.table_name,ArchiveLimits())
-    assert target.read_bytes()==before and not list(tmp_path.glob('*.part'))
+    target=tmp_path/'target.zip'; stage=tmp_path/'stage.part'
+    assert _stage(source,stage,LAYER.table_name,ArchiveLimits())[0]==checksum
+    assert not target.exists()
     with pytest.raises(ArchiveError): inspect_archive(source,ArchiveLimits(),'wrong_table')
     source.write_text('<html>not zip')
     with pytest.raises(ArchiveError): inspect_archive(source,ArchiveLimits())
-    with pytest.raises(ArchiveError): inspect_archive(target,ArchiveLimits(archive_bytes=1))
+    with pytest.raises(ArchiveError): inspect_archive(stage,ArchiveLimits(archive_bytes=1))
 
 
 @pytest.mark.parametrize('value',[0,True,-1])
@@ -174,7 +172,8 @@ async def test_download_unavailable_rechecked_and_no_overwrite(browser,tmp_path)
     assert (tmp_path/'old.zip').read_bytes()==b'previous'
 
 
-async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_path):
+@pytest.mark.parametrize('cancel',[False,True])
+async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_path,monkeypatch,cancel):
     source=tmp_path/'browser.zip'; make_zip(source)
     browser.page.evaluate=AsyncMock(return_value=wire({'resultList':[ROW],'resultListTotCnt':1}))
     handlers={}
@@ -189,9 +188,22 @@ async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_pa
     browser.page.locator=Mock(side_effect=lambda sel:button if 'shpDown' in sel else original(sel))
     browser.page.get_by_role=Mock(return_value=SimpleNamespace(click=AsyncMock()))
     async with client(VadaHubFileClient) as c:
-        receipt=await c.download(LAYER,tmp_path/'published.zip')
-        assert receipt.local_path.read_bytes()==source.read_bytes() and receipt.layer==LAYER
-        assert receipt.collected_at.tzinfo and len(receipt.member_sha256)==4
+        if cancel:
+            import threading
+            started,release=threading.Event(),threading.Event()
+            def slow_stage(*args):
+                started.set(); release.wait(); return _stage(*args)
+            monkeypatch.setattr('vadahub.files._stage',slow_stage)
+            task=asyncio.create_task(c.download(LAYER,tmp_path/'published.zip'))
+            await asyncio.to_thread(started.wait)
+            task.cancel(); await asyncio.sleep(0); release.set()
+            with pytest.raises(asyncio.CancelledError): await task
+            assert not (tmp_path/'published.zip').exists()
+            assert not list(tmp_path.glob('.vadahub-*.part'))
+        else:
+            receipt=await c.download(LAYER,tmp_path/'published.zip')
+            assert receipt.local_path.read_bytes()==source.read_bytes() and receipt.layer==LAYER
+            assert receipt.collected_at.tzinfo and len(receipt.member_sha256)==4
     assert handlers=={}
     download.delete.assert_awaited_once()
 

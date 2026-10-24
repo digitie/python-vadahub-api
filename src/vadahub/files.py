@@ -18,22 +18,23 @@ from .exceptions import ArchiveError, DownloadUnavailableError, ProviderError, S
 from .models import ArchiveReceipt, DatasetLayer
 
 
-def _publish(source: Path, destination: Path, table: str, limits: ArchiveLimits) -> tuple:
+def _stage(source: Path, temporary: Path, table: str, limits: ArchiveLimits) -> tuple:
     if source.stat().st_size > limits.archive_bytes:
         raise ArchiveError('다운로드 원문 크기 제한 초과')
-    if shutil.disk_usage(destination.parent).free < source.stat().st_size * 2:
+    if shutil.disk_usage(temporary.parent).free < source.stat().st_size * 2:
         raise ArchiveError('검증·공개용 로컬 여유 공간 부족')
-    fd, name = tempfile.mkstemp(prefix='.vadahub-', suffix='.part', dir=destination.parent)
-    os.close(fd)
-    temporary = Path(name)
+    shutil.copyfile(source, temporary)
+    checksum, members = inspect_archive(temporary, limits, table)
+    return checksum, members, temporary.stat().st_size
+
+
+async def _cleanup_download(item: Download, timeout: float) -> None:
     try:
-        shutil.copyfile(source, temporary)
-        checksum, members = inspect_archive(temporary, limits, table)
-        size = temporary.stat().st_size
-        os.link(temporary, destination)
-        return checksum, members, size
-    finally:
-        temporary.unlink(missing_ok=True)
+        async with asyncio.timeout(timeout):
+            await item.cancel()
+            await item.delete()
+    except Exception:
+        pass  # context 종료도 브라우저 임시 원문을 정리한다.
 
 
 class VadaHubFileClient(VadaHubClient):
@@ -89,6 +90,7 @@ class VadaHubFileClient(VadaHubClient):
             page.on('response', on_response)
             page.on('dialog', on_dialog)
             item = None
+            temporary = None
             try:
                 await button.first.click()
                 waiters: list[asyncio.Future[Any]] = [received, failure]
@@ -101,7 +103,14 @@ class VadaHubFileClient(VadaHubClient):
                     raise ArchiveError('다운로드 파일 경로가 없습니다')
                 if failure.done():
                     raise failure.result()
-                checksum, members, size = await run_io(_publish, Path(source), path, current.table_name, limits)
+                fd, name = tempfile.mkstemp(prefix='.vadahub-', suffix='.part', dir=path.parent)
+                os.close(fd)
+                temporary = Path(name)
+                checksum, members, size = await run_io(_stage, Path(source), temporary, current.table_name, limits)
+                # worker 완료·취소 반영과 모든 await 정리 뒤에만 원자 commit한다.
+                await _cleanup_download(item, self._browser.cleanup_timeout)
+                item = None
+                os.link(temporary, path)
                 return ArchiveReceipt(current, current.source_url, datetime.now(timezone.utc), checksum, size, path, members)
             finally:
                 page.remove_listener('download', on_download)
@@ -109,10 +118,7 @@ class VadaHubFileClient(VadaHubClient):
                 page.remove_listener('dialog', on_dialog)
                 received.cancel()
                 failure.cancel()
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
                 if item is not None:
-                    try:
-                        async with asyncio.timeout(self._browser.cleanup_timeout):
-                            await item.cancel()
-                            await item.delete()
-                    except Exception:
-                        pass  # context 종료도 브라우저 임시 원문을 정리한다.
+                    await _cleanup_download(item, self._browser.cleanup_timeout)
