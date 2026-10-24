@@ -1,5 +1,10 @@
 # 재개 지점
 
+**T001~T008의 가능한 구현·검증·PR 머지 완료.** 최종 구현 PR #10은
+`bc92785ae688fddb7f2ecea52679a2e2b7282eaa`로 머지했다.
+미완료는 [tasks](tasks.md)의 T005E(도선 원천 출도착지/여객터미널 원격SHP)와
+T007A2E(API139 실제 조회 성공 확보)다. 이 자료가 제공되지 않은 상태를 완료로 바꾸지 않는다.
+
 T003 [PR #3](https://github.com/digitie/python-vadahub-api/pull/3)은 `d342204`로 머지했다.
 최종 구현 `6fe5e34`에서 독립 리뷰 A/B 차단 없음, unit132/96.49%, live4(skip0),
 증빙 head `8a828cd`의 CI 전부 통과를 확인했다.
@@ -17,10 +22,12 @@ T007A2 PR #8을 `dc977f1`로 머지했다. 최종구현8939481·증빙7e1063c,
 API139 통신실패는 T007A2E 외부제약/미완료로 남긴다.
 T007B PR #9를 `d6ea2ea`로 머지했다. 소스929a36b·증빙ac4840a에서
 리뷰2·unit274/94.66%·새9ZIP/GDAL2897행 live2(skip0)·최종CI7개 통과.
-현재 `codex/t008-final-acceptance`에서 clean wheel 설치·최종 소비자 검증을 진행한다.
+T008은 clean wheel 설치·최종 소비자 검증을 완료했다.
 구현6357c55의 리뷰2 차단없음, unit274/94.66%, Windows core/완전격리 WSL wheel설치,
 실제6ZIP857행+관광529행+API124필터 및 관광예제, 구현CI 전부 통과했다.
-최종 증빙 head 정산·CI 후 PR #10을 머지하고 완료 문서에 실제 merge SHA를 기록한다.
+최종 증빙 head de643dc의 A/B 차단없음과 CI7개 통과 후 PR #10 머지를 확인했다.
+설치/사용은 [installation](installation.md), 지원 범위는 [관광](tourism.md)과
+[공개 안내](public-catalogs.md), 검증은 [T008](validation/t008.md)을 따른다.
 T005E 외부 제약은 미해결 유지한다.
 
 추가 관광자료 요청은 T007B에 반영했다. 해수욕장·전망대·체험마을·낚시·마리나는
