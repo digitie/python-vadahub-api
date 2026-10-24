@@ -94,6 +94,7 @@ class LibraryResource:
     grid_available: bool
     download_available: bool
     masked: bool
+    backing_dataset_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,3 +125,18 @@ class LibraryArchiveReceipt:
     local_path: Path
     member_sha256: tuple[tuple[str, str], ...]
     schema_version: str = '1'
+
+
+@dataclass(frozen=True, slots=True)
+class WebTablePage:
+    """공개 웹 grid의 단일 페이지. live DB 결과이며 다중 호출 snapshot은 아니다."""
+    resource: LibraryResource
+    columns: tuple[str, ...]
+    labels: tuple[str | None, ...]
+    rows: tuple[Mapping[str, Any], ...]
+    start: int
+    page_size: int
+    total: int
+    filtered_total: int
+    collected_at: datetime
+    source_columns: tuple[str, ...] = ()

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from dataclasses import replace
 import json
 import re
 from typing import Literal
@@ -15,7 +16,7 @@ from ._browser import BASE_URL, BrowserSession
 from ._ratelimit import AsyncTokenBucket
 from .exceptions import AccessDeniedError, DownloadUnavailableError, NetworkError, RateLimitError, SchemaError
 from .models import PageSnapshot
-from .models import CatalogKind, Dataset, DatasetLayer, LibraryResource, DocumentPreview, TablePreview
+from .models import CatalogKind, Dataset, DatasetLayer, LibraryResource, DocumentPreview, TablePreview, WebTablePage
 from . import _catalog
 
 _SPACE_PATH = "/renew/spaceData/index.do"
@@ -203,28 +204,31 @@ class VadaHubClient:
             raise SchemaError('요청한 layer가 현재 meta 이력에 없습니다')
 
     async def _resources(self, page: Page, dataset: Dataset) -> tuple[LibraryResource, ...]:
+        meta = _catalog.backing_meta(dataset)
         payload = await self._post(page,'/renew/selectMdMetaRelateList.do',
-                                   {'metaSn': _catalog.identifier(dataset.dataset_id), 'histDe': _catalog.history(dataset.history_date)})
+                                   {'metaSn': meta, 'histDe': _catalog.history(dataset.history_date)})
         rows = _catalog.rows(payload)
         if len(rows) != _catalog.count(payload.get('resultListTotCnt')):
             raise SchemaError('자료실 resource 수량 불일치')
-        result = tuple(_catalog.parse_resource(row,dataset) for row in rows)
+        parent = replace(dataset,dataset_id=meta)
+        result = tuple(replace(_catalog.parse_resource(row,parent),dataset=dataset,
+                               backing_dataset_id=meta if dataset.catalog.startswith('api_') else None) for row in rows)
         if len({item.resource_id for item in result}) != len(result):
             raise SchemaError('중복 자료실 resource ID')
         return result
 
     async def list_resources(self, dataset: Dataset) -> tuple[LibraryResource, ...]:
         """자료실/안내 meta의 파일·테이블 resource를 발견한다. 파일명을 SQL table로 해석하지 않는다."""
-        if dataset.catalog not in ('documents','statistics'):
-            raise ValueError('list_resources는 문서/통계 자료실을 지원합니다')
+        if dataset.catalog not in ('documents','statistics','api_original','api_analysis','api_map'):
+            raise ValueError('list_resources는 자료실/OpenAPI 안내를 지원합니다')
         async with self._browser.operation() as page:
             await _open_page(page,BASE_URL + _catalog.CATALOG_PATHS[dataset.catalog][0])
             return await self._resources(page,dataset)
 
     async def _current_resource(self, page: Page, resource: LibraryResource) -> LibraryResource:
         dataset = resource.dataset
-        if dataset.catalog not in ('documents','statistics'):
-            raise ValueError('문서/통계 자료실 resource가 아닙니다')
+        if dataset.catalog not in ('documents','statistics','api_original','api_analysis','api_map'):
+            raise ValueError('자료실/OpenAPI resource가 아닙니다')
         await _open_page(page,BASE_URL + _catalog.CATALOG_PATHS[dataset.catalog][0])
         current = next((item for item in await self._resources(page,dataset) if item.resource_id == resource.resource_id),None)
         if current is None or current.source_name != resource.source_name:
@@ -276,3 +280,27 @@ class VadaHubClient:
                                and all(value is None or isinstance(value,(str,int,float,bool)) for value in row.values()) for row in rows)):
                 raise SchemaError('공개 테이블 미리보기 schema 불일치')
             return TablePreview(current,tuple(columns),tuple(labels),tuple(MappingProxyType(row) for row in rows),datetime.now(timezone.utc))
+
+    async def query_table(self, resource: LibraryResource, *, start: int = 0, page_size: int = 50,
+                          filters: dict[str,str] | None = None, order_by: str | None = None,
+                          descending: bool = True) -> WebTablePage:
+        """공개 웹 grid를 bounded 페이지로 조회한다. 인증 API의 파라미터/응답과 구분한다."""
+        from .query import query_table
+        return await query_table(self,resource,start=start,page_size=page_size,filters=filters,
+                                 order_by=order_by,descending=descending)
+
+    async def list_api_layers(self, dataset: Dataset) -> tuple[DatasetLayer, ...]:
+        """OpenAPI 안내의 실제 backing 공간 layer. 기존 download/load API와 연결한다."""
+        if dataset.catalog not in ('api_original','api_analysis','api_map'):
+            raise ValueError('OpenAPI 안내 Dataset이 필요합니다')
+        meta, hist = _catalog.backing_meta(dataset), _catalog.history(dataset.history_date)
+        async with self._browser.operation() as page:
+            await _open_page(page,BASE_URL + _catalog.CATALOG_PATHS[dataset.catalog][0])
+            payload = await self._post(page,'/renew/selectMdMetaRelateList.do',{'metaSn':meta,'histDe':hist})
+            rows = _catalog.rows(payload)
+            if len(rows) != _catalog.count(payload.get('resultListTotCnt')):
+                raise SchemaError('OpenAPI backing layer 수량 불일치')
+            result = tuple(_catalog.parse_layer(row,meta,hist) for row in rows if row.get('atrbSpceSe')=='SPATIAL')
+            if len({item.layer_id for item in result}) != len(result):
+                raise SchemaError('OpenAPI backing layer 중복')
+            return result

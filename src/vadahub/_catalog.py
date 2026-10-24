@@ -17,6 +17,14 @@ CATALOG_PATHS: dict[CatalogKind, tuple[str, str, str]] = {
 }
 
 
+def backing_meta(dataset: Dataset) -> str:
+    meta = identifier(dataset.dataset_id)
+    if dataset.catalog.startswith('api_'):
+        api_id = identifier(dataset.api_id)
+        return {'140':'5247','142':'5248'}.get(api_id,meta)
+    return meta
+
+
 def text(value: Any) -> str:
     if not isinstance(value, str) or not value.strip():
         raise SchemaError('필수 문자열이 없거나 잘못됐습니다')
