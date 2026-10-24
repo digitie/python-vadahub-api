@@ -6,6 +6,8 @@
 - transport DTO adapter, source+port_id 참조, pssh_p 시설 상세·원문·조사연도,
   전체항로/segment 분리, 지역+이름 유일성 및 버전고정 crosswalk를 구현했다.
 - 원천 도선 출도착지 결측과 여객터미널 원격 미제공(T005E)은 해결된 것으로 표시하지 않는다.
+- A 시설역할·B nullable좌표출처 P2 수정 후 최종 `59b4a4c` 리뷰2 차단 없음.
+  unit172/94.80%, 새 ZIP live1 및 동일원문 최종 GDAL/매핑 live2 통과.
 
 ## 2026-10-24 KST — T004 GDAL
 
