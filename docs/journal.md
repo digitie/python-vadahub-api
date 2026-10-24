@@ -14,5 +14,7 @@
 - T001 머지 main에서 `codex/t002-async-foundation` 분기 후 provider 구현 시작.
 - KRIC src layout/패키징·문서 체계를 적용하고 Opinet token bucket 및 Chromium 생명주기를 구현.
 - GDAL은 spatial extra로 분리해 core에 native ABI 의존을 강제하지 않는다.
-- fixture 62개, coverage 98.39%, mypy·compileall, 실제 Chromium live 3개 통과.
-- 패키지 빌드·설치본 확인, 독립 리뷰 2건·CI·머지 gate는 별도 최종 기록한다.
+- B가 발견한 생성/정리 정지 시 무한 대기를 유한 유예·늦은 자원 추적으로 수정했다.
+- 최종 소스 `472a75a`: unit 72개/98.29%, mypy·compileall·실제 Chromium live 3개·빌드·
+  별도 wheel 설치본의 실제 VadaHub 조회 통과. A/B 모두 차단 해제.
+- [PR #2](https://github.com/digitie/python-vadahub-api/pull/2)의 최종 head CI/머지를 확인해 다음 task로 진행한다.
