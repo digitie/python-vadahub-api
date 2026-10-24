@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from collections.abc import Mapping
+from typing import Any
 
 
 @dataclass(frozen=True, slots=True)
@@ -53,3 +55,20 @@ class ArchiveReceipt:
     local_path: Path
     member_sha256: tuple[tuple[str, str], ...]
     schema_version: str = '1'
+
+
+@dataclass(frozen=True, slots=True)
+class SpatialFeature:
+    """native 객체 대신 복사한 속성과 WKB를 제공하는 공간 레코드."""
+    layer: DatasetLayer
+    record_id: str
+    record_id_field: str
+    raw_attributes: Mapping[str, Any]
+    attributes: Mapping[str, Any]
+    geometry_wkb: bytes | None
+    geometry_type: str | None
+    source_crs: str | None
+    crs_evidence: str | None
+    wgs84_wkb: bytes | None
+    source_sha256: str
+    source_collected_at: datetime | None = None

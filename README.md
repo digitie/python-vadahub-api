@@ -4,7 +4,7 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 키 없이 수집·해석하는 **비동기 Python provider 라이브러리**다.
 상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
 T003에서 공간자료 카탈로그·기초자료·공개 ZIP 다운로드를 구현했다.
-GDAL 파싱·매핑·버전 관리는 이후 task다.
+T004에서 GDAL 파싱과 async load/iter/local API를 구현 중이다. 매핑·버전 관리는 이후 task다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
 관광지정보, 여객터미널, 도선항로, 여객항로다. 웹 접근은 Chromium을 사용한다.
@@ -40,7 +40,7 @@ GDAL 파싱·매핑·버전 관리는 이후 task다.
 
 Python 3.11 이상에서 `python -m pip install .` 후
 `python -m playwright install chromium`으로 Chromium을 준비한다.
-SHP parser 구현 단계에서는 시스템 GDAL과 같은 버전의 binding을 먼저 준비해야 한다.
+SHP parser에는 시스템 GDAL 3.8 이상과 같은 버전의 Python binding을 먼저 준비해야 한다.
 현재 core 설치와 페이지 확인에는 GDAL·API 키가 필요 없다.
 
 ```python
@@ -102,6 +102,30 @@ python -m pytest -m live --run-live
 
 live 실행에 설치된 Chromium 경로를 지정하려면 `VADAHUB_CHROMIUM_EXECUTABLE` 환경변수를
 사용한다. SDK 자체는 이 변수를 자동 탐색하지 않고 테스트가 명시적으로 전달한다.
+
+## GDAL 공간자료 로딩
+
+```python
+from contextlib import aclosing
+from vadahub import VadaHubFileClient
+
+async def read_archive(layer) -> None:
+    async with VadaHubFileClient() as client:
+        async with aclosing(client.iter_file('dosun.zip', layer=layer)) as rows:
+            async for row in rows:
+                print(row.record_id, row.attributes, row.geometry_type)
+```
+
+`load_file`은 전체 목록, `iter_file`은 bounded batch를 반환한다. `load(layer)`와
+`iter(layer)`는 다운로드와 임시 ZIP의 수명도 관리한다. 반복을 일찍 끝낼 때는
+`aclosing`으로 iterator를 닫는다. GDAL 객체는 하나의 worker에서 생성·사용·해제한다.
+취소 시 worker 종료를 기다리므로 native 읽기가 멈춰 있으면 취소 완료도 지연될 수 있다.
+원문 WKB와 raw DBF 속성, TXT로 복원한 속성, 원문 SHA256을 함께 제공한다.
+날짜 필드의 유효한 YYYYMMDD는 `date`, 빈 문자열은 `None`, 코드/전화는 문자열로 보존한다.
+`.prj`가 없으면 CRS와 WGS84 WKB는 `None`이다. `source_crs`를 명시하면 근거를
+기록하고 변환하며, 원문 `.prj`와 충돌하면 `UnknownCrsError`다.
+Windows에서 GDAL이 없으면 공간 호출만 `SpatialDependencyError`로 실패한다.
+[설치·ABI·필수 공간 CI](docs/gdal.md)를 따른다.
 
 ## 조사 재현
 
