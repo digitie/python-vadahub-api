@@ -62,6 +62,12 @@ operation 제한이며 브라우저 자산 요청량 제한이 아니다. 자동
 401/403·로그인·보안 확인은 `AccessDeniedError`, 429는 `RateLimitError`, 통신/timeout은
 `NetworkError`, 제목/컨테이너 변경은 `SchemaError`로 노출한다.
 
+`timeout`은 operation 본체의 제한이다. 취소 후 생성/종료 command별로 추가 정리 유예
+`cleanup_timeout`(기본 5초)를 둔다. 이 유예도 넘으면 client를 종료 상태로 전환해 다음
+operation을 차단하고, 늦게 생성/종료되는 소유 자원은 background로 추적한다.
+외부 context는 이때도 닫지 않는다. 응답이 끝내 오지 않으면 pending 정리가 해당 context/
+driver 종료까지 남을 수 있다. `aclose()`의 반복 호출은 이 pending 응답을 무한 대기하지 않는다.
+
 ```bash
 python -m pip install -e '.[dev]'
 python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90

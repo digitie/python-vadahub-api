@@ -54,6 +54,7 @@ class BrowserSession:
         self,
         *,
         timeout: float,
+        cleanup_timeout: float,
         max_rps: float,
         rate_limiter: AsyncTokenBucket | None,
         browser_context: BrowserContext | None,
@@ -61,9 +62,12 @@ class BrowserSession:
     ) -> None:
         if isinstance(timeout, bool) or not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout은 유한한 양수여야 합니다")
+        if isinstance(cleanup_timeout, bool) or not math.isfinite(cleanup_timeout) or cleanup_timeout <= 0:
+            raise ValueError("cleanup_timeout은 유한한 양수여야 합니다")
         if browser_context is not None and executable_path is not None:
             raise ValueError("browser_context와 executable_path는 함께 지정할 수 없습니다")
         self.timeout = float(timeout)
+        self.cleanup_timeout = float(cleanup_timeout)
         self.rate_limiter = rate_limiter or AsyncTokenBucket(max_rps, capacity=1)
         self._external_context = browser_context
         self._executable_path = executable_path
@@ -72,6 +76,7 @@ class BrowserSession:
         self._lock = asyncio.Lock()
         self._loop: asyncio.AbstractEventLoop | None = None
         self._closed = False
+        self._pending: set[asyncio.Task[Any]] = set()
 
     def _bind_loop(self) -> None:
         loop = asyncio.get_running_loop()
@@ -122,26 +127,77 @@ class BrowserSession:
         return page
 
     async def _acquire(self, creation: Awaitable[T], close: Callable[[T], Awaitable[None]]) -> T:
-        # 생성 응답 직전에 취소돼도 원격에서 생성된 자원을 잃지 않는다.
+        # 취소 후에도 짧은 정리 유예만 기다리고, 늦은 생성 결과의 소유권은 계속 추적한다.
         task = asyncio.ensure_future(creation)
-        cancelled = False
-        while True:
-            try:
-                resource = await asyncio.shield(task)
-                break
-            except asyncio.CancelledError:
-                if task.cancelled():
-                    raise
-                cancelled = True
-            except Exception:
-                if cancelled:
-                    raise asyncio.CancelledError from None
-                raise
+        try:
+            resource = await asyncio.shield(task)
+        except asyncio.CancelledError:
+            if not task.cancelled():
+                await self._wait_cleanup(task)
+                if not task.done():
+                    self._closed = True
+                    self._defer_acquisition(task, close)
+                elif not task.cancelled():
+                    try:
+                        resource = task.result()
+                    except Exception:
+                        pass  # 취소 뒤 생성 실패는 원래 취소를 가리지 않는다.
+                    else:
+                        assert self._stack is not None
+                        self._stack.push_async_callback(self._close_resource, close, resource)
+            raise
         assert self._stack is not None
-        self._stack.push_async_callback(close, resource)
-        if cancelled:
-            raise asyncio.CancelledError
+        self._stack.push_async_callback(self._close_resource, close, resource)
         return resource
+
+    async def _wait_cleanup(self, task: asyncio.Task[Any]) -> None:
+        """반복 취소로 연장되지 않는 절대 정리 유예. 원격 command 자체는 취소하지 않는다."""
+        deadline = asyncio.get_running_loop().time() + self.cleanup_timeout
+        while not task.done():
+            remaining = deadline - asyncio.get_running_loop().time()
+            if remaining <= 0:
+                return
+            try:
+                await asyncio.wait({task}, timeout=remaining)
+            except asyncio.CancelledError:
+                continue
+
+    def _track_cleanup(self, task: asyncio.Task[Any]) -> None:
+        self._pending.add(task)
+
+        def finished(done: asyncio.Task[Any]) -> None:
+            self._pending.discard(done)
+            if not done.cancelled():
+                done.exception()  # 유예 뒤 실패도 미회수 task 오류로 남기지 않는다.
+
+        task.add_done_callback(finished)
+
+    def _defer_acquisition(self, task: asyncio.Task[T], close: Callable[[T], Awaitable[None]]) -> None:
+        """늦게 반환된 자원도 닫는다. 멈춘 외부 context를 SDK가 닫지는 않는다."""
+        self._pending.add(task)
+
+        def acquired(done: asyncio.Task[T]) -> None:
+            self._pending.discard(done)
+            if done.cancelled():
+                return
+            try:
+                resource = done.result()
+            except Exception:
+                return
+            self._track_cleanup(asyncio.create_task(self._close_resource(close, resource)))
+
+        task.add_done_callback(acquired)
+
+    async def _close_resource(self, close: Callable[[T], Awaitable[None]], resource: T) -> None:
+        task = asyncio.ensure_future(close(resource))
+        await self._wait_cleanup(task)
+        if not task.done():
+            self._closed = True
+            self._track_cleanup(task)
+            raise NetworkError("브라우저 정리 유예를 초과했습니다. 늦은 종료는 계속 추적합니다")
+        if task.cancelled():
+            raise NetworkError("브라우저 자원 정리 command가 취소됐습니다")
+        await task
 
     async def _dispose(self) -> None:
         stack, self._stack = self._stack, None

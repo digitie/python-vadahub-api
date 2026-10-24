@@ -1,4 +1,4 @@
-"""비동기 HTTP 호출의 TPS를 제어하는 공통 토큰 버킷 구현."""
+"""비동기 operation 예산을 공유하는 토큰 버킷. Opinet 구현을 재사용한다."""
 
 from __future__ import annotations
 

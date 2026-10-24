@@ -43,13 +43,14 @@ class VadaHubClient:
         self,
         *,
         timeout: float = 30.0,
+        cleanup_timeout: float = 5.0,
         max_rps: float = 1.0,
         rate_limiter: AsyncTokenBucket | None = None,
         browser_context: BrowserContext | None = None,
         executable_path: str | None = None,
     ) -> None:
         self._browser = BrowserSession(
-            timeout=timeout, max_rps=max_rps, rate_limiter=rate_limiter,
+            timeout=timeout, cleanup_timeout=cleanup_timeout, max_rps=max_rps, rate_limiter=rate_limiter,
             browser_context=browser_context, executable_path=executable_path,
         )
 

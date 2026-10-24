@@ -360,3 +360,104 @@ async def test_automatic_detach_on_closed_page_is_safe(browser):
     async with VadaHubClient() as client:
         await client.get_page_snapshot()
     browser.context.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("budget", [True, 0, -1, float("inf"), float("nan")])
+def test_invalid_cleanup_budget(budget):
+    with pytest.raises(ValueError):
+        VadaHubClient(cleanup_timeout=budget)
+
+
+async def _drain_pending(client):
+    async with asyncio.timeout(1):
+        while client._browser._pending:
+            await asyncio.sleep(0.001)
+
+
+async def test_stalled_creation_has_finite_grace_and_late_page_is_closed(browser):
+    release = asyncio.Event()
+
+    async def stalled_creation():
+        await release.wait()
+        return browser.page
+
+    browser.context.new_page.side_effect = stalled_creation
+    client = VadaHubClient(browser_context=browser.context, timeout=0.01, cleanup_timeout=0.01)
+    with pytest.raises(NetworkError, match="시간 제한"):
+        await asyncio.wait_for(client.get_page_snapshot(), 0.5)
+    await asyncio.wait_for(client.aclose(), 0.5)
+    browser.context.close.assert_not_awaited()
+    assert client._browser._pending
+    with pytest.raises(ClientClosedError):
+        await client.get_page_snapshot()
+    release.set()
+    await _drain_pending(client)
+    browser.page.close.assert_awaited_once()
+    browser.context.close.assert_not_awaited()
+
+
+async def test_stalled_creation_late_failure_is_consumed(browser):
+    release = asyncio.Event()
+
+    async def failed_later():
+        await release.wait()
+        raise PlaywrightError("late private response")
+
+    browser.context.new_page.side_effect = failed_later
+    client = VadaHubClient(timeout=0.01, cleanup_timeout=0.01)
+    with pytest.raises(NetworkError):
+        await asyncio.wait_for(client.get_page_snapshot(), 0.5)
+    release.set()
+    await _drain_pending(client)
+    browser.context.close.assert_awaited_once()
+    await client.aclose()
+
+
+async def test_stalled_close_continues_other_cleanup_and_late_completion(browser):
+    release = asyncio.Event()
+    browser.page.close.side_effect = release.wait
+    client = VadaHubClient(cleanup_timeout=0.01)
+    await client.get_page_snapshot()
+    with pytest.raises(NetworkError, match="정리 유예"):
+        await asyncio.wait_for(client.aclose(), 0.5)
+    browser.context.close.assert_awaited_once()
+    browser.engine.close.assert_awaited_once()
+    browser.playwright.stop.assert_awaited_once()
+    await asyncio.wait_for(client.aclose(), 0.5)
+    assert client._browser._pending
+    release.set()
+    await _drain_pending(client)
+
+
+async def test_repeated_cancellation_does_not_extend_creation_grace(browser):
+    started, release = asyncio.Event(), asyncio.Event()
+
+    async def creation():
+        started.set()
+        await release.wait()
+        return browser.page
+
+    browser.context.new_page.side_effect = creation
+    client = VadaHubClient(browser_context=browser.context, cleanup_timeout=0.01)
+    task = asyncio.create_task(client.get_page_snapshot())
+    await started.wait()
+    task.cancel()
+    async with asyncio.timeout(0.5):
+        while not task.done():
+            await asyncio.sleep(0.001)
+            task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    await asyncio.wait_for(client.aclose(), 0.5)
+    release.set()
+    await _drain_pending(client)
+    browser.page.close.assert_awaited_once()
+
+
+async def test_cancelled_close_command_is_network_error(browser):
+    client = VadaHubClient()
+    await client.get_page_snapshot()
+    browser.page.close.side_effect = asyncio.CancelledError()
+    with pytest.raises(NetworkError, match="command가 취소"):
+        await client.aclose()
+    browser.context.close.assert_awaited_once()

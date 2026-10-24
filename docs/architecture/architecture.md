@@ -1,7 +1,8 @@
 # 구조
 
 이 저장소는 Python provider SDK다. KRIC 저장소의 디렉터리 구조를 기반으로 한다.
-아래 `src`와 `tests`는 T002 이후 순서대로 구현할 목표 구조다.
+아래는 전체 목표 구조다. T002에서는 __init__/py.typed/client/_browser/_ratelimit/models/
+exceptions 및 기반 테스트를 구현했다. files/parse/mapping/storage는 후속 task다.
 
 ```text
 python-vadahub-api/
@@ -47,6 +48,13 @@ VadaHub 공개 화면 → async Chromium → 카탈로그·기초 layer 목록
 주입한 BrowserContext는 닫지 않고 생성한 page만 닫는다. 자체 생성 driver/browser/context는
 역순 정리한다. 종료는 멱등이며 실패·취소 후 listener·page·부분 파일을 정리한다.
 다른 event loop에서의 재사용은 오류다. 종료와 진행 중 operation의 경쟁도 테스트한다.
+
+operation timeout 이후에는 생성/자원별 `cleanup_timeout` 유예를 추가 적용한다.
+유예 만료 시 client를 재사용 불가로 전환하고 늦은 생성/close task를 추적한다.
+생성은 클라이언트당 최대 1개, 소유 자원별 close는 각각 1개라 실패 후 재시작으로 누적하지 않는다.
+소유 상위 자원 정리는 계속 진행하고 외부 context는 유지한다. 끝내 응답하지 않는 원격 command의
+정리는 context/driver 종료까지 남을 수 있으나 operation/후속 aclose를 무한 대기시키지 않는다.
+operation 제한은 정리까지 포함한 전체 hard deadline을 의미하지 않는다.
 
 대용량 디스크 I/O와 ZIP/DBF/CRS 계산은 thread로 넘기되 취소 후에도 thread의 쓰기가
 계속되는 문제를 고려해 완료 대기·파일 소유권을 명시한다. bounded batch로 async iterator를

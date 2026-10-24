@@ -1,0 +1,4 @@
+include AGENTS.md CLAUDE.md SKILL.md
+recursive-include docs *.md *.json
+recursive-include tests *.py
+recursive-include tools *.py
