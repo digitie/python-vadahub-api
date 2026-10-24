@@ -1,12 +1,35 @@
 """공개 수집 결과의 타입과 계보."""
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from collections.abc import Mapping
 from typing import Any, Literal
 
 CatalogKind = Literal['space', 'documents', 'statistics', 'api_original', 'api_analysis', 'api_map']
+WaveMeasure = Literal['height', 'period']
+
+
+@dataclass(frozen=True, slots=True)
+class WaveStatistic:
+    """공개 웹 날짜별 통계. 시간별 원행/전체 기간의 통계라는 의미가 아니다."""
+    grid_code: str
+    analysis_date: date
+    value: float | None
+    raw_attributes: Mapping[str, Any]
+
+
+@dataclass(frozen=True, slots=True)
+class WaveStatistics:
+    """3분 공간격자의 날짜별 웹 통계와 질의·원천 계보."""
+    resource: 'LibraryResource'
+    grid_code: str
+    start_date: date
+    end_date: date
+    measure: WaveMeasure
+    rows: tuple[WaveStatistic, ...]
+    source_url: str
+    collected_at: datetime
 
 
 @dataclass(frozen=True, slots=True)

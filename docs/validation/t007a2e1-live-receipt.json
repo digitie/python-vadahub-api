@@ -1,0 +1,44 @@
+{
+  "source_sha": "957514569cbcdb854a69a3c4aef50592a8a27f6e",
+  "rows_are_web_statistics_not_raw_table": true,
+  "measurements": [
+    {
+      "measure": "height",
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "api_id": "139",
+      "resource_id": "520360",
+      "collected_at": "2026-10-24T05:54:43.112343+00:00",
+      "rows": [
+        {
+          "gridCd": "GR3_F4J12_H",
+          "analsYmd": "20180610",
+          "wvhgh": 1.6
+        },
+        {
+          "gridCd": "GR3_F4J12_H",
+          "analsYmd": "20180611",
+          "wvhgh": 1.0
+        }
+      ]
+    },
+    {
+      "measure": "period",
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "api_id": "139",
+      "resource_id": "520360",
+      "collected_at": "2026-10-24T05:54:50.144531+00:00",
+      "rows": [
+        {
+          "gridCd": "GR3_F4J12_H",
+          "analsYmd": "20180610",
+          "pd": 10.2
+        },
+        {
+          "gridCd": "GR3_F4J12_H",
+          "analsYmd": "20180611",
+          "pd": 11.5
+        }
+      ]
+    }
+  ]
+}
