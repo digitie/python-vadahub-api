@@ -6,4 +6,15 @@
 - KRIC/Opinet/MOIS/transport 참조 코드 및 실제 VadaHub 공개 페이지·ZIP 조사.
 - 사용자 확인: ITS는 오기, VadaHub만 대상. 추가 지시: kor-travel-geo GDAL binding 활용.
 - 실제 공개 ZIP 6개 확보. 여객터미널 다운로드 N, 도선 출도착지 부재, `.prj` 부재를 확인.
-- 문서 PR 리뷰·CI·머지는 아직 미완료. provider 구현은 문서 머지 뒤 시작한다.
+- 문서 [PR #1](https://github.com/digitie/python-vadahub-api/pull/1)을 `9d73701`로 머지했다.
+  독립 A/B의 P2 총 3건 수정·재리뷰, live/GDAL 재검증, 최종 head CI를 통과했다.
+
+## 2026-10-24 KST — T002 async 기반
+
+- T001 머지 main에서 `codex/t002-async-foundation` 분기 후 provider 구현 시작.
+- KRIC src layout/패키징·문서 체계를 적용하고 Opinet token bucket 및 Chromium 생명주기를 구현.
+- GDAL은 spatial extra로 분리해 core에 native ABI 의존을 강제하지 않는다.
+- B가 발견한 생성/정리 정지 시 무한 대기를 유한 유예·늦은 자원 추적으로 수정했다.
+- 최종 소스 `472a75a`: unit 72개/98.29%, mypy·compileall·실제 Chromium live 3개·빌드·
+  별도 wheel 설치본의 실제 VadaHub 조회 통과. A/B 모두 차단 해제.
+- [PR #2](https://github.com/digitie/python-vadahub-api/pull/2)의 최종 head CI/머지를 확인해 다음 task로 진행한다.

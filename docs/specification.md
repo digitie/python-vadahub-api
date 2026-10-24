@@ -128,7 +128,10 @@ GDAL OSR의 traditional GIS axis order를 명시하고 geometry 좌표는 `(lon,
 사이트 자원 요청량은 operation 수와 다르므로 내부 요청까지 관찰해 별도 계측한다.
 401/403/429·schema 오류는 자동 재시도하지 않는다. 임시 네트워크 오류만 제한된 backoff 후보이며
 SHP 생성 재시도는 서버 상태를 바꿀 수 있어 명시적으로 통제한다.
-timeout은 lock 대기·navigation·download를 포함한 operation 전체에 적용한다.
+timeout은 lock 대기·navigation·download를 포함한 operation 본체에 적용한다.
+본체 종료 뒤 생성/자원별 유한한 cleanup_timeout 유예가 추가되므로 정리까지의 hard deadline은
+아니다. 유예 만료 시 client는 재사용 불가이며 늦은 자원 결과를 추적해 정리한다.
+응답이 끝내 없는 외부 command는 context/driver 종료까지 남을 수 있지만 호출자를 계속 막지 않는다.
 쿠키·브라우저 저장 상태·원문 HTML 전체·인증 정보는 로그/fixture에 기록하지 않는다.
 
 ## 완료 정의
