@@ -8,7 +8,9 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
-import zipfile
+import subprocess
+
+from _probe_archive import validate_archive
 
 from playwright.async_api import async_playwright
 
@@ -24,8 +26,12 @@ POST = """async ({path, data}) => {
 
 
 async def probe(output: Path, executable: str | None, download: bool) -> None:
+    if output.exists() and any(output.iterdir()):
+        raise ValueError("원문/receipt 혼합을 막기 위해 비어 있는 새 run 디렉터리가 필요합니다")
     output.mkdir(parents=True, exist_ok=True)
-    report: dict = {"collected_at": datetime.now(timezone.utc).isoformat(), "datasets": []}
+    source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"],
+                                         cwd=Path(__file__).resolve().parents[1], text=True).strip()
+    report: dict = {"source_sha": source_sha, "collected_at": datetime.now(timezone.utc).isoformat(), "datasets": []}
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(executable_path=executable)
         try:
@@ -85,10 +91,10 @@ async def probe(output: Path, executable: str | None, download: bool) -> None:
                     item = await pending.value
                     path = output / f"{sid}.zip"
                     await item.save_as(path)
-                    with zipfile.ZipFile(path) as archive:
-                        if archive.testzip() is not None:
-                            raise RuntimeError("ZIP CRC 오류")
+                    with validate_archive(path) as archive:
                         row["members"] = archive.namelist()
+                        row["member_sha256"] = {n: hashlib.sha256(archive.read(n)).hexdigest()
+                                                for n in archive.namelist()}
                     with path.open("rb") as source:
                         checksum = hashlib.file_digest(source, "sha256").hexdigest()
                     row.update(download_status="downloaded", byte_size=path.stat().st_size,

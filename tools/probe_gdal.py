@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 import re
-import zipfile
+from _probe_archive import validate_archive
 
 from osgeo import gdal, ogr
 
@@ -14,9 +14,7 @@ from osgeo import gdal, ogr
 def inspect(directory: Path) -> list[dict]:
     rows = []
     for path in sorted(directory.glob("[0-9]*.zip")):
-        with zipfile.ZipFile(path) as archive:
-            if archive.testzip() is not None:
-                raise RuntimeError("ZIP CRC 오류")
+        with validate_archive(path) as archive:
             names = archive.namelist()
             shapes = [n for n in names if n.endswith(".shp")]
             if len(shapes) != 1:

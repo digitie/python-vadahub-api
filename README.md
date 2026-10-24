@@ -45,6 +45,7 @@ python tools/probe_source.py --output-dir artifacts/t001 --download
 ```
 
 로그인 없이 공개 버튼으로만 다운로드한다. 내려받지 못한 자료를 성공으로 기록하지 않는다.
+실행마다 비어 있는 새 output 디렉터리를 지정한다. 기존 성공 receipt와 재생성 ZIP을 섞지 않는다.
 실행 결과 원문·쿠키·대용량 ZIP은 저장소에 커밋하지 않는다.
 
 라이선스는 기존 저장소의 GPL-3.0-or-later를 따른다. 원천자료의 이용조건은 별도로

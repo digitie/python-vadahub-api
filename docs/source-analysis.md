@@ -62,7 +62,12 @@ Innοrix offset 인자나 임시 파일명은 공개 URL 규칙으로 일반화�
 
 ## 실제 ZIP 확인
 
-다음은 공개 버튼으로 실제 내려받고 pyshp로 전 행을 읽은 결과다.
+다음은 최초 조사에서 공개 버튼으로 실제 내려받고 pyshp로 전 행을 읽은 결과다.
+ZIP hash는 **최초 수집 실행**의 값이다. 최종 재현 실행은 별도
+[공개 receipt](validation/t001-public-receipt.json)에 실행 시각·코드 SHA·ZIP/member SHA를 기록한다.
+서버가 매번 ZIP을 재생성하므로 member timestamp/order 차이로 ZIP hash가 달라질 수 있다.
+재수집 비교에서 멤버 payload 바이트는 같고 ZIP timestamp만 바뀜을 확인했다.
+원문 ZIP 식별 hash와 데이터 내용의 fingerprint를 구분한다.
 
 | layer | 실제 bytes | 레코드 | SHP 유형 | SHA-256 |
 |---|---:|---:|---|---|

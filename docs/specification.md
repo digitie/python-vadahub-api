@@ -98,7 +98,9 @@ Playwright download는 브라우저가 먼저 임시파일로 저장하므로 �
 
 저장은 임시 파일→전송/CRC/크기/형식/hash 검증→해시 경로 원문→원자 manifest 순서다.
 manifest는 dataset/history/layer→여러 SHA 버전을 기록한다. 동일 hash는 재사용하고
-날짜/URL만으로 완료를 판단하지 않는다. 원문 생성 후 manifest 실패한 고아 파일은
+날짜/URL만으로 완료를 판단하지 않는다. 서버 ZIP 생성시각 때문에 내용이 같아도 hash가 바뀔 수
+있으므로 멤버명+payload SHA fingerprint를 별도로 기록해 내용 중복과 원문 버전을 구분한다.
+원문 생성 후 manifest 실패한 고아 파일은
 다음 실행에서 검증 후 복구/보고한다. 삭제·보존기한은 호출자의 명시적 정책이며 기본 삭제 안 함.
 원격 S3 저장은 선택 adapter로 별도 gate를 통과시킨다. 설정·비밀값을 자동 탐색하지 않는다.
 
