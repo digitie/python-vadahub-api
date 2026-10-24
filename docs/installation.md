@@ -95,3 +95,11 @@ python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90
 [live 실행 절차](runbooks/live.md)에 따라 웹 수집과 동일 원문 파싱을 순서대로 실행한다.
 [최종 검증 증빙](validation/t008.md)과 [외부 제약](tasks.md)을 함께 읽는다.
 선택적인 S3 adapter·서버·스케줄러·운영 DB는 이번 구현에 포함하지 않았다.
+
+## 검증된 Chromium Python 클라이언트 버전
+
+Playwright 지원 하한은1.64.1이다. Windows/Python3.14에서1.63.0은 실제 다운로드를
+마친 뒤 Browser.close 내부 task 때문에 asyncio teardown이 종료되지 않았다. 같은 코드와
+Chromium을 사용하는 새1.64.1 환경은 live6개가 정상 종료했다. upstream 수정 원인을
+확정한 것은 아니며 재현된 호환성 차이를 근거로 설치 범위를 제한한다. 기존 환경은
+`python -m pip install --upgrade .`로 선언된 의존성을 함께 갱신한다.

@@ -125,3 +125,8 @@ T007A2E1 PR #13의 최종리뷰2/live/CI와37e0ced머지를 확인 후 분기했
 strictCP949·OGR WKT의boundedworker와nullable/CRS미상·별도출처를 보존한다.
 CSV도 LocalArchiveStore의별도scope에서 해시버전/멱등성/복구를 제공한다.
 실제개발probe CSV다운로드/76행OGR/76참조터미널 변환은 통과했으며 최종SHA의리뷰/live/CI를 진행한다.
+
+T005E1 리뷰의P2 세건(WKT suffix, 로더 첨부출처, redirect live fixture)을 수정했다.
+370 unit/95.02%, Win·WSL 신규다운로드6live와 GDAL/보관3live·격리wheel76행 통과.
+Windows Playwright1.63.0의 teardown 미종료를 관측했고 같은 검증의1.64.1 정상종료를
+근거로 지원하한을 올린다. 마지막 구현SHA의 재리뷰·재live·CI를 다시 확인한다.
