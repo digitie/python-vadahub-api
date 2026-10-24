@@ -47,8 +47,10 @@ F02의 원천 다운로드와 F06의 도선 출도착지 보강은 외부 데이
 | `iter(layer, batch_size=...)` | bounded async iterator; 무제한 producer thread/queue 금지 |
 | `load_file(path, layer=..., source_crs=None, encoding=None)` | 로컬 ZIP을 동일 파서로 읽음; 원격 미제공 자료의 수동 확보 경로 |
 | `iter_file(...)` | thread에서 bounded batch로 파싱, 조기 종료/취소 시 파일 핸들 정리 |
-| `map_route(feature, ports=..., crosswalk=...)` | 출발/도착 각각의 상태·확정 선착장·후보·증거 제공 |
 | `list_tourism_layers(category=None)`, `load_tourism(category)`, `iter_tourism(category)` | [관광9종](tourism.md)의 현재 layer·GDAL 요약·검색 |
+
+`map_route(feature, ports=..., crosswalk=...)`는 `from vadahub import map_route`로 가져오는
+독립 함수이며 클라이언트 메서드가 아니다. 출발/도착 각각의 상태·확정 선착장·후보·근거를 제공한다.
 
 ## 타입과 계보
 
@@ -62,8 +64,10 @@ F02의 원천 다운로드와 F06의 도선 출도착지 보강은 외부 데이
   geometry_wkb/geometry_type/geometry_valid, source_crs/crs_evidence/wgs84_wkb,
   source_sha256/source_collected_at. 레코드 ID는 이름이 아닌
   layer+gid+원문 버전 문맥으로 식별한다.
-- `RouteEndpoints`: 전체 항로와 segment 구분, 출발/기항/도착의 원문 문자열,
-  보강 출처·revision·출처 record ID. 구간명 하이픈만으로 자동 분할하지 않는다.
+- `RouteEndpoints`: departure/arrival/calls_raw/route_name/segment_name/scope로
+  전체 항로와 구간 및 원문 출도착지를 구분한다. 구간명 하이픈만으로 자동 분할하지 않는다.
+  외부 보강의 출처·revision·record ID는 입력 EndpointCrosswalk에,
+  적용한 매칭 근거는 EndpointMatch.evidence에 보존한다.
 - `PortReference`: source, port_id, name, region(주입한 지역/행정코드), 주소·전화,
   원천 좌표/CRS·수집시점, location_source. 항구/선착장/터미널 역할도 구분한다.
 - `EndpointMatch`: raw_name, status(`matched`,`ambiguous`,`unmatched`,`missing_endpoints`),
@@ -121,8 +125,10 @@ TXT `inFieldName`과 DBF 선언을 일대일 대조한다. `c2` 같은 누락 �
 원시 코드/빈값/날짜/숫자 처리에서 0과 None을 구분하고 알 수 없는 필드를 버리지 않는다.
 
 `.prj` 또는 호출자의 명시적 CRS와 근거가 있을 때만 WGS84로 변환한다.
-GDAL OSR의 traditional GIS axis order를 명시하고 geometry 좌표는 `(lon,lat)`, 구조화 좌표는 named latitude/longitude로
-제공한다. 미확인 CRS는 None이며 `(0,0)`으로 치환하지 않는다.
+GDAL OSR의 traditional GIS axis order를 명시한다. geometry_wkb는 원문 CRS의 XY이며
+투영 좌표일 수 있다. 검증된 근거로 변환한 wgs84_wkb만 `(lon,lat)`다.
+PortReference의 구조화 좌표는 named latitude/longitude로 제공한다.
+미확인 CRS는 None이며 `(0,0)`으로 치환하지 않는다.
 속성 `x_crdn,y_crdn`도 CRS 근거가 없으면 원시 속성으로 둔다.
 
 ## 실패·호출량·운영

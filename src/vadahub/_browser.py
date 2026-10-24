@@ -100,9 +100,10 @@ class BrowserSession:
                 playwright.chromium.launch(executable_path=self._executable_path),
                 lambda value: value.close(),
             )
-            context = await self._acquire(
+            owned_context = await self._acquire(
                 browser.new_context(service_workers="block"), lambda value: value.close(),
             )
+            context = owned_context
         session: CDPSession | None = None
 
         async def close_page(value: Page) -> None:
