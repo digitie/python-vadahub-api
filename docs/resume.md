@@ -1,16 +1,15 @@
 # 재개 지점
 
-T002 PR #2 머지 확인 완료. 현재 `codex/t003-catalog-download`에서 카탈로그와 다운로드를
-구현했다. 초기 live SDK 183 meta/7 layer/6 ZIP/terminal 미제공을 확인했다.
-T003의 최종 리뷰2/live/CI 및 머지 후 T004 GDAL parser로 진행한다.
+T003 [PR #3](https://github.com/digitie/python-vadahub-api/pull/3)은 `d342204`로 머지했다.
+최종 구현 `6fe5e34`에서 독립 리뷰 A/B 차단 없음, unit132/96.49%, live4(skip0),
+증빙 head `8a828cd`의 CI 전부 통과를 확인했다.
 
-T001 문서 PR #1은 `9d73701`로 머지했다. T002 브랜치 `codex/t002-async-foundation`에서
-패키지 기초·async Chromium session·공유 제한·예외·CI를 구현했다.
-현재 unit 72개/98.29%, 타입·컴파일·빌드·설치본의 실제 VadaHub 조회와
-실제 Chromium live 3개를 통과했다. 두 독립 리뷰도 최종 소스 `472a75a`에서 차단을 해제했다.
-[PR #2](https://github.com/digitie/python-vadahub-api/pull/2)의 최종 CI·머지 여부를 확인한다.
-머지되었다면 T002를 tasks-done으로 옮기고 새 main 기준으로 T003을 시작한다.
-다음은 T003 카탈로그·기초자료 발견·공개 UI 다운로드이며 T002 머지 전 구현하지 않는다.
+현재 `codex/t004-gdal-loader`에서 GDAL 전용 worker·TXT 필드복원·WKB·근거 있는
+CRS 변환과 load/iter/local API를 구현 중이다. 실제 GDAL CI를 필수 job으로 추가했다.
+T004 독립 리뷰2·새 ZIP live/GDAL·최종 CI·머지 후 T005로 진행한다.
+
+추가 관광자료 요청은 T007B에 반영했다. 해수욕장·전망대·체험마을·낚시·마리나는
+실제 버튼/ZIP/필드/시점을 조사해 제공한다. metadata Y만으로 가용 판정하지 않는다.
 
 범위는 VadaHub만(ITS 오기 확인). API 키 없음. GDAL Python binding 필수.
 여객터미널 원격 SHP 미제공·도선 출도착지 부재·CRS 부재를 숨기지 않는다.

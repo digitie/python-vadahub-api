@@ -1,7 +1,11 @@
 name: CI
 on:
   push:
+    branches: [main]
   pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -18,7 +22,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e '.[dev]'
       - run: python -m compileall -q src/vadahub tests
-      - run: python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90
+      - run: python -m pytest -m 'not live'
       - run: python -m build
   typecheck:
     runs-on: ubuntu-latest
@@ -29,3 +33,13 @@ jobs:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev]'
       - run: python -m mypy src/vadahub
+  spatial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -o Acquire::Retries=2 && sudo apt-get install -y --no-install-recommends python3-gdal python3-venv
+      - run: /usr/bin/python3 -m venv --system-site-packages /tmp/vadahub-ci
+      - run: /tmp/vadahub-ci/bin/python -m pip install -e '.[dev]'
+      - run: /tmp/vadahub-ci/bin/python -c 'from osgeo import gdal; print(gdal.VersionInfo())'
+      - run: /tmp/vadahub-ci/bin/python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90

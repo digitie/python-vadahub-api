@@ -10,7 +10,8 @@ from .models import PageSnapshot
 from .models import Dataset, DatasetLayer, ArchiveReceipt
 from .files import VadaHubFileClient
 from ._archive import ArchiveLimits
-from .exceptions import ArchiveError, DownloadUnavailableError
+from .exceptions import ArchiveError, DownloadUnavailableError, SpatialDependencyError, UnknownCrsError
+from .models import SpatialFeature
 
 __all__ = [
     "AccessDeniedError", "AsyncTokenBucket", "ClientClosedError", "NetworkError",
@@ -18,4 +19,5 @@ __all__ = [
     "VadaHubClient", "VadaHubError",
     "Dataset", "DatasetLayer", "ArchiveReceipt", "VadaHubFileClient", "ArchiveLimits",
     "ArchiveError", "DownloadUnavailableError",
+    "SpatialFeature", "SpatialDependencyError", "UnknownCrsError",
 ]

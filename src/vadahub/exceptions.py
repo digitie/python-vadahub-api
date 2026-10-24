@@ -35,3 +35,11 @@ class ArchiveError(VadaHubError):
 
 class DownloadUnavailableError(VadaHubError):
     """실제 공개 UI에서 다운로드를 제공하지 않음."""
+
+
+class SpatialDependencyError(VadaHubError):
+    """시스템과 버전이 일치하는 GDAL Python binding이 필요함."""
+
+
+class UnknownCrsError(VadaHubError):
+    """CRS가 불명확하거나 서로 다른 근거가 충돌함."""

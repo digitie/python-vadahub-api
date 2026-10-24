@@ -1,5 +1,13 @@
 # 작업 기록
 
+## 2026-10-24 KST — T004 GDAL
+
+- T003 PR #3의 리뷰2·live4·최종 CI와 머지 `d342204`를 확인한 뒤 분기했다.
+- GDAL Python binding 전용 worker, ZIP 검증, CP949 TXT 정확 필드명 연결, 원문 WKB,
+  nullable CRS와 근거 있는 변환, 날짜/코드 보존, async load/iter/local API를 추가했다.
+- 공간 CI를 필수로 추가하고 PR의 중복 push workflow를 줄였다.
+- 추가 관광자료 요구는 T007B로 task화했으며 실제 가용성 조사는 계속한다.
+
 ## 2026-10-24 KST — T003 카탈로그·다운로드
 
 - PR #2 머지 확인 후 `codex/t003-catalog-download`에서 구현.

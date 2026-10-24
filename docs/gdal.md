@@ -47,6 +47,22 @@ fixture 단위 테스트와 함께 실제 공개 ZIP→GDAL 전 행→TXT 필드
 
 ## 실제 준비 상태
 
+T004 구현은 GDAL 3.8 이상을 요구한다. Linux의 시스템 Python binding을 쓰는 예:
+
+```bash
+sudo apt-get install python3-gdal python3-venv
+/usr/bin/python3 -m venv --system-site-packages .venv
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -c 'from osgeo import gdal; print(gdal.VersionInfo())'
+.venv/bin/python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90
+```
+
+필수 `spatial` CI가 실제 GDAL로 전체 unit과 90% coverage gate를 실행한다.
+Python 3.11~3.14 core matrix는 binding 없이 core·빌드를 검증한다.
+로컬 live는 Windows Chromium으로 새 ZIP을 받은 뒤 같은 원문의 SHA를 WSL GDAL에서
+대조하는 두 환경으로 실행한다. `VADAHUB_LIVE_ARCHIVES`로 원문의 디렉터리를 전달한다.
+원문은 재생성 ZIP이므로 ZIP 해시와 멤버 해시를 구분해 보관한다.
+
 현재 Windows Python에는 `osgeo`가 없다. WSL `Ubuntu-26.04`의 Python에는
 GDAL `3120200`(3.12.2) binding이 있어 실제 받은 원문 ZIP을 대상으로 별도 읽기 검증한다.
 이번 단계에서는 geo 저장소의 DB·운영 컨테이너·데이터를 변경하지 않는다.

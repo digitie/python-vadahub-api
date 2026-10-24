@@ -33,7 +33,7 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra"
-markers = ["live: 실제 공개 VadaHub와 Chromium을 사용하는 검증"]
+markers = ["live: 실제 공개 VadaHub와 Chromium을 사용하는 검증", "spatial: GDAL Python binding이 필요한 공간 검증"]
 
 [tool.mypy]
 python_version = "3.11"
