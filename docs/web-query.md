@@ -36,3 +36,14 @@ WebTablePage.columns는 JSON camelCase 키, source_columns는 원 schema의 snak
 `VadaHubFileClient.list_api_layers(service)`는 backing 공간 layer만 반환하며 기존
 download/load/load_file/GDAL API와 연결한다. 미제공 버튼·SHP·미확인 CRS는 기존 계약과 같다.
 자료실의 get_table_preview는 별도 partial UI snapshot이며 이 페이지 API와 혼동하지 않는다.
+
+원천 API139(파랑3분)는 실제 grid 호출에서 150초 통신 실패를 확인했다. 이 서비스의 실제
+조회 성공은 T007A2E 외부제약/미완료로 남긴다. SDK는 NetworkError를 반환하며 자동 재시도하지 않는다.
+live는 해당 실패와 성공 서비스를 별도 집계한다. 목록 발견/실패 전파를 조회 성공이라고 표시하지 않는다.
+권한 제한, 연결자료0, 실제 schema/행0 역시 정상 데이터 조회 성공과 별도다.
+
+실제 OPEN API144의 ZIP은 polygon119개 중4개가 invalid다. 기본 공간 로더는 이를 거부한다.
+`invalid_geometry='preserve'`를 명시하면 원문 WKB와 geometry_valid=False를 보존하고
+WGS84 변환을 생략한다. 자동 보정하거나 정상 geometry로 표시하지 않는다. 읽기·인코딩 경고는
+그대로 오류이며 IsValid의 invalid 경고만 이 옵션에서 수용한다. null/empty geometry의
+geometry_valid는 None이다. 원본 attributes/SHA/CRS 근거도 그대로 제공한다.

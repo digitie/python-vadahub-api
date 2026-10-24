@@ -66,3 +66,8 @@ Python 3.11~3.14 core matrix는 binding 없이 core·빌드를 검증한다.
 현재 Windows Python에는 `osgeo`가 없다. WSL `Ubuntu-26.04`의 Python에는
 GDAL `3120200`(3.12.2) binding이 있어 실제 받은 원문 ZIP을 대상으로 별도 읽기 검증한다.
 이번 단계에서는 geo 저장소의 DB·운영 컨테이너·데이터를 변경하지 않는다.
+
+T007A2에서 실제 추가 원천의 invalid polygon을 확인했다. 기본은 SchemaError다.
+load/iter/load_file/iter_file의 `invalid_geometry='preserve'` 명시 시에만 원문 WKB와
+geometry_valid=False를 반환하며 WGS84를 생성하지 않는다. 자동 geometry 보정은 없다.
+geometry_valid=True는 topology 검사 결과이며 CRS/경위도 근거를 대신하지 않는다.
