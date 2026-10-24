@@ -24,3 +24,14 @@ Windows Git으로 HEAD를 확인할 수 없다. 따라서 원격 SHA를 기준�
 `asyncio.to_thread`, Python GDAL binding, scoped `SHAPE_ENCODING=CP949`, 협조적 취소,
 시스템/binding ABI 일치를 채택한다. geo의 PostGIS 적재·기존 EPSG:5179 강제는 가져오지 않는다.
 VadaHub ZIP에 CRS가 없으므로 geo의 원천 CRS와 같다고 추정하지 않는다.
+
+## T002 실제 재사용
+
+KRIC의 src 패키지·py.typed·setuptools·pytest/mypy/coverage CI 구조를 VadaHub용으로 적용했다.
+`_ratelimit.py`는 위 Opinet SHA의 공유 token bucket을 재사용했다.
+Chromium 전용 `_browser.py`와 생명주기·redirect/소유권·취소 테스트는 위 `python-krits-api`
+SHA의 파일을 출처로 사용해 VadaHub origin과 계약으로 수정했다. 이는 ITS 기능 구현을
+가져온 것이 아니라 브라우저 기반 provider의 자원 관리 공통 코드다.
+추가 source는 `src/krits/_browser.py`, `src/krits/exceptions.py`,
+`tests/{conftest,test_client,test_ratelimit,test_live_browser}.py`다.
+VadaHub의 title·컨테이너·공개 페이지 검증은 이 저장소에서 직접 구현·live 확인했다.

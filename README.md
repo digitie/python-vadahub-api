@@ -2,7 +2,8 @@
 
 VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자료 ZIP/SHP를
 키 없이 수집·해석하는 **비동기 Python provider 라이브러리**다.
-현재는 사양 문서화 단계이며 공개 패키지 API는 아직 구현하지 않았다.
+상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
+공간자료 목록·다운로드·GDAL 파싱·매핑은 이후 task이며 아직 제공하지 않는다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
 관광지정보, 여객터미널, 도선항로, 여객항로다. 웹 접근은 Chromium을 사용한다.
@@ -33,6 +34,43 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 
 원문 다운로드·파싱·파일 보관은 이 저장소, 주기 수집·운영 DB·외부 서비스 제공은
 소비자의 책임이다. `kor-travel-transport`의 DB나 코드를 런타임 import하지 않는다.
+
+## 구현된 async 기반 사용
+
+Python 3.11 이상에서 `python -m pip install .` 후
+`python -m playwright install chromium`으로 Chromium을 준비한다.
+SHP parser 구현 단계에서는 시스템 GDAL과 같은 버전의 binding을 먼저 준비해야 한다.
+현재 core 설치와 페이지 확인에는 GDAL·API 키가 필요 없다.
+
+```python
+import asyncio
+from vadahub import VadaHubClient
+
+async def main() -> None:
+    async with VadaHubClient(timeout=60) as client:
+        snapshot = await client.get_page_snapshot()
+        print(snapshot.title, snapshot.source_url, snapshot.collected_at)
+
+asyncio.run(main())
+```
+
+이 결과는 공개 공간자료 페이지 접근 확인이며 4종 자료를 수집한 결과가 아니다.
+`executable_path`로 설치된 Chromium을 지정하거나 `browser_context`로 Chromium context를
+주입할 수 있다. 주입한 context는 호출자가 닫고 SDK가 만든 page는 SDK가 닫는다.
+동일 loop의 여러 SDK가 `AsyncTokenBucket`을 공유할 수 있다. 기본 1 RPS·burst 1은
+operation 제한이며 브라우저 자산 요청량 제한이 아니다. 자동 재시도는 하지 않는다.
+401/403·로그인·보안 확인은 `AccessDeniedError`, 429는 `RateLimitError`, 통신/timeout은
+`NetworkError`, 제목/컨테이너 변경은 `SchemaError`로 노출한다.
+
+```bash
+python -m pip install -e '.[dev]'
+python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90
+python -m mypy src/vadahub
+python -m pytest -m live --run-live
+```
+
+live 실행에 설치된 Chromium 경로를 지정하려면 `VADAHUB_CHROMIUM_EXECUTABLE` 환경변수를
+사용한다. SDK 자체는 이 변수를 자동 탐색하지 않고 테스트가 명시적으로 전달한다.
 
 ## 조사 재현
 

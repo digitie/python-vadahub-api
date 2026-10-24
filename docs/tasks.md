@@ -6,8 +6,7 @@
 
 | 순서 | ID | 작업·산출물 | 의존 | 완료 기준·live 검증 | 상태 |
 |---|---|---|---|---|---|
-| 1 | T001 | 상세 조사·사양·구조·참조 분석·GDAL 결정·task·AGENTS·검증 runbook | 없음 | 실제 Chromium 4 meta/7 layer, 공개 ZIP 6개, terminal N 확인, GDAL 실제 파일 읽기, 리뷰 2건·문서 CI·PR 머지 | 진행 |
-| 2 | T002 | KRIC src layout 카피/이름변경·패키징·모델 기초·예외·async Chromium 생명주기·공유 제한·CI | T001 머지 | install/import/typecheck/unit, 실제 Chromium 세션 open/catalog 페이지/close, 취소·외부 context 소유권, 2리뷰·live·CI·머지 | 예정 |
+| 2 | T002 | KRIC src layout 카피/이름변경·패키징·모델 기초·예외·async Chromium 생명주기·공유 제한·CI | T001 머지 | install/import/typecheck/unit, 실제 Chromium 세션 open/catalog 페이지/close, 취소·외부 context 소유권, 2리뷰·live·CI·머지 | 진행 |
 | 3 | T003 | 전체 카탈로그·페이지네이션·기초 layer 발견·공개상태·UI ZIP 다운로드 | T002 머지 | 4 meta/7 layer·6 ZIP 다운로드·terminal DownloadUnavailable, 전체보기 클릭, 생성/다운로드 직렬화, quota/timeout 실패 테스트·2리뷰·live·CI·머지 | 예정 |
 | 4 | T004 | GDAL 기반 ZIP/SHP/DBF/TXT loader·geometry·좌표근거·async load/iter/local 파일 | T003 머지 | 실제 6 ZIP 전 행(34/424/38/142/109/110) 대조, CP949·c2 누락·CRS None·손상/zipbomb·취소 검증, GDAL 필수 CI·2리뷰·live·머지 | 예정 |
 | 5 | T005 | transport 참조 typed adapter·선착장 모델·출도착지 매핑·근거/crosswalk | T004 머지 | 실제 도선 전건 missing_endpoints, 여객 전체/구간 구분, pssh 후보, 동명/지역미상 오매핑 없음, 실제 원문+참조 fixture 매핑 E2E·2리뷰·CI·머지 | 예정 |
