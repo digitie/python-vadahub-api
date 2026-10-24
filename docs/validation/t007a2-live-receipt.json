@@ -1,0 +1,1637 @@
+{
+  "implementation_sha": "8939481f13f602a04d4c0c40550537e328105c04",
+  "query_success": 49,
+  "access_restricted": 12,
+  "source_grid_unavailable": 3,
+  "source_network_failed": 1,
+  "external_unresolved": [
+    "API139 NetworkError; not a successful data query"
+  ],
+  "services": [
+    {
+      "api_id": "147",
+      "catalog": "api_original",
+      "catalog_meta": "10077",
+      "title": "(개방)시운전금지해역",
+      "resources": [
+        {
+          "resource_id": "520798",
+          "backing_meta": "10077",
+          "source_name": "opn_trnrn_prhbt_sar_a",
+          "status": "access_restricted",
+          "service_auth": "LIST_OPEN",
+          "masked": null
+        }
+      ]
+    },
+    {
+      "api_id": "146",
+      "catalog": "api_original",
+      "catalog_meta": "10076",
+      "title": "(개방)수상레저금지구역",
+      "resources": [
+        {
+          "resource_id": "520797",
+          "backing_meta": "10076",
+          "source_name": "opn_wtron_lsr_prhbt_zn_a_2025",
+          "status": "access_restricted",
+          "service_auth": null,
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "144",
+      "catalog": "api_original",
+      "catalog_meta": "10075",
+      "title": "(개방)해양용도구역-에너지개발구역",
+      "resources": [
+        {
+          "resource_id": "520355",
+          "backing_meta": "10075",
+          "source_name": "opn_os_prpos_zone_en",
+          "status": "query_supported",
+          "total": 119,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "141",
+      "catalog": "api_original",
+      "catalog_meta": "5242",
+      "title": "(개방)해수유동 3분",
+      "resources": [
+        {
+          "resource_id": "520358",
+          "backing_meta": "5242",
+          "source_name": "opn_tb_grid_cont_oc_3min",
+          "status": "access_restricted",
+          "service_auth": "PRIVATE",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "140",
+      "catalog": "api_original",
+      "catalog_meta": "5247",
+      "title": "(개방)해수유동 15분",
+      "resources": [
+        {
+          "resource_id": "520359",
+          "backing_meta": "5247",
+          "source_name": "opn_tb_grid_cont_oc_15min",
+          "status": "access_restricted",
+          "service_auth": "PRIVATE",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "139",
+      "catalog": "api_original",
+      "catalog_meta": "5243",
+      "title": "(개방)파랑 3분",
+      "resources": [
+        {
+          "resource_id": "520360",
+          "backing_meta": "5243",
+          "source_name": "opn_tb_grid_cont_wv_3min",
+          "status": "source_network_failed",
+          "reason": "Chromium operation 시간 제한을 초과했습니다"
+        }
+      ]
+    },
+    {
+      "api_id": "124",
+      "catalog": "api_original",
+      "catalog_meta": "10030",
+      "title": "(개방)파랑 15분",
+      "resources": [
+        {
+          "resource_id": "520005",
+          "backing_meta": "10030",
+          "source_name": "opn_tb_grid_cont_wv_15min",
+          "status": "query_supported",
+          "total": 4942850,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "analsHhs",
+            "lo",
+            "la",
+            "wvhgh",
+            "wvdrct",
+            "wvlen",
+            "avgWvPd",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ],
+          "filter_verified": true
+        }
+      ]
+    },
+    {
+      "api_id": "134",
+      "catalog": "api_original",
+      "catalog_meta": "10040",
+      "title": "(개방)생태경관보전지역",
+      "resources": [
+        {
+          "resource_id": "520015",
+          "backing_meta": "10040",
+          "source_name": "opn_ecgy_scene_presv_area_a",
+          "status": "query_supported",
+          "total": 33,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "areaNm"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "132",
+      "catalog": "api_original",
+      "catalog_meta": "10038",
+      "title": "(개방)시도생태경관보전지역",
+      "resources": [
+        {
+          "resource_id": "520013",
+          "backing_meta": "10038",
+          "source_name": "opn_sido_ecolandscape_a",
+          "status": "query_supported",
+          "total": 24,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "sidoEcgyScenePresvAreaWdpaNo",
+            "sidoEcgyScenePresvAreaKrnm",
+            "sidoEcgyScenePresvAreaEnnm",
+            "sidoEcgyScenePresvAreaIntrlStdKrnm",
+            "sidoEcgyScenePresvAreaIntrlStdEnnm",
+            "sidoEcgyScenePresvAreaPznTyCd",
+            "sidoEcgyScenePresvAreaIucnparCd",
+            "sidoEcgyScenePresvAreaPznNtfAtCn",
+            "sidoEcgyScenePresvAreaOcSpceObjSttCd",
+            "sidoEcgyScenePresvAreaOcSpceObjSttInvsYr",
+            "sidoEcgyScenePresvAreaMngmInstCd",
+            "sidoEcgyScenePresvAreaMngmInstEnnm",
+            "sidoEcgyScenePresvAreaMngmPlnEnnm",
+            "sidoEcgyScenePresvAreaVrfSttAtCn",
+            "sidoEcgyScenePresvAreaAppnYr",
+            "sidoEcgyScenePresvAreaNtnCd",
+            "sidoEcgyScenePresvAreaItsdzUtnsilNtnCd1",
+            "sidoEcgyScenePresvAreaItsdzUtnsilNtnCd2"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "52",
+      "catalog": "api_original",
+      "catalog_meta": "10047",
+      "title": "(개방)격자5단계",
+      "resources": [
+        {
+          "resource_id": "510004",
+          "backing_meta": "10047",
+          "source_name": "opn_grid_5_step_a",
+          "status": "query_supported",
+          "total": 659348,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "51",
+      "catalog": "api_original",
+      "catalog_meta": "10046",
+      "title": "(개방)격자4단계",
+      "resources": [
+        {
+          "resource_id": "510003",
+          "backing_meta": "10046",
+          "source_name": "opn_grid_4_step_a",
+          "status": "query_supported",
+          "total": 73814,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "50",
+      "catalog": "api_original",
+      "catalog_meta": "10045",
+      "title": "(개방)격자3단계",
+      "resources": [
+        {
+          "resource_id": "510002",
+          "backing_meta": "10045",
+          "source_name": "opn_grid_3_step_a",
+          "status": "query_supported",
+          "total": 18692,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "49",
+      "catalog": "api_original",
+      "catalog_meta": "10044",
+      "title": "(개방)격자2단계",
+      "resources": [
+        {
+          "resource_id": "510001",
+          "backing_meta": "10044",
+          "source_name": "opn_grid_2_step_a",
+          "status": "query_supported",
+          "total": 823,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "48",
+      "catalog": "api_original",
+      "catalog_meta": "700102",
+      "title": "(개방)격자1단계",
+      "resources": [
+        {
+          "resource_id": "510000",
+          "backing_meta": "700102",
+          "source_name": "opn_grid_1_step_a",
+          "status": "query_supported",
+          "total": 67,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "86",
+      "catalog": "api_original",
+      "catalog_meta": "10060",
+      "title": "(개방)동해안EEZ-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510074",
+          "backing_meta": "10060",
+          "source_name": "opn_ecoast_eez_grid",
+          "status": "query_supported",
+          "total": 161,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "116",
+      "catalog": "api_original",
+      "catalog_meta": "10052",
+      "title": "(개방)전북-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510275",
+          "backing_meta": "10052",
+          "source_name": "opn_jb_grid",
+          "status": "query_supported",
+          "total": 274,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "77",
+      "catalog": "api_original",
+      "catalog_meta": "10051",
+      "title": "(개방)제주-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510065",
+          "backing_meta": "10051",
+          "source_name": "opn_jeju_grid",
+          "status": "query_supported",
+          "total": 753,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "87",
+      "catalog": "api_original",
+      "catalog_meta": "10061",
+      "title": "(개방)서해안EEZ-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510283",
+          "backing_meta": "10061",
+          "source_name": "opn_wcoast_eez_grid",
+          "status": "query_supported",
+          "total": 265,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "85",
+      "catalog": "api_original",
+      "catalog_meta": "10059",
+      "title": "(개방)남해안EEZ-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510282",
+          "backing_meta": "10059",
+          "source_name": "opn_scoast_eez_grid",
+          "status": "query_supported",
+          "total": 323,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "84",
+      "catalog": "api_original",
+      "catalog_meta": "10058",
+      "title": "(개방)경북-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510281",
+          "backing_meta": "10058",
+          "source_name": "opn_gb_grid",
+          "status": "query_supported",
+          "total": 586,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "83",
+      "catalog": "api_original",
+      "catalog_meta": "10057",
+      "title": "(개방)강원-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510280",
+          "backing_meta": "10057",
+          "source_name": "opn_kw_grid",
+          "status": "query_supported",
+          "total": 338,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "81",
+      "catalog": "api_original",
+      "catalog_meta": "10055",
+      "title": "(개방)경남-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510278",
+          "backing_meta": "10055",
+          "source_name": "opn_gynm_grid",
+          "status": "query_supported",
+          "total": 466,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "82",
+      "catalog": "api_original",
+      "catalog_meta": "10056",
+      "title": "(개방)울산-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510279",
+          "backing_meta": "10056",
+          "source_name": "opn_ulsan_grid",
+          "status": "query_supported",
+          "total": 151,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "79",
+      "catalog": "api_original",
+      "catalog_meta": "10053",
+      "title": "(개방)충남-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510276",
+          "backing_meta": "10053",
+          "source_name": "opn_cn_grid",
+          "status": "query_supported",
+          "total": 542,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "80",
+      "catalog": "api_original",
+      "catalog_meta": "10054",
+      "title": "(개방)부산-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510277",
+          "backing_meta": "10054",
+          "source_name": "opn_busn_grid",
+          "status": "query_supported",
+          "total": 200,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "76",
+      "catalog": "api_original",
+      "catalog_meta": "10050",
+      "title": "(개방)전남-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510274",
+          "backing_meta": "10050",
+          "source_name": "opn_jn_grid",
+          "status": "query_supported",
+          "total": 3599,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "75",
+      "catalog": "api_original",
+      "catalog_meta": "10049",
+      "title": "(개방)경기-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510273",
+          "backing_meta": "10049",
+          "source_name": "opn_gygi_grid",
+          "status": "query_supported",
+          "total": 608,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "74",
+      "catalog": "api_original",
+      "catalog_meta": "10048",
+      "title": "(개방)인천-특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510272",
+          "backing_meta": "10048",
+          "source_name": "opn_incn_grid",
+          "status": "query_supported",
+          "total": 3316,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "mspId",
+            "ogId",
+            "lyrNm",
+            "lyrClCn"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "103",
+      "catalog": "api_original",
+      "catalog_meta": "10013",
+      "title": "(개방)특성평가격자",
+      "resources": [
+        {
+          "resource_id": "510334",
+          "backing_meta": "10013",
+          "source_name": "opn_cheval_grid_a",
+          "status": "query_supported",
+          "total": 12857,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "chevalGridOgId",
+            "chevalGridMspId",
+            "chevalGridAreaNm",
+            "chevalGridAreaId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "72",
+      "catalog": "api_original",
+      "catalog_meta": "10025",
+      "title": "(개방)해양용도구역이미결정된해양공간범위",
+      "resources": [
+        {
+          "resource_id": "510270",
+          "backing_meta": "10025",
+          "source_name": "opn_udecsn_oc_spce_scop_a",
+          "status": "query_supported",
+          "total": 7,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "znNm"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "115",
+      "catalog": "api_original",
+      "catalog_meta": "10074",
+      "title": "(개방)해양용도구역_안전관리",
+      "resources": [
+        {
+          "resource_id": "510292",
+          "backing_meta": "10074",
+          "source_name": "opn_os_prpos_zone_sf",
+          "status": "query_supported",
+          "total": 719,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "114",
+      "catalog": "api_original",
+      "catalog_meta": "10073",
+      "title": "(개방)해양용도구역_군사활동",
+      "resources": [
+        {
+          "resource_id": "510291",
+          "backing_meta": "10073",
+          "source_name": "opn_os_prpos_zone_am",
+          "status": "query_supported",
+          "total": 382,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "113",
+      "catalog": "api_original",
+      "catalog_meta": "10072",
+      "title": "(개방)해양용도구역_항만항행",
+      "resources": [
+        {
+          "resource_id": "510290",
+          "backing_meta": "10072",
+          "source_name": "opn_os_prpos_zone_ss",
+          "status": "query_supported",
+          "total": 1955,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "112",
+      "catalog": "api_original",
+      "catalog_meta": "10071",
+      "title": "(개방)해양용도구역_연구교육",
+      "resources": [
+        {
+          "resource_id": "510289",
+          "backing_meta": "10071",
+          "source_name": "opn_os_prpos_zone_st",
+          "status": "query_supported",
+          "total": 232,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "111",
+      "catalog": "api_original",
+      "catalog_meta": "10070",
+      "title": "(개방)해양용도구역_환경생태",
+      "resources": [
+        {
+          "resource_id": "510269",
+          "backing_meta": "10070",
+          "source_name": "opn_os_prpos_zone_ec",
+          "status": "query_supported",
+          "total": 8036,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "110",
+      "catalog": "api_original",
+      "catalog_meta": "10069",
+      "title": "(개방)해양용도구역_해양관광",
+      "resources": [
+        {
+          "resource_id": "510268",
+          "backing_meta": "10069",
+          "source_name": "opn_os_prpos_zone_to",
+          "status": "query_supported",
+          "total": 1317,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "109",
+      "catalog": "api_original",
+      "catalog_meta": "10068",
+      "title": "(개방)해양용도구역_골재광물",
+      "resources": [
+        {
+          "resource_id": "510266",
+          "backing_meta": "10068",
+          "source_name": "opn_os_prpos_zone_ag",
+          "status": "query_supported",
+          "total": 450,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "108",
+      "catalog": "api_original",
+      "catalog_meta": "10067",
+      "title": "(개방)해양용도구역_어업활동",
+      "resources": [
+        {
+          "resource_id": "510265",
+          "backing_meta": "10067",
+          "source_name": "opn_os_prpos_zone_fh",
+          "status": "query_supported",
+          "total": 22348,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "107",
+      "catalog": "api_original",
+      "catalog_meta": "10024",
+      "title": "(개방)해양용도구역",
+      "resources": [
+        {
+          "resource_id": "510288",
+          "backing_meta": "10024",
+          "source_name": "opn_os_prpos_zone",
+          "status": "query_supported",
+          "total": 35558,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prposZoneGeomId",
+            "ntfcCd",
+            "ntfcNm",
+            "dmsLat",
+            "dmsLatDesc",
+            "dmsLon",
+            "dmsLonDesc",
+            "ntfcYear",
+            "areaId",
+            "areaNm",
+            "frstRegistDt",
+            "lastUpdateDt",
+            "zoneGeomAr",
+            "zoneDetailDc",
+            "manageZoneCoreActNm",
+            "manageZoneCoreActBgnDe",
+            "manageZoneCoreActEndDe"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "73",
+      "catalog": "api_original",
+      "catalog_meta": "10026",
+      "title": "(개방)해양공간의범위",
+      "resources": [
+        {
+          "resource_id": "510271",
+          "backing_meta": "10026",
+          "source_name": "opn_oc_spce_scop_a",
+          "status": "query_supported",
+          "total": 5525,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridNo",
+            "mspId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "169",
+      "catalog": "api_analysis",
+      "catalog_meta": "530008",
+      "title": "업종 재분별 어업정보활동",
+      "resources": [
+        {
+          "resource_id": "530008",
+          "backing_meta": "530008",
+          "source_name": "fishery_data",
+          "status": "source_grid_unavailable",
+          "reason": "원천 grid에 공개된 schema/행이 없습니다"
+        }
+      ]
+    },
+    {
+      "api_id": "166",
+      "catalog": "api_analysis",
+      "catalog_meta": "530006",
+      "title": "수치모델을 이용한 과거해황 지도 서비스",
+      "resources": [
+        {
+          "resource_id": "530006",
+          "backing_meta": "530006",
+          "source_name": "past_oceanic_data",
+          "status": "source_grid_unavailable",
+          "reason": "원천 grid에 공개된 schema/행이 없습니다"
+        }
+      ]
+    },
+    {
+      "api_id": "143",
+      "catalog": "api_analysis",
+      "catalog_meta": "5241",
+      "title": "파고 3분 격자 예측값",
+      "resources": [
+        {
+          "resource_id": "520356",
+          "backing_meta": "5241",
+          "source_name": "opn_tb_grid_prdn_wv_3min",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "142",
+      "catalog": "api_analysis",
+      "catalog_meta": "5241",
+      "title": "파고 15분 격자 예측값",
+      "resources": [
+        {
+          "resource_id": "520357",
+          "backing_meta": "5248",
+          "source_name": "opn_tb_grid_prdn_wv_15min",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "138",
+      "catalog": "api_analysis",
+      "catalog_meta": "10031",
+      "title": "(개방)연안침식백서_모니터링위치",
+      "resources": [
+        {
+          "resource_id": "520006",
+          "backing_meta": "10031",
+          "source_name": "opn_cst_wash_mnrg_p",
+          "status": "query_supported",
+          "total": 282,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "sidoNm",
+            "mnrgSpotNm",
+            "mnrgSpotKey"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "135",
+      "catalog": "api_analysis",
+      "catalog_meta": "10041",
+      "title": "(개방)수산자원보호구역",
+      "resources": [
+        {
+          "resource_id": "520016",
+          "backing_meta": "10041",
+          "source_name": "opn_fshrsrc_pzn_a",
+          "status": "query_supported",
+          "total": 10,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "fshrsrcPznCd",
+            "fshrsrcPznNm",
+            "shapeLeng",
+            "shapeLe1",
+            "shapeLe2",
+            "shapeLe3",
+            "shapeLe4",
+            "shapeLe5",
+            "shapeLe6",
+            "fshrsrcPznAr"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "131",
+      "catalog": "api_analysis",
+      "catalog_meta": "10037",
+      "title": "(개방)시도특정도서",
+      "resources": [
+        {
+          "resource_id": "520012",
+          "backing_meta": "10037",
+          "source_name": "opn_sido_specific_island_a",
+          "status": "query_supported",
+          "total": 158,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prtlIslnKrnm",
+            "prtlIslnXtn",
+            "swdsAsdnDsrbAddr",
+            "prtlIndpJungYr"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "133",
+      "catalog": "api_analysis",
+      "catalog_meta": "10039",
+      "title": "(개방)특정도서",
+      "resources": [
+        {
+          "resource_id": "520014",
+          "backing_meta": "10039",
+          "source_name": "opn_prtl_isln_a",
+          "status": "query_supported",
+          "total": 257,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "prtlIslnWdpaNo",
+            "prtlIslnKrnm",
+            "prtlIslnEnnm",
+            "prtlIslnIntrlStdKrnm",
+            "prtlIslnIntrlStdEnnm",
+            "prtlIslnPznTyCd",
+            "prtlIslnIucnparCd",
+            "prtlIslnPznNtfAtCn",
+            "prtlIslnOcSpceObjSttCd",
+            "prtlIslnOcSpceObjSttInvsYr",
+            "prtlIslnMngmInstCd",
+            "prtlIslnOwnerCd",
+            "prtlIslnMngmInstEnnm",
+            "prtlIslnMngmPlnEnnm",
+            "prtlIslnVrfSttAtCn",
+            "prtlIndpJungYr",
+            "prtlIslnNtnCd",
+            "prtlIslnItsdzUtnsilNtnCd1",
+            "prtlIslnItsdzUtnsilNtnCd2"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "123",
+      "catalog": "api_analysis",
+      "catalog_meta": "10029",
+      "title": "(개방)인공어초 15km 내 해조류 분포",
+      "resources": [
+        {
+          "resource_id": "520004",
+          "backing_meta": "10029",
+          "source_name": "opn_mfrst_fusn_15km_p",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "122",
+      "catalog": "api_analysis",
+      "catalog_meta": "10028",
+      "title": "(개방)인공어초 10km 내 해조류 분포",
+      "resources": [
+        {
+          "resource_id": "520003",
+          "backing_meta": "10028",
+          "source_name": "opn_mfrst_fusn_10km_p",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "121",
+      "catalog": "api_analysis",
+      "catalog_meta": "10027",
+      "title": "(개방)인공어초 5km 내 해조류 분포",
+      "resources": [
+        {
+          "resource_id": "520002",
+          "backing_meta": "10027",
+          "source_name": "opn_mfrst_fusn_5km_p",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "117",
+      "catalog": "api_analysis",
+      "catalog_meta": "10062",
+      "title": "(개방)연속정보 수온(15분)",
+      "resources": [
+        {
+          "resource_id": "510005",
+          "backing_meta": "10062",
+          "source_name": "opn_tb_grid_cont_wtem_15min",
+          "status": "query_supported",
+          "total": 976681,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "lo",
+            "la",
+            "wtem",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "88",
+      "catalog": "api_analysis",
+      "catalog_meta": "10019",
+      "title": "(개방)연속정보 수온(3분)",
+      "resources": [
+        {
+          "resource_id": "510006",
+          "backing_meta": "10019",
+          "source_name": "opn_tb_grid_cont_wtem_3min",
+          "status": "query_supported",
+          "total": 24488230,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "lo",
+            "la",
+            "wtem",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "100",
+      "catalog": "api_analysis",
+      "catalog_meta": "10011",
+      "title": "(개방)국가어항10KM인구분포",
+      "resources": []
+    },
+    {
+      "api_id": "105",
+      "catalog": "api_analysis",
+      "catalog_meta": "10042",
+      "title": "(개방)연안3KM시설물",
+      "resources": [
+        {
+          "resource_id": "510286",
+          "backing_meta": "10042",
+          "source_name": "opn_cst_km3_fct_a",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "104",
+      "catalog": "api_analysis",
+      "catalog_meta": "10012",
+      "title": "(개방)연안1KM시설물",
+      "resources": [
+        {
+          "resource_id": "510285",
+          "backing_meta": "10012",
+          "source_name": "opn_cst_km1_fct_a",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "106",
+      "catalog": "api_analysis",
+      "catalog_meta": "10043",
+      "title": "(개방)연안5KM시설물",
+      "resources": [
+        {
+          "resource_id": "510287",
+          "backing_meta": "10043",
+          "source_name": "opn_cst_km5_fct_a",
+          "status": "access_restricted",
+          "service_auth": "PARTIAL",
+          "masked": false
+        }
+      ]
+    },
+    {
+      "api_id": "9",
+      "catalog": "api_analysis",
+      "catalog_meta": "10023",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 15분 격자 D+1 예측값",
+      "resources": [
+        {
+          "resource_id": "510013",
+          "backing_meta": "10023",
+          "source_name": "opn_tb_grid_prdn_wtem_15min_1day",
+          "status": "query_supported",
+          "total": 1828,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "prdnYmd",
+            "lo",
+            "la",
+            "prdnWtem",
+            "dataInfo",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "11",
+      "catalog": "api_analysis",
+      "catalog_meta": "10022",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 3분 격자 D+1 예측값",
+      "resources": [
+        {
+          "resource_id": "510011",
+          "backing_meta": "10022",
+          "source_name": "opn_tb_grid_prdn_wtem_3min_1day",
+          "status": "query_supported",
+          "total": 45817,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "prdnYmd",
+            "lo",
+            "la",
+            "prdnWtem",
+            "dataInfo",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "7",
+      "catalog": "api_analysis",
+      "catalog_meta": "10020",
+      "title": "(개방) 연속정보 염분(3분)",
+      "resources": [
+        {
+          "resource_id": "510007",
+          "backing_meta": "10020",
+          "source_name": "opn_tb_grid_cont_slnty_3min",
+          "status": "query_supported",
+          "total": 30366380,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "lo",
+            "la",
+            "slnty",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "6",
+      "catalog": "api_analysis",
+      "catalog_meta": "10063",
+      "title": "(개방) 연속정보 염분(15분)",
+      "resources": [
+        {
+          "resource_id": "510008",
+          "backing_meta": "10063",
+          "source_name": "opn_tb_grid_cont_slnty_15min",
+          "status": "query_supported",
+          "total": 1162007,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "lo",
+            "la",
+            "slnty",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "8",
+      "catalog": "api_analysis",
+      "catalog_meta": "10021",
+      "title": "(개방) 연속정보 해상풍(15분)",
+      "resources": [
+        {
+          "resource_id": "510010",
+          "backing_meta": "10021",
+          "source_name": "opn_tb_grid_cont_sbrz_15min",
+          "status": "query_supported",
+          "total": 18070848,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "analsHhs",
+            "lo",
+            "la",
+            "wndrct",
+            "wnspd",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "10",
+      "catalog": "api_analysis",
+      "catalog_meta": "10066",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 15분 격자 D+2 예측값",
+      "resources": [
+        {
+          "resource_id": "510014",
+          "backing_meta": "10066",
+          "source_name": "opn_tb_grid_prdn_wtem_15min_2day",
+          "status": "query_supported",
+          "total": 1828,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "prdnYmd",
+            "lo",
+            "la",
+            "prdnWtem",
+            "dataInfo",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "12",
+      "catalog": "api_analysis",
+      "catalog_meta": "10065",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 3분 격자 D+2 예측값",
+      "resources": [
+        {
+          "resource_id": "510012",
+          "backing_meta": "10065",
+          "source_name": "opn_tb_grid_prdn_wtem_3min_2day",
+          "status": "query_supported",
+          "total": 45817,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "prdnYmd",
+            "lo",
+            "la",
+            "prdnWtem",
+            "dataInfo",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "44",
+      "catalog": "api_analysis",
+      "catalog_meta": "10064",
+      "title": "(개방) 연속정보 해상풍(3분)",
+      "resources": [
+        {
+          "resource_id": "510009",
+          "backing_meta": "10064",
+          "source_name": "opn_tb_grid_cont_sbrz_3min",
+          "status": "query_supported",
+          "total": 12761832,
+          "rows": 1,
+          "columns": [
+            "gid",
+            "gridCd",
+            "analsYmd",
+            "analsHhs",
+            "lo",
+            "la",
+            "wndrct",
+            "wnspd",
+            "creatMth",
+            "creatDt",
+            "creatId"
+          ]
+        }
+      ]
+    },
+    {
+      "api_id": "171",
+      "catalog": "api_map",
+      "catalog_meta": "530011",
+      "title": "해양공간지도",
+      "resources": [
+        {
+          "resource_id": "530011",
+          "backing_meta": "530011",
+          "source_name": "imap_lyr_data",
+          "status": "source_grid_unavailable",
+          "reason": "원천 grid에 공개된 schema/행이 없습니다"
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "layer": {
+      "dataset_id": "10075",
+      "history_date": "2022-10-18",
+      "layer_id": "520355",
+      "table_name": "opn_os_prpos_zone_en",
+      "title": "(개방)해양용도구역-에너지개발구역",
+      "service_auth": "OPEN",
+      "open_scope": "ALL",
+      "grid_available": true,
+      "download_available": true,
+      "masked": false,
+      "require_public": true
+    },
+    "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=10075&histDe=2022-10-18",
+    "collected_at": "2026-10-24T04:39:51.082450+00:00",
+    "sha256": "76563039f308dca63cb3465c39c9004d36392fd2d54ac0213325728876113170",
+    "byte_size": 139688,
+    "local_path": "api144.zip",
+    "member_sha256": [
+      [
+        "opn_os_prpos_zone_en.dbf",
+        "802aa2d07e4b333c9d21b2ea99338591fd2add635adc0448d916d50fb1f9b81d"
+      ],
+      [
+        "opn_os_prpos_zone_en.shp",
+        "fd35fe7382ed12f0161fa29bae18f1d2798b5872421ef3567d9a256d85daa8a0"
+      ],
+      [
+        "opn_os_prpos_zone_en.shx",
+        "914e2e6dee1b6b98512917a66c2973aba512e49ee804db21d75daa5d03cb648e"
+      ],
+      [
+        "opn_os_prpos_zone_en.txt",
+        "a3d58eb2be732de1c7476ebe18e1e9cdbb70301454e096cd6476f19dd2719852"
+      ]
+    ],
+    "schema_version": "1",
+    "expected_rows": 119
+  },
+  "gdal": {
+    "count": 119,
+    "invalid_geometry": 4,
+    "sha256": "76563039f308dca63cb3465c39c9004d36392fd2d54ac0213325728876113170"
+  }
+}

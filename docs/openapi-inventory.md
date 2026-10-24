@@ -1,7 +1,7 @@
 # OpenAPI 안내 서비스별 목록
 
 2026-10-24 공개 Chromium 응답의 66개 안내다. 모든 행은 안내 카탈로그 조회 지원,
-키 없는 개별 API 질의는 미지원이다. 통계 UI snapshot·공간 ZIP은 별도 지원 계약이다.
+아래 인증 API와 별도로 공개 backing 웹 질의를 제공한다. 서비스별 실제 점검 결과는 다음 표와 같다.
 외부 신청 링크를 조회/인증 없이 데이터 응답으로 가장하지 않는다.
 
 | 분류 | API ID / meta | 서비스 | 포맷 | 신청 안내 |
@@ -72,3 +72,77 @@
 | analysis | 12 / 10065 | (개방) 지식정보 생산모델 해수면 수온 3분 격자 D+2 예측값 | JSON+XML | [안내](https://www.data.go.kr/data/15075839/openapi.do) |
 | analysis | 44 / 10064 | (개방) 연속정보 해상풍(3분) | JSON+XML | [안내](https://www.data.go.kr/data/15075738/openapi.do) |
 | map | 171 / 530011 | 해양공간지도 | 지도 | 없음 |
+
+## 공개 backing 웹 질의 실측
+
+66개 안내 중 실제49개 resource 조회성공. 권한제한12/grid미제공3/139통신실패1은 성공에 포함하지 않는다.
+API100은 연결자료0이다. 인증 API 파라미터/응답 완전 동등성이 아닌 공개 웹 질의 계약이다.
+
+| API ID | 상태 | 공개 grid 원천 total |
+|---|---|---|
+| 147 | access_restricted |  |
+| 146 | access_restricted |  |
+| 144 | query_supported | 119 |
+| 141 | access_restricted |  |
+| 140 | access_restricted |  |
+| 139 | source_network_failed |  |
+| 124 | query_supported | 4942850 |
+| 134 | query_supported | 33 |
+| 132 | query_supported | 24 |
+| 52 | query_supported | 659348 |
+| 51 | query_supported | 73814 |
+| 50 | query_supported | 18692 |
+| 49 | query_supported | 823 |
+| 48 | query_supported | 67 |
+| 86 | query_supported | 161 |
+| 116 | query_supported | 274 |
+| 77 | query_supported | 753 |
+| 87 | query_supported | 265 |
+| 85 | query_supported | 323 |
+| 84 | query_supported | 586 |
+| 83 | query_supported | 338 |
+| 81 | query_supported | 466 |
+| 82 | query_supported | 151 |
+| 79 | query_supported | 542 |
+| 80 | query_supported | 200 |
+| 76 | query_supported | 3599 |
+| 75 | query_supported | 608 |
+| 74 | query_supported | 3316 |
+| 103 | query_supported | 12857 |
+| 72 | query_supported | 7 |
+| 115 | query_supported | 719 |
+| 114 | query_supported | 382 |
+| 113 | query_supported | 1955 |
+| 112 | query_supported | 232 |
+| 111 | query_supported | 8036 |
+| 110 | query_supported | 1317 |
+| 109 | query_supported | 450 |
+| 108 | query_supported | 22348 |
+| 107 | query_supported | 35558 |
+| 73 | query_supported | 5525 |
+| 169 | source_grid_unavailable |  |
+| 166 | source_grid_unavailable |  |
+| 143 | access_restricted |  |
+| 142 | access_restricted |  |
+| 138 | query_supported | 282 |
+| 135 | query_supported | 10 |
+| 131 | query_supported | 158 |
+| 133 | query_supported | 257 |
+| 123 | access_restricted |  |
+| 122 | access_restricted |  |
+| 121 | access_restricted |  |
+| 117 | query_supported | 976681 |
+| 88 | query_supported | 24488230 |
+| 100 | no_backing_resource |  |
+| 105 | access_restricted |  |
+| 104 | access_restricted |  |
+| 106 | access_restricted |  |
+| 9 | query_supported | 1828 |
+| 11 | query_supported | 45817 |
+| 7 | query_supported | 30366380 |
+| 6 | query_supported | 1162007 |
+| 8 | query_supported | 18070848 |
+| 10 | query_supported | 1828 |
+| 12 | query_supported | 45817 |
+| 44 | query_supported | 12761832 |
+| 171 | source_grid_unavailable |  |

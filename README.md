@@ -5,7 +5,7 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
 T003에서 공간자료 카탈로그·기초자료·공개 ZIP 다운로드를 구현했다.
 GDAL 파싱과 async load/iter/local API, 선착장 상세·보수적 매핑을 제공한다.
-원문 SHA 버전 보관과 manifest 복구를 제공하며 T007A 공개 안내·자료실을 구현 중이다.
+원문 SHA 버전 보관과 manifest 복구, 공개 안내·자료실을 제공하며 T007A2 웹 질의를 구현 중이다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
 관광지정보, 여객터미널, 도선항로, 여객항로다. 웹 접근은 Chromium을 사용한다.
@@ -137,6 +137,12 @@ Windows에서 GDAL이 없으면 공간 호출만 `SpatialDependencyError`로 실
 이는 API 키를 쓰는 서비스의 전체 응답을 보장하지 않는다. 실제 확인한 연안기본조사 ZIP은
 `download_library(resource,destination)` 후 같은 `LocalArchiveStore.put(receipt)`로 보관한다.
 [전체 안내 목록과 지원 범위](docs/public-catalogs.md)를 확인한다.
+
+OpenAPI 안내도 `list_resources(dataset)`로 공개 backing 자료를 발견하고
+`query_table(resource,start=0,page_size=50,filters={'column':'value'},order_by='column')`로
+실제 공개 웹 테이블을 조회한다. 결과의 원천 total·필터 total·정렬된 schema·수집시점을
+보존한다. `list_api_layers(dataset)`의 backing 공간 layer는 기존 download/load로 연결한다.
+[웹 질의 상세 계약](docs/web-query.md)은 인증 API와의 차이와 자료 미제공을 설명한다.
 
 선착장 상세는 `ports_from_features(pssh_rows)`로 제공한다. `port_from_transport(dto,
 collected_at=...,source_url=...)`는 transport ferry-ports-v1 개별 항구 DTO를 변환한다.

@@ -20,7 +20,7 @@ from vadahub.parse import _field_mapping, _value
 LAYER=DatasetLayer('52','2019-12-10','500048','piltg_rute_l','도선항로','OPEN','ALL',True,True)
 
 
-def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, null=False, point='POINT (126 37)'):
+def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, null=False, point='POINT (126 37)', geomtype=ogr.wkbPoint):
     directory=tmp_path/'source'; directory.mkdir(exist_ok=True)
     path=directory/(LAYER.table_name+'.shp')
     ref=None
@@ -29,7 +29,7 @@ def archive(tmp_path, *, srid=None, count=3, duplicate=False, bad_date=False, nu
             ref=osr.SpatialReference(); ref.ImportFromEPSG(srid)
     with gdal.ExceptionMgr(), ogr.ExceptionMgr():
         ds=ogr.GetDriverByName('ESRI Shapefile').CreateDataSource(str(path))
-        layer=ds.CreateLayer(LAYER.table_name,srs=ref,geom_type=ogr.wkbPoint,options=['ENCODING=CP949'])
+        layer=ds.CreateLayer(LAYER.table_name,srs=ref,geom_type=geomtype,options=['ENCODING=CP949'])
         for name,kind in [('c1',ogr.OFTInteger),('c3',ogr.OFTString),('c4',ogr.OFTString),('c5',ogr.OFTString)]:
             layer.CreateField(ogr.FieldDefn(name,kind))
         for i in range(count):
@@ -83,6 +83,16 @@ async def test_wgs84_bounds_and_clean_worker_error(tmp_path):
         trace=trace.tb_next
     assert '_iter_sync' not in names and 'worker' not in names
     assert caught.value.__cause__ is None and caught.value.__context__ is None
+
+
+async def test_invalid_polygon_explicit_preserve_never_repairs_or_transforms(tmp_path):
+    path=archive(tmp_path,srid=4326,geomtype=ogr.wkbPolygon,point='POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))')
+    async with VadaHubFileClient() as c:
+        with pytest.raises(SchemaError,match='유효성'):await c.load_file(path,layer=LAYER)
+        rows=await c.load_file(path,layer=LAYER,invalid_geometry='preserve')
+        assert len(rows)==3 and all(row.geometry_valid is False for row in rows)
+        assert all(row.geometry_wkb and row.source_crs and row.wgs84_wkb is None for row in rows)
+        with pytest.raises(ValueError):await c.load_file(path,layer=LAYER,invalid_geometry='repair')
 
 
 async def test_explicit_crs_receipt_and_remote_load(tmp_path,monkeypatch):

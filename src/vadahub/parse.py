@@ -12,7 +12,7 @@ from pathlib import Path
 import re
 import threading
 from types import MappingProxyType
-from typing import Any
+from typing import Any, Literal
 import zipfile
 
 from ._archive import ArchiveLimits, inspect_archive
@@ -55,6 +55,7 @@ def _value(name: str, value: Any) -> Any:
 
 def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_crs: str | None,
                encoding: str | None, max_features: int, receipt: ArchiveReceipt | None,
+               invalid_geometry: Literal['raise','preserve'],
                stop: threading.Event) -> Generator[SpatialFeature, None, None]:
     checksum, _members = inspect_archive(path, limits, layer.table_name)
     if receipt is not None and (receipt.sha256 != checksum or receipt.layer != layer):
@@ -149,12 +150,21 @@ def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_cr
                         seen.add(record_id)
                         geometry = feature.GetGeometryRef()
                         raw_wkb = wgs84 = geometry_type = None
+                        geometry_valid = None
                         if geometry is not None and not geometry.IsEmpty():
-                            if geometry.WkbSize() > 16 * 1024 * 1024 or not geometry.IsValid():
-                                raise SchemaError('geometry 크기 상한 또는 유효성 오류')
+                            if gdal.GetLastErrorType() >= gdal.CE_Warning:
+                                raise SchemaError('geometry 읽기/디코딩 경고')
+                            if geometry.WkbSize() > 16 * 1024 * 1024:
+                                raise SchemaError('geometry 크기 상한 초과')
+                            geometry_valid = bool(geometry.IsValid())
+                            if not geometry_valid:
+                                if invalid_geometry == 'raise':
+                                    raise SchemaError('geometry 유효성 오류')
+                                # IsValid의 경고만 명시적으로 수용한다. 다른 읽기/변환 경고는 여전히 오류다.
+                                gdal.ErrorReset()
                             raw_wkb = bytes(geometry.ExportToWkb())
                             geometry_type = geometry.GetGeometryName()
-                            if transform is not None:
+                            if transform is not None and geometry_valid:
                                 converted = geometry.Clone()
                                 if converted.Transform(transform) != 0 or not converted.IsValid():
                                     raise UnknownCrsError('WGS84 좌표변환 실패')
@@ -169,7 +179,7 @@ def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_cr
                         actual += 1
                         yield SpatialFeature(layer, record_id, id_field, MappingProxyType(raw), MappingProxyType(attrs),
                                              raw_wkb, geometry_type, wkt, evidence, wgs84, checksum,
-                                             receipt.collected_at if receipt else None)
+                                             receipt.collected_at if receipt else None, geometry_valid)
                     if actual != expected:
                         raise SchemaError('SHP 선언 수량과 실제 반복 수량이 다릅니다')
                 finally:
@@ -182,11 +192,14 @@ def _iter_sync(path: Path, layer: DatasetLayer, limits: ArchiveLimits, source_cr
 
 async def iter_file(path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                     encoding: str | None = None, batch_size: int = 64, max_features: int = 1000000,
-                    limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None) -> AsyncGenerator[SpatialFeature, None]:
+                    limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None,
+                    invalid_geometry: Literal['raise','preserve'] = 'raise') -> AsyncGenerator[SpatialFeature, None]:
     """전용 worker에서만 GDAL 객체를 사용하고 최대 2 batch를 대기시킨다."""
     if (isinstance(batch_size, bool) or not isinstance(batch_size, int) or not 1 <= batch_size <= 1024
             or isinstance(max_features, bool) or not isinstance(max_features, int) or not 1 <= max_features <= 10000000):
         raise ValueError('batch_size 1..1024, max_features 1..10000000 정수가 필요합니다')
+    if invalid_geometry not in ('raise','preserve'):
+        raise ValueError('invalid_geometry는 raise 또는 preserve입니다')
     # 잘못된 모델이 GDAL 경로를 구성하지 않게 테이블 ID도 검증한다.
     if not re.fullmatch('[a-zA-Z][a-zA-Z0-9_]*', layer.table_name):
         raise SchemaError('안전하지 않은 layer 이름입니다')
@@ -211,7 +224,7 @@ async def iter_file(path: str | Path, *, layer: DatasetLayer, source_crs: str | 
         try:
             batch: list[SpatialFeature] = []
             batch_bytes = 0
-            with closing(_iter_sync(Path(path), layer, limits, source_crs, encoding, max_features, receipt, stop)) as records:
+            with closing(_iter_sync(Path(path), layer, limits, source_crs, encoding, max_features, receipt, invalid_geometry, stop)) as records:
                 for feature in records:
                     estimate = (len(feature.geometry_wkb or b'') + len(feature.wgs84_wkb or b'')
                                 + sum(len(str(value).encode('utf-8')) * 2 for value in feature.raw_attributes.values()) + 512)

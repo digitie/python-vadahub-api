@@ -17,6 +17,14 @@ CATALOG_PATHS: dict[CatalogKind, tuple[str, str, str]] = {
 }
 
 
+def backing_meta(dataset: Dataset) -> str:
+    meta = identifier(dataset.dataset_id)
+    if dataset.catalog.startswith('api_'):
+        api_id = identifier(dataset.api_id)
+        return {'140':'5247','142':'5248'}.get(api_id,meta)
+    return meta
+
+
 def text(value: Any) -> str:
     if not isinstance(value, str) or not value.strip():
         raise SchemaError('필수 문자열이 없거나 잘못됐습니다')
@@ -83,6 +91,12 @@ def flag(value: Any) -> bool:
     return value == 'Y'
 
 
+def optional_flag(value: Any) -> bool | None:
+    if value is None or (isinstance(value,str) and not value.strip()):
+        return None
+    return flag(value)
+
+
 def parse_layer(row: dict[str, Any], meta: str, hist: str) -> DatasetLayer:
     if identifier(row.get('metaSn')) != meta or history(row.get('histDe')) != hist:
         raise SchemaError('다른 meta의 기초자료가 섞였습니다')
@@ -92,7 +106,7 @@ def parse_layer(row: dict[str, Any], meta: str, hist: str) -> DatasetLayer:
     return DatasetLayer(meta, hist, identifier(row.get('bsisDtaSn')), table,
                         text(row.get('bsisDtaNm')), text(row.get('serviceAuthCd')),
                         text(row.get('opnScopeSe')), flag(row.get('gridOpenYn')),
-                        flag(row.get('dwldPosblYn')))
+                        flag(row.get('dwldPosblYn')), optional_flag(row.get('maskingYn')))
 
 
 def parse_resource(row: dict[str, Any], dataset: Dataset) -> LibraryResource:
@@ -104,7 +118,14 @@ def parse_resource(row: dict[str, Any], dataset: Dataset) -> LibraryResource:
     source_format = row.get('orginlTableNm')
     if source_format is not None and not isinstance(source_format,str):
         raise SchemaError('자료 포맷 형식 오류')
+    auth = row.get('serviceAuthCd')
+    if auth is not None and not isinstance(auth,str):
+        raise SchemaError('자료 공개 상태 형식 오류')
+    raw = tuple((name,row.get(name)) for name in ('serviceAuthCd','gridOpenYn','dwldPosblYn','maskingYn'))
+    if not all(value is None or isinstance(value,str) for _,value in raw):
+        raise SchemaError('자료 공개 원문 형식 오류')
     return LibraryResource(dataset,identifier(row.get('bsisDtaSn')),text(row.get('bsisDtaNm')),
                            text(row.get('relateDtaNm')),source_format,kind,
-                           text(row.get('serviceAuthCd')),text(row.get('opnScopeSe')),
-                           flag(row.get('gridOpenYn')),flag(row.get('dwldPosblYn')),flag(row.get('maskingYn')))
+                           auth.strip() or None if auth is not None else None,text(row.get('opnScopeSe')),
+                           optional_flag(row.get('gridOpenYn')),optional_flag(row.get('dwldPosblYn')),optional_flag(row.get('maskingYn')),
+                           raw_availability=raw)

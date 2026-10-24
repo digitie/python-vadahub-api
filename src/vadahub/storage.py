@@ -132,6 +132,7 @@ class LocalArchiveStore:
             if 'resource' in item:
                 raw = dict(item['resource'])
                 raw['dataset'] = Dataset(**raw['dataset'])
+                raw['raw_availability'] = tuple(tuple(pair) for pair in raw.get('raw_availability',()))
                 scope = LibraryResource(**raw)
             else:
                 scope = DatasetLayer(**item['layer'])

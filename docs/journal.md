@@ -1,5 +1,17 @@
 # 작업 기록
 
+## 2026-10-24 KST — T007A2 공개 웹 질의
+
+- T007A 최종 리뷰2/live/CI와 머지 `0f76224`를 확인한 뒤 분기했다.
+- 66개 안내의 backing resource 65개(한 안내는 연결자료0)를 실제 Chromium으로 조사했다.
+- UI DataTables의 필수 정렬 파라미터, setRecordsTotal/recordsFiltered, camelCase JSON과
+  snake_case schema를 확인해 bounded 페이지/필터/정렬 및 정확 label 연결을 구현했다.
+- API140/142의 원 catalog meta와 backing meta를 별도로 보존하고 공간 layer에 기존 ZIP/GDAL을 연결했다.
+- A의 공백상태/schema전단사 P2와 B의 API SHP 공개정책 P2 수정 후 `8939481` 코드 차단 없음.
+- Chromium66안내 점검은 조회성공49/권한제한12/grid미제공3/139통신실패1/연결0안내1이다.
+  139는 T007A2E 미완료로 남긴다. 실제API144 ZIP119행 중4invalid 기본거부/preserve 보존확인,
+  unit250/94.30%, GDALlive·구현CI 통과. 개별 원천 실패를 전수 조회성공으로 표시하지 않는다.
+
 ## 2026-10-24 KST — T007A 공개 안내·자료실
 
 - T006 최종 리뷰2/live2/CI와 머지 `0a1a53a` 확인 후 분기했다.

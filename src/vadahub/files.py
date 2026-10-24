@@ -1,11 +1,12 @@
 """공개 UI로 ZIP을 받아 검증 후 호출자가 지정한 경로에 원자 공개한다."""
 import asyncio
 from datetime import datetime, timezone
+from dataclasses import replace
 import os
 from pathlib import Path
 import shutil
 import tempfile
-from typing import Any
+from typing import Any, Literal
 from collections.abc import AsyncGenerator
 
 from playwright.async_api import Download, Response, Dialog, Page, Locator
@@ -15,7 +16,7 @@ from ._browser import BASE_URL
 from ._catalog import identifier, history
 from ._io import run_io
 from .client import VadaHubClient, _open_page, _SPACE_PATH, _check_status
-from .exceptions import ArchiveError, DownloadUnavailableError, ProviderError, SchemaError
+from .exceptions import AccessDeniedError, ArchiveError, DownloadUnavailableError, ProviderError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer, SpatialFeature
 from .models import LibraryResource, LibraryArchiveReceipt
 from . import parse
@@ -45,35 +46,38 @@ class VadaHubFileClient(VadaHubClient):
 
     def iter_file(self, path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                   encoding: str | None = None, batch_size: int = 64, max_features: int = 1000000,
-                  limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None) -> AsyncGenerator[SpatialFeature, None]:
+                  limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None,
+                  invalid_geometry: Literal['raise','preserve'] = 'raise') -> AsyncGenerator[SpatialFeature, None]:
         """로컬 ZIP을 동일 GDAL 파서로 읽는다. 조기 종료 시 aclose/aclosing을 사용한다."""
         return parse.iter_file(path, layer=layer, source_crs=source_crs, encoding=encoding,
-                               batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt)
+                               batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)
 
     async def load_file(self, path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                         encoding: str | None = None, max_features: int = 1000000,
-                        limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None) -> list[SpatialFeature]:
+                        limits: ArchiveLimits = ArchiveLimits(), receipt: ArchiveReceipt | None = None,
+                        invalid_geometry: Literal['raise','preserve'] = 'raise') -> list[SpatialFeature]:
         """로컬 원문 전체를 명시적으로 메모리에 적재한다."""
         return [item async for item in self.iter_file(path, layer=layer, source_crs=source_crs,
-                encoding=encoding, max_features=max_features, limits=limits, receipt=receipt)]
+                encoding=encoding, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)]
 
     async def iter(self, layer: DatasetLayer, *, source_crs: str | None = None, encoding: str | None = None,
                    batch_size: int = 64, max_features: int = 1000000,
-                   limits: ArchiveLimits = ArchiveLimits()) -> AsyncGenerator[SpatialFeature, None]:
+                   limits: ArchiveLimits = ArchiveLimits(),invalid_geometry: Literal['raise','preserve'] = 'raise') -> AsyncGenerator[SpatialFeature, None]:
         """공개 ZIP→bounded GDAL iterator. 임시 원문은 generator 종료 후 정리한다."""
         from contextlib import aclosing
         with tempfile.TemporaryDirectory(prefix='vadahub-load-') as directory:
             receipt = await self.download(layer, Path(directory) / 'source.zip', limits=limits)
             async with aclosing(self.iter_file(receipt.local_path, layer=receipt.layer, source_crs=source_crs,
-                    encoding=encoding, batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt)) as stream:
+                    encoding=encoding, batch_size=batch_size, max_features=max_features, limits=limits, receipt=receipt,invalid_geometry=invalid_geometry)) as stream:
                 async for item in stream:
                     yield item
 
     async def load(self, layer: DatasetLayer, *, source_crs: str | None = None, encoding: str | None = None,
-                   max_features: int = 1000000, limits: ArchiveLimits = ArchiveLimits()) -> list[SpatialFeature]:
+                   max_features: int = 1000000, limits: ArchiveLimits = ArchiveLimits(),
+                   invalid_geometry: Literal['raise','preserve'] = 'raise') -> list[SpatialFeature]:
         """공개 ZIP 전체 적재. 원문 보관은 download 또는 후속 store를 사용한다."""
         return [item async for item in self.iter(layer, source_crs=source_crs, encoding=encoding,
-                                                max_features=max_features, limits=limits)]
+                                                max_features=max_features, limits=limits,invalid_geometry=invalid_geometry)]
 
     async def download(self, layer: DatasetLayer, destination: str | Path, *,
                        limits: ArchiveLimits = ArchiveLimits()) -> ArchiveReceipt:
@@ -92,6 +96,10 @@ class VadaHubFileClient(VadaHubClient):
             current = next((x for x in await self._layers(page, meta, hist) if x.layer_id == sid), None)
             if current is None or current.table_name != layer.table_name:
                 raise SchemaError('기초자료가 없거나 layer identity가 달라졌습니다')
+            if layer.require_public:
+                if current.service_auth != 'OPEN' or current.open_scope != 'ALL' or current.masked is not False:
+                    raise AccessDeniedError('공개/전체/비마스킹 API 공간 layer만 다운로드합니다')
+                current = replace(current,require_public=True)
             if not current.download_available:
                 raise DownloadUnavailableError('이 layer는 원천에서 다운로드를 제공하지 않습니다')
             await _open_page(page, current.source_url, '#metaSn')
