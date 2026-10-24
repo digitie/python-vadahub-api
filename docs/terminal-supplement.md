@@ -32,7 +32,7 @@ context lock을 유지한다. 같은 loop의 limiter를 두 클라이언트에 �
 완료된CSV를 strict 검사·원문정리한 뒤 신규 경로에 원자 공개하며 기존 파일은 덮어쓰지 않는다.
 취소/오류/정리실패는 이전 성공과 원문을 훼손하지 않는다.
 
-`load_file`/`iter_file`은 CP949를 strict 디코딩하고13개 고정 필드·문자열 고유 ID·연도를
+`load_file`/`iter_file`은 CP949를 strict 디코딩하고12개 고정 필드·문자열 고유 ID·연도를
 검증한다. CSV는stdlib, WKT는GDAL OGR로 한 worker에서 처리한다. Native 객체는 worker에서
 해제하고 복사한 WKB·속성만 async 경계를 넘긴다. 원문16MiB·최대10000행, 대기2batch/각4MiB
 목표로 제한한다. `iter_file`의 batch_size는1~256이며 조기 종료는aclosing을 사용한다.

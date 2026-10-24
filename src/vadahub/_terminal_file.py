@@ -11,10 +11,14 @@ import re
 import threading
 from types import MappingProxyType
 
-from .exceptions import ArchiveError, SchemaError
+from .exceptions import AccessDeniedError, ArchiveError, SchemaError
+from ._terminal_source import _attachment
 from .models import PassengerTerminal, TerminalFileReceipt
 from .parse import _native
 from ._stream import iter_worker
+
+_NUMBER = r'[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?'
+_POINT = re.compile(rf'POINT(?:\s+EMPTY|\s*\(\s*{_NUMBER}\s+{_NUMBER}\s*\))', re.IGNORECASE | re.ASCII)
 
 MAX_BYTES = 16 * 1024 * 1024
 SOURCE_URL = 'https://www.data.go.kr/data/15148558/fileData.do'
@@ -75,38 +79,48 @@ def _records(path: Path, max_features: int, receipt: TerminalFileReceipt | None,
             or receipt.collected_at.tzinfo is None
             or receipt.collected_at.utcoffset() is None):
         raise SchemaError('터미널 원문과 receipt의 출처/버전/해시/시점 불일치')
+    if receipt is not None:
+        try:
+            _attachment(receipt.download_url, final=True)
+        except (AccessDeniedError, SchemaError) as exc:
+            raise SchemaError('터미널 receipt의 공식 다운로드 출처/첨부 인자 불일치') from exc
     gdal, ogr, _osr = _native()
-    with gdal.ExceptionMgr(), ogr.ExceptionMgr(), gdal.quiet_errors():
-        for row in _rows(data, max_features):
-            if stop.is_set(): return
-            geometry = None
-            try:
-                text = row['공간정보'].strip()
-                wkb = None
-                valid = None
-                if text:
-                    gdal.ErrorReset()
-                    try:
-                        geometry = ogr.CreateGeometryFromWkt(text)
-                        if geometry is None or geometry.GetGeometryType() != ogr.wkbPoint:
-                            raise SchemaError('터미널 공간정보는 POINT WKT여야 합니다')
-                        if not geometry.IsEmpty():
-                            if not all(math.isfinite(value) for value in (geometry.GetX(), geometry.GetY())):
-                                raise SchemaError('터미널 WKT 좌표가 유한수가 아닙니다')
-                            valid = bool(geometry.IsValid())
-                            if not valid: raise SchemaError('터미널 WKT geometry 유효성 오류')
-                            wkb = bytes(geometry.ExportToWkb())
-                        if gdal.GetLastErrorType() != 0:
-                            raise SchemaError('터미널 WKT 읽기 경고/오류')
-                    except RuntimeError as exc:
-                        raise SchemaError('터미널 WKT 읽기 오류') from exc
-            finally:
+    try:
+        with gdal.ExceptionMgr(), ogr.ExceptionMgr(), gdal.quiet_errors():
+            for row in _rows(data, max_features):
+                if stop.is_set(): return
                 geometry = None
-            year = row['여객터미널조사년도'].strip()
-            yield PassengerTerminal(receipt.source if receipt else 'local_csv:' + checksum,
-                row['공간정보일련번호'], row['종착지명'].strip() or None, row['시설도로명주소'].strip() or None,
-                int(year) if year else None, MappingProxyType(row), wkb, valid, checksum,
-                receipt.source_url if receipt else None, receipt.collected_at if receipt else None)
+                try:
+                    text = row['공간정보'].strip()
+                    wkb = None
+                    valid = None
+                    if text:
+                        if _POINT.fullmatch(text) is None:
+                            raise SchemaError('터미널 공간정보 전체가 단일 2D POINT WKT여야 합니다')
+                        gdal.ErrorReset()
+                        try:
+                            geometry = ogr.CreateGeometryFromWkt(text)
+                            if geometry is None or geometry.GetGeometryType() != ogr.wkbPoint:
+                                raise SchemaError('터미널 공간정보는 POINT WKT여야 합니다')
+                            if not geometry.IsEmpty():
+                                if not all(math.isfinite(value) for value in (geometry.GetX(), geometry.GetY())):
+                                    raise SchemaError('터미널 WKT 좌표가 유한수가 아닙니다')
+                                valid = bool(geometry.IsValid())
+                                if not valid: raise SchemaError('터미널 WKT geometry 유효성 오류')
+                                wkb = bytes(geometry.ExportToWkb())
+                            if gdal.GetLastErrorType() != 0:
+                                raise SchemaError('터미널 WKT 읽기 경고/오류')
+                        except RuntimeError as exc:
+                            raise SchemaError('터미널 WKT 읽기 오류') from exc
+                finally:
+                    geometry = None
+                year = row['여객터미널조사년도'].strip()
+                yield PassengerTerminal(receipt.source if receipt else 'local_csv:' + checksum,
+                    row['공간정보일련번호'], row['종착지명'].strip() or None, row['시설도로명주소'].strip() or None,
+                    int(year) if year else None, MappingProxyType(row), wkb, valid, checksum,
+                    receipt.source_url if receipt else None, receipt.collected_at if receipt else None)
+    except RuntimeError as exc:
+        raise SchemaError('터미널 WKT native context 오류') from exc
 
 
 async def iter_terminal_file(path: str | Path, *, receipt: TerminalFileReceipt | None = None,

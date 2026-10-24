@@ -7,6 +7,8 @@ from datetime import date, datetime, timezone
 import hashlib
 import io
 import threading
+from urllib.parse import urlencode
+from vadahub._terminal_source import NAME
 import pytest
 pytest.importorskip('osgeo', reason='필수 spatial CI/WSL에서 GDAL 실행')
 pytestmark = pytest.mark.spatial
@@ -25,7 +27,7 @@ def fixture_file(tmp_path, count=1, **change):
         writer.writerow([attrs[key] for key in COLUMNS])
     data = stream.getvalue().encode('cp949')
     path = tmp_path/'terminal.csv'; path.write_bytes(data)
-    receipt = TerminalFileReceipt(SOURCE_URL, 'https://www.data.go.kr/cmm/cmm/fileDownload.do',
+    receipt = TerminalFileReceipt(SOURCE_URL, 'https://www.data.go.kr/cmm/cmm/fileDownload.do?' + urlencode(dict(atchFileId='FILE_000000003250090', fileDetailSn='1', dataNm=NAME)),
         datetime.now(timezone.utc), hashlib.sha256(data).hexdigest(), len(data), path)
     return path, receipt
 
@@ -52,7 +54,7 @@ async def test_null_geometry_is_not_zero(tmp_path, wkt):
     assert row.geometry_wkb is None and row.geometry_valid is None and row.name is None and row.survey_year is None
 
 
-@pytest.mark.parametrize('wkt', ['garbage', 'LINESTRING (0 0,1 1)', 'POINT (NaN 1)', 'POINT Z (1 2 3)'])
+@pytest.mark.parametrize('wkt', ['garbage', 'LINESTRING (0 0,1 1)', 'POINT (NaN 1)', 'POINT Z (1 2 3)', 'POINT (1 2) junk', 'POINT (1 2), POINT (3 4)', 'POINTEMPTY', 'POINT (1 2 3)', 'POINT (1e999 2)'])
 async def test_bad_geometry_is_explicit(tmp_path, wkt):
     path, _ = fixture_file(tmp_path, 공간정보=wkt)
     async with OfficialTerminalClient() as client:
@@ -60,7 +62,10 @@ async def test_bad_geometry_is_explicit(tmp_path, wkt):
 
 
 @pytest.mark.parametrize('change', [{'sha256': 'b'*64}, {'byte_size': 1}, {'source_url': 'https://evil'},
-    {'source': 'other'}, {'content_date': date(2015, 1, 1)}, {'collected_at': datetime(2026, 1, 1)}])
+    {'source': 'other'}, {'content_date': date(2015, 1, 1)}, {'collected_at': datetime(2026, 1, 1)},
+    {'download_url': 'https://evil.example/other.csv'},
+    {'download_url': 'https://www.data.go.kr/cmm/cmm/fileDownload.do'},
+    {'download_url': 'https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003250090&fileDetailSn=1&dataNm=other'}])
 async def test_receipt_mismatch(tmp_path, change):
     path, receipt = fixture_file(tmp_path)
     async with OfficialTerminalClient() as client:

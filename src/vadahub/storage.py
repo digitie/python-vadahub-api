@@ -38,7 +38,7 @@ class StoredArchive:
 
 def _key(layer: Scope) -> str:
     if isinstance(layer, TerminalFileReceipt):
-        from .terminal import _attachment
+        from ._terminal_source import _attachment
         from .exceptions import AccessDeniedError
         if layer.source != 'data.go.kr:15148558' or layer.source_url != TERMINAL_URL or layer.content_date != date(2014, 12, 31):
             raise ArchiveError('공식 터미널 보관 출처/버전 오류')
