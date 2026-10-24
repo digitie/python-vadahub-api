@@ -1,0 +1,837 @@
+{
+  "counts": {
+    "api_original": 40,
+    "api_analysis": 25,
+    "api_map": 1,
+    "documents": 451,
+    "statistics": 73
+  },
+  "api_services": [
+    {
+      "dataset_id": "10077",
+      "history_date": "2023-05-26",
+      "title": "(개방)시운전금지해역",
+      "description": "「해사안전법」제14조의2 에서 정의한 해양사고를 방지하기 위해 시운전을 금지한 해역 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10077&histDe=2023-05-26&odtaId=147",
+      "catalog": "api_original",
+      "api_id": "147",
+      "api_request_url": "https://www.data.go.kr/data/15114236/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10076",
+      "history_date": "2023-05-26",
+      "title": "(개방)수상레저금지구역",
+      "description": "「수상레저안전법」제25조(수상레저활동 금지구역의 지정 등)에 따라 수상레저금지구역으로 지정된 구역 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10076&histDe=2023-05-26&odtaId=146",
+      "catalog": "api_original",
+      "api_id": "146",
+      "api_request_url": "https://www.data.go.kr/data/15114234/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10075",
+      "history_date": "2022-10-18",
+      "title": "(개방)해양용도구역-에너지개발구역",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 에너지개발구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10075&histDe=2022-10-18&odtaId=144",
+      "catalog": "api_original",
+      "api_id": "144",
+      "api_request_url": "https://www.data.go.kr/data/15112353/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "5242",
+      "history_date": "2022-10-19",
+      "title": "(개방)해수유동 3분",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 격자기반(3분)의 시공간 연속정보 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=5242&histDe=2022-10-19&odtaId=141",
+      "catalog": "api_original",
+      "api_id": "141",
+      "api_request_url": "https://www.data.go.kr/data/15112619/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "5247",
+      "history_date": "2022-10-19",
+      "title": "(개방)해수유동 15분",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 격자기반(15분)의 시공간 연속정보 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=5247&histDe=2022-10-19&odtaId=140",
+      "catalog": "api_original",
+      "api_id": "140",
+      "api_request_url": "https://www.data.go.kr/data/15112620/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "5243",
+      "history_date": "2022-10-19",
+      "title": "(개방)파랑 3분",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 격자기반(3분)의 시공간 연속정보 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=5243&histDe=2022-10-19&odtaId=139",
+      "catalog": "api_original",
+      "api_id": "139",
+      "api_request_url": "https://www.data.go.kr/data/15112615/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10030",
+      "history_date": "2020-12-16",
+      "title": "(개방)파랑 15분",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 격자기반(15분)의 시공간 연속정보 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10030&histDe=2020-12-16&odtaId=124",
+      "catalog": "api_original",
+      "api_id": "124",
+      "api_request_url": "https://www.data.go.kr/data/15097767/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10040",
+      "history_date": "2020-12-06",
+      "title": "(개방)생태경관보전지역",
+      "description": "(해양) 생물다양성이 풍부하여 보전할 필요가 있는 지역 등을 정하여 보전하는 지역을 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10040&histDe=2020-12-06&odtaId=134",
+      "catalog": "api_original",
+      "api_id": "134",
+      "api_request_url": "https://www.data.go.kr/data/15097303/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10038",
+      "history_date": "2019-12-10",
+      "title": "(개방)시도생태경관보전지역",
+      "description": "(해양) 생물다양성이 풍부하여 보전할 필요가 있는 지역 등을 정하여 보전할 목적으로 시도에서 선정한 정보를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10038&histDe=2019-12-10&odtaId=132",
+      "catalog": "api_original",
+      "api_id": "132",
+      "api_request_url": "https://www.data.go.kr/data/15097729/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10047",
+      "history_date": "2019-12-10",
+      "title": "(개방)격자5단계",
+      "description": "해양격자 5단계(30초 격자) 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10047&histDe=2019-12-10&odtaId=52",
+      "catalog": "api_original",
+      "api_id": "52",
+      "api_request_url": "https://www.data.go.kr/data/15074719/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10046",
+      "history_date": "2019-12-10",
+      "title": "(개방)격자4단계",
+      "description": "해양격자 4단계(1분30초 격자) 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10046&histDe=2019-12-10&odtaId=51",
+      "catalog": "api_original",
+      "api_id": "51",
+      "api_request_url": "https://www.data.go.kr/data/15074709/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10045",
+      "history_date": "2019-12-10",
+      "title": "(개방)격자3단계",
+      "description": "해양격자 3단계(3분 격자) 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10045&histDe=2019-12-10&odtaId=50",
+      "catalog": "api_original",
+      "api_id": "50",
+      "api_request_url": "https://www.data.go.kr/data/15074706/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10044",
+      "history_date": "2019-12-10",
+      "title": "(개방)격자2단계",
+      "description": "해양격자 2단계(15분 격자) 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10044&histDe=2019-12-10&odtaId=49",
+      "catalog": "api_original",
+      "api_id": "49",
+      "api_request_url": "https://www.data.go.kr/data/15074699/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "700102",
+      "history_date": "2019-12-10",
+      "title": "(개방)격자1단계",
+      "description": "해양격자 1단계(60분 격자) 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=700102&histDe=2019-12-10&odtaId=48",
+      "catalog": "api_original",
+      "api_id": "48",
+      "api_request_url": "https://www.data.go.kr/data/15074694/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10060",
+      "history_date": "2019-12-10",
+      "title": "(개방)동해안EEZ-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(동해안EEZ지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10060&histDe=2019-12-10&odtaId=86",
+      "catalog": "api_original",
+      "api_id": "86",
+      "api_request_url": "https://www.data.go.kr/data/15074728/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10052",
+      "history_date": "2019-12-10",
+      "title": "(개방)전북-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(전북지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10052&histDe=2019-12-10&odtaId=116",
+      "catalog": "api_original",
+      "api_id": "116",
+      "api_request_url": "https://www.data.go.kr/data/15074872/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10051",
+      "history_date": "2019-12-10",
+      "title": "(개방)제주-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(제주지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10051&histDe=2019-12-10&odtaId=77",
+      "catalog": "api_original",
+      "api_id": "77",
+      "api_request_url": "https://www.data.go.kr/data/15075681/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10061",
+      "history_date": "2019-12-10",
+      "title": "(개방)서해안EEZ-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(서해안EEZ지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10061&histDe=2019-12-10&odtaId=87",
+      "catalog": "api_original",
+      "api_id": "87",
+      "api_request_url": "https://www.data.go.kr/data/15074729/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10059",
+      "history_date": "2019-12-10",
+      "title": "(개방)남해안EEZ-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(남해안EEZ지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10059&histDe=2019-12-10&odtaId=85",
+      "catalog": "api_original",
+      "api_id": "85",
+      "api_request_url": "https://www.data.go.kr/data/15074727/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10058",
+      "history_date": "2019-12-10",
+      "title": "(개방)경북-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(경북지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10058&histDe=2019-12-10&odtaId=84",
+      "catalog": "api_original",
+      "api_id": "84",
+      "api_request_url": "https://www.data.go.kr/data/15074726/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10057",
+      "history_date": "2019-12-10",
+      "title": "(개방)강원-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(강원지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10057&histDe=2019-12-10&odtaId=83",
+      "catalog": "api_original",
+      "api_id": "83",
+      "api_request_url": "https://www.data.go.kr/data/15075813/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10055",
+      "history_date": "2019-12-10",
+      "title": "(개방)경남-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(경남지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10055&histDe=2019-12-10&odtaId=81",
+      "catalog": "api_original",
+      "api_id": "81",
+      "api_request_url": "https://www.data.go.kr/data/15074725/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10056",
+      "history_date": "2019-12-10",
+      "title": "(개방)울산-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(울산지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10056&histDe=2019-12-10&odtaId=82",
+      "catalog": "api_original",
+      "api_id": "82",
+      "api_request_url": "https://www.data.go.kr/data/15074869/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10053",
+      "history_date": "2019-12-10",
+      "title": "(개방)충남-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(충남지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10053&histDe=2019-12-10&odtaId=79",
+      "catalog": "api_original",
+      "api_id": "79",
+      "api_request_url": "https://www.data.go.kr/data/15075687/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10054",
+      "history_date": "2019-12-10",
+      "title": "(개방)부산-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(부산지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10054&histDe=2019-12-10&odtaId=80",
+      "catalog": "api_original",
+      "api_id": "80",
+      "api_request_url": "https://www.data.go.kr/data/15074865/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10050",
+      "history_date": "2019-12-10",
+      "title": "(개방)전남-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(전남지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10050&histDe=2019-12-10&odtaId=76",
+      "catalog": "api_original",
+      "api_id": "76",
+      "api_request_url": "https://www.data.go.kr/data/15074871/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10049",
+      "history_date": "2019-12-10",
+      "title": "(개방)경기-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(경기지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10049&histDe=2019-12-10&odtaId=75",
+      "catalog": "api_original",
+      "api_id": "75",
+      "api_request_url": "https://www.data.go.kr/data/15074723/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10048",
+      "history_date": "2019-12-10",
+      "title": "(개방)인천-특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공(인천지역)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10048&histDe=2019-12-10&odtaId=74",
+      "catalog": "api_original",
+      "api_id": "74",
+      "api_request_url": "https://www.data.go.kr/data/15074870/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10013",
+      "history_date": "2019-12-10",
+      "title": "(개방)특성평가격자",
+      "description": "해양이용, 개발 및 보전 방향을 유도하고 결정하는데 필요한 특성평가대상해역을 대상으로 해양공간정보를 활용하여 해양의 특성평가 단위인 격자정보를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10013&histDe=2019-12-10&odtaId=103",
+      "catalog": "api_original",
+      "api_id": "103",
+      "api_request_url": "https://www.data.go.kr/data/15075698/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10025",
+      "history_date": "2019-12-10",
+      "title": "(개방)해양용도구역이미결정된해양공간범위",
+      "description": "해양공간계획 수립에 따라 결정된 해역의 범위 ",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10025&histDe=2019-12-10&odtaId=72",
+      "catalog": "api_original",
+      "api_id": "72",
+      "api_request_url": "https://www.data.go.kr/data/15075844/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10074",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_안전관리",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 안전관리구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10074&histDe=2020-05-22&odtaId=115",
+      "catalog": "api_original",
+      "api_id": "115",
+      "api_request_url": "https://www.data.go.kr/data/15075853/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10073",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_군사활동",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 군사활동구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10073&histDe=2020-05-22&odtaId=114",
+      "catalog": "api_original",
+      "api_id": "114",
+      "api_request_url": "https://www.data.go.kr/data/15075852/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10072",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_항만항행",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 항만항행구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10072&histDe=2020-05-22&odtaId=113",
+      "catalog": "api_original",
+      "api_id": "113",
+      "api_request_url": "https://www.data.go.kr/data/15075850/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10071",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_연구교육",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 연구교육구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10071&histDe=2020-05-22&odtaId=112",
+      "catalog": "api_original",
+      "api_id": "112",
+      "api_request_url": "https://www.data.go.kr/data/15075849/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10070",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_환경생태",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 환경생태구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10070&histDe=2020-05-22&odtaId=111",
+      "catalog": "api_original",
+      "api_id": "111",
+      "api_request_url": "https://www.data.go.kr/data/15075848/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10069",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_해양관광",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 해양관광구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10069&histDe=2020-05-22&odtaId=110",
+      "catalog": "api_original",
+      "api_id": "110",
+      "api_request_url": "https://www.data.go.kr/data/15075847/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10068",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_골재광물",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 골재광물구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10068&histDe=2020-05-22&odtaId=109",
+      "catalog": "api_original",
+      "api_id": "109",
+      "api_request_url": "https://www.data.go.kr/data/15075846/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10067",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역_어업활동",
+      "description": "해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역 중 어업활동구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10067&histDe=2020-05-22&odtaId=108",
+      "catalog": "api_original",
+      "api_id": "108",
+      "api_request_url": "https://www.data.go.kr/data/15075845/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10024",
+      "history_date": "2020-05-22",
+      "title": "(개방)해양용도구역",
+      "description": " 해양공간특성평가 결과, 법적‧제도적 기준, 해양이용‧개발 및 보전수요 등을 고려하여 9개의 해양용도구역으로 지정된 정보 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10024&histDe=2020-05-22&odtaId=107",
+      "catalog": "api_original",
+      "api_id": "107",
+      "api_request_url": "https://www.data.go.kr/data/15075843/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10026",
+      "history_date": "2019-12-10",
+      "title": "(개방)해양공간의범위",
+      "description": " 해양공간관리(해양용도구역관리)를 위한 우리나라 해역의 범위를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10026&histDe=2019-12-10&odtaId=73",
+      "catalog": "api_original",
+      "api_id": "73",
+      "api_request_url": "https://www.data.go.kr/data/15075713/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "530008",
+      "history_date": "2024-02-25",
+      "title": "업종 재분별 어업정보활동",
+      "description": "업종재분별 어업정보활동",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=530008&histDe=2024-02-25&odtaId=169",
+      "catalog": "api_analysis",
+      "api_id": "169",
+      "api_request_url": "https://www.data.go.kr/data/15127848/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "530006",
+      "history_date": "2024-02-25",
+      "title": "수치모델을 이용한 과거해황 지도 서비스",
+      "description": "수치모델(해황)",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=530006&histDe=2024-02-25&odtaId=166",
+      "catalog": "api_analysis",
+      "api_id": "166",
+      "api_request_url": "https://www.data.go.kr/data/15127853/openapi.do",
+      "formats": "지도"
+    },
+    {
+      "dataset_id": "5241",
+      "history_date": "2022-10-19",
+      "title": "파고 3분 격자 예측값",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 파고 자료를 3분격자 기준으로 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=5241&histDe=2022-10-19&odtaId=143",
+      "catalog": "api_analysis",
+      "api_id": "143",
+      "api_request_url": "https://www.data.go.kr/data/15112611/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "5241",
+      "history_date": "2022-10-19",
+      "title": "파고 15분 격자 예측값",
+      "description": "관측 정보와 기상청에서 제공하는 지역파랑모델(RWW3) 정보를 학습한 AI(인공지능)를 활용하여 파고 예측값을 15분격자 기준으로 생산하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=5248&histDe=2022-10-19&odtaId=142",
+      "catalog": "api_analysis",
+      "api_id": "142",
+      "api_request_url": "https://www.data.go.kr/data/15112614/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10031",
+      "history_date": "2019-12-23",
+      "title": "(개방)연안침식백서_모니터링위치",
+      "description": "국내 연안 침식 실태조사를 위한 침식 모니터링 위치를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10031&histDe=2019-12-23&odtaId=138",
+      "catalog": "api_analysis",
+      "api_id": "138",
+      "api_request_url": "https://www.data.go.kr/data/15097742/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10041",
+      "history_date": "2020-12-06",
+      "title": "(개방)수산자원보호구역",
+      "description": "수산동·식물의 산란·서식환경을 보호하고, 수산자원을 육성하기 위해 해면과 인접 육역을 지정된 구역을 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10041&histDe=2020-12-06&odtaId=135",
+      "catalog": "api_analysis",
+      "api_id": "135",
+      "api_request_url": "https://www.data.go.kr/data/15097317/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10037",
+      "history_date": "2019-12-10",
+      "title": "(개방)시도특정도서",
+      "description": "사람이 거주하지 않거나 극히 제한된 지역에만 거주하는 섬으로서 자연생태계·지형·지질·자연환경이 우수한 도서를 시도에서 선정한 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10037&histDe=2019-12-10&odtaId=131",
+      "catalog": "api_analysis",
+      "api_id": "131",
+      "api_request_url": "https://www.data.go.kr/data/15097735/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10039",
+      "history_date": "2019-12-10",
+      "title": "(개방)특정도서",
+      "description": "사람이 거주하지 않거나 극히 제한된 지역에만 거주하는 섬으로서 자연생태계·지형·지질·자연환경이 우수한 도서를 국가에서 선정한 정보를 공간정보로 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10039&histDe=2019-12-10&odtaId=133",
+      "catalog": "api_analysis",
+      "api_id": "133",
+      "api_request_url": "https://www.data.go.kr/data/15097758/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10029",
+      "history_date": "2019-12-10",
+      "title": "(개방)인공어초 15km 내 해조류 분포",
+      "description": "바다숲 어초 조성을 위한 최적지역 선정에 활용 가능하도록 바다숲 어초조성 위치정보와 해조류 분포정보를 어초기준 15Km 반경으로 융합하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10029&histDe=2019-12-10&odtaId=123",
+      "catalog": "api_analysis",
+      "api_id": "123",
+      "api_request_url": "https://www.data.go.kr/data/15097756/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10028",
+      "history_date": "2019-12-10",
+      "title": "(개방)인공어초 10km 내 해조류 분포",
+      "description": "바다숲 어초 조성을 위한 최적지역 선정에 활용 가능하도록 바다숲 어초조성 위치정보와 해조류 분포정보를 어초기준 10Km 반경으로 융합하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10028&histDe=2019-12-10&odtaId=122",
+      "catalog": "api_analysis",
+      "api_id": "122",
+      "api_request_url": "https://www.data.go.kr/data/15097750/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10027",
+      "history_date": "2019-12-10",
+      "title": "(개방)인공어초 5km 내 해조류 분포",
+      "description": "해양공간 의사결정에 활용 가능하도록 연안 시설물 정보와 해안선 정보를 융합하여 해안선 반경 5Km내의 시설물 분포정보를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10027&histDe=2019-12-10&odtaId=121",
+      "catalog": "api_analysis",
+      "api_id": "121",
+      "api_request_url": "https://www.data.go.kr/data/15097744/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10062",
+      "history_date": "2019-12-23",
+      "title": "(개방)연속정보 수온(15분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 수온정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10062&histDe=2019-12-23&odtaId=117",
+      "catalog": "api_analysis",
+      "api_id": "117",
+      "api_request_url": "https://www.data.go.kr/data/15075720/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10019",
+      "history_date": "2019-12-23",
+      "title": "(개방)연속정보 수온(3분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 수온정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10019&histDe=2019-12-23&odtaId=88",
+      "catalog": "api_analysis",
+      "api_id": "88",
+      "api_request_url": "https://www.data.go.kr/data/15075721/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10011",
+      "history_date": "2019-12-10",
+      "title": "(개방)국가어항10KM인구분포",
+      "description": "어항 주변 개발의 정책졀정 참고자료로 활용 가능하도록 국가어항위치정보와 국토지리원의 인구정보를 어항기준 10Km 반경으로 융합하여 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10011&histDe=2019-12-10&odtaId=100",
+      "catalog": "api_analysis",
+      "api_id": "100",
+      "api_request_url": "https://www.data.go.kr/data/15075776/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10042",
+      "history_date": "2019-12-10",
+      "title": "(개방)연안3KM시설물",
+      "description": " 해양공간 의사결정에 활용 가능하도록 연안 시설물 정보와 해안선 정보를 융합하여 해안선 반경 3Km내의 시설물 분포정보를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10042&histDe=2019-12-10&odtaId=105",
+      "catalog": "api_analysis",
+      "api_id": "105",
+      "api_request_url": "https://www.data.go.kr/data/15075778/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10012",
+      "history_date": "2019-12-10",
+      "title": "(개방)연안1KM시설물",
+      "description": " 해양공간 의사결정에 활용 가능하도록 연안 시설물 정보와 해안선 정보를 융합하여 해안선 반경 1Km내의 시설물 분포정보를 제공",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10012&histDe=2019-12-10&odtaId=104",
+      "catalog": "api_analysis",
+      "api_id": "104",
+      "api_request_url": "https://www.data.go.kr/data/15075777/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10043",
+      "history_date": "2019-12-10",
+      "title": "(개방)연안5KM시설물",
+      "description": "(개방)연안5KM시설물",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10043&histDe=2019-12-10&odtaId=106",
+      "catalog": "api_analysis",
+      "api_id": "106",
+      "api_request_url": "https://www.data.go.kr/data/15075779/openapi.do",
+      "formats": "XML+지도"
+    },
+    {
+      "dataset_id": "10023",
+      "history_date": "2019-12-23",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 15분 격자 D+1 예측값",
+      "description": "인공지능을 통한 24시간 및 48시간의 수온에 대한 예측 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10023&histDe=2019-12-23&odtaId=9",
+      "catalog": "api_analysis",
+      "api_id": "9",
+      "api_request_url": "https://www.data.go.kr/data/15075817/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10022",
+      "history_date": "2019-12-23",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 3분 격자 D+1 예측값",
+      "description": "인공지능을 통한 24시간 및 48시간의 수온에 대한 예측 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10022&histDe=2019-12-23&odtaId=11",
+      "catalog": "api_analysis",
+      "api_id": "11",
+      "api_request_url": "https://www.data.go.kr/data/15075835/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10020",
+      "history_date": "2019-12-23",
+      "title": "(개방) 연속정보 염분(3분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 염분정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10020&histDe=2019-12-23&odtaId=7",
+      "catalog": "api_analysis",
+      "api_id": "7",
+      "api_request_url": "https://www.data.go.kr/data/15075723/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10063",
+      "history_date": "2019-12-23",
+      "title": "(개방) 연속정보 염분(15분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 염분정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10063&histDe=2019-12-23&odtaId=6",
+      "catalog": "api_analysis",
+      "api_id": "6",
+      "api_request_url": "https://www.data.go.kr/data/15075722/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10021",
+      "history_date": "2019-12-23",
+      "title": "(개방) 연속정보 해상풍(15분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 해상풍정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10021&histDe=2019-12-23&odtaId=8",
+      "catalog": "api_analysis",
+      "api_id": "8",
+      "api_request_url": "https://www.data.go.kr/data/15075733/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10066",
+      "history_date": "2019-12-23",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 15분 격자 D+2 예측값",
+      "description": "인공지능을 통한 24시간 및 48시간의 수온에 대한 예측 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10066&histDe=2019-12-23&odtaId=10",
+      "catalog": "api_analysis",
+      "api_id": "10",
+      "api_request_url": "https://www.data.go.kr/data/15075826/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10065",
+      "history_date": "2019-12-23",
+      "title": "(개방) 지식정보 생산모델 해수면 수온 3분 격자 D+2 예측값",
+      "description": "인공지능을 통한 24시간 및 48시간의 수온에 대한 예측 정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10065&histDe=2019-12-23&odtaId=12",
+      "catalog": "api_analysis",
+      "api_id": "12",
+      "api_request_url": "https://www.data.go.kr/data/15075839/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "10064",
+      "history_date": "2019-12-23",
+      "title": "(개방) 연속정보 해상풍(3분)",
+      "description": "해외 및 국내 관측기관에서 수집된 해양관측정보를 인공지능을 통해 연속화한 해상풍정보",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=10064&histDe=2019-12-23&odtaId=44",
+      "catalog": "api_analysis",
+      "api_id": "44",
+      "api_request_url": "https://www.data.go.kr/data/15075738/openapi.do",
+      "formats": "JSON+XML"
+    },
+    {
+      "dataset_id": "530011",
+      "history_date": "2024-03-19",
+      "title": "해양공간지도",
+      "description": "해양수산분야 및 타기관에서 생산ㆍ관리 되는 공간정보 데이터를 시스템별 공간정보 및 서비스를 별도 구축없이 공동활용하기 위해 제공하는 API기반 지도서비스로, 이 를 통해 공간정보의 중복구축 및 갱신주기 차이로 인한 업무 혼란 등을 방지하여 업무 생산성 향상을 목적으로 한다.",
+      "source_url": "https://vadahub.go.kr/bigdata/openApiRenew/detail.do?metaSn=530011&histDe=2024-03-19&odtaId=171",
+      "catalog": "api_map",
+      "api_id": "171",
+      "api_request_url": null,
+      "formats": "지도"
+    }
+  ],
+  "pdf_preview": {
+    "resource_id": "43388",
+    "url": "https://vadahub.go.kr/resource/publish/pdf/%ED%95%B4%EC%9A%B4%ED%86%B5%EA%B3%84/1970-2001%EB%85%84%EC%84%B8%EA%B3%84%ED%95%B4%EC%83%81%EB%AC%BC%EB%8F%99%EB%9F%89%EC%B6%94%EC%9D%B4%ED%95%B4%EC%9A%B4%ED%86%B5%EA%B3%84_2003/1970-2001%EB%85%84%EC%84%B8%EA%B3%84%ED%95%B4%EC%83%81%EB%AC%BC%EB%8F%99%EB%9F%89%EC%B6%94%EC%9D%B4%ED%95%B4%EC%9A%B4%ED%86%B5%EA%B3%84_2003.pdf",
+    "download_available": false
+  },
+  "library_archive": {
+    "resource": {
+      "dataset": {
+        "dataset_id": "700101",
+        "history_date": "2025-12-30",
+        "title": "연안기본조사",
+        "description": "연안의 현황 및 실태 관련 기초데이터",
+        "source_url": "https://vadahub.go.kr/renew/docData/detail.do?metaSn=700101&histDe=2025-12-30",
+        "catalog": "documents",
+        "api_id": null,
+        "api_request_url": null,
+        "formats": null
+      },
+      "resource_id": "720006",
+      "title": "연안기본조사 연안환경",
+      "source_name": "CoastalBasicSurvey01.zip",
+      "format": "PDF",
+      "attribute_kind": "PDF",
+      "service_auth": "OPEN",
+      "open_scope": "ALL",
+      "grid_available": true,
+      "download_available": true,
+      "masked": false
+    },
+    "source_url": "https://vadahub.go.kr/renew/docData/detail.do?metaSn=700101&histDe=2025-12-30",
+    "collected_at": "2026-10-24T04:20:35.218358+00:00",
+    "sha256": "b7806c5e18c903231358cf12d3cfbcb7b5510457ce5ae7e853fedfac142c1e05",
+    "byte_size": 131740,
+    "local_path": "coastal-basic-survey.zip",
+    "member_sha256": [
+      [
+        "01.연안환경/",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      [
+        "01.연안환경/[1_1_1]_해안선.xlsx",
+        "62121418e55644dc716e15d0752b292a8bf8d86cf0051bb0b2920701160d76fd"
+      ],
+      [
+        "01.연안환경/[1_1_2]_도서.xlsx",
+        "11d1199343603668474435a94bd71d2b0779de65961984b7a21f0d37f77b98b8"
+      ],
+      [
+        "01.연안환경/[1_1_3]_바닷가.xlsx",
+        "075eae8d00b93742f79dc5ee64436cf9c8ec8188cf476d9c4429b888de1e9c31"
+      ],
+      [
+        "01.연안환경/[1_1_4-5]_]연안습지및해안사구.xlsx",
+        "0b3f51c3598c82d46fa0868e7ecb7d4f4c3788d8d3600c35f337d3831f17a903"
+      ],
+      [
+        "01.연안환경/[1_2_1]_연안육역 표고분포.xlsx",
+        "c84a6defb014a403bbee27ab562eeeced1317183cafbd10e79caa568f97fb9a8"
+      ],
+      [
+        "01.연안환경/[1_2_2]_연안 재질.xlsx",
+        "e0b5ceb65476bae72232e104fa28ce6b69b9be21a32d861bec4f9c99ab034868"
+      ],
+      [
+        "01.연안환경/[1_3_7]_해수수질평가지수(WQI).xlsx",
+        "315787085bae81fee128f222801740c99438e1954e885afd56640eed4a6a34c0"
+      ],
+      [
+        "01.연안환경/[1_5_4]_유류유출량.xlsx",
+        "5bc37e6bd7dc0faf7a8ae7945a4f6354eee063290621466e04cc0bdc0676b145"
+      ],
+      [
+        "01.연안환경/[1_5_5]_폐기물 해양배출량.xlsx",
+        "bccbd77f6b37cf91bb023f07d3030db01a16a2b58a18c9163e1da6b4d89adb64"
+      ],
+      [
+        "01.연안환경/[1_6_1]_연안대기오염.xlsx",
+        "a62950d7f1c7313f88717196b9e0185aab53ce36971823471a225104169c64fd"
+      ],
+      [
+        "01.연안환경/[1_7_5]_해양폐기물정화사업.xlsx",
+        "7c50bcc2ad41f72e0581c606e649b1894c1f5f1177f99570e4d95cb37b833173"
+      ]
+    ],
+    "schema_version": "1"
+  },
+  "stored_object": "objects/library/documents/700101/2025-12-30/720006/b7806c5e18c903231358cf12d3cfbcb7b5510457ce5ae7e853fedfac142c1e05",
+  "table_preview": {
+    "resource_id": "520403",
+    "rows": 216,
+    "columns": [
+      "PRD_DE",
+      "C1_NM",
+      "C2_NM",
+      "ITM_NM",
+      "DT",
+      "UNIT_NM"
+    ],
+    "partial": true
+  }
+}

@@ -8,7 +8,7 @@ import tempfile
 from typing import Any
 from collections.abc import AsyncGenerator
 
-from playwright.async_api import Download, Response, Dialog
+from playwright.async_api import Download, Response, Dialog, Page, Locator
 
 from ._archive import ArchiveLimits, inspect_archive
 from ._browser import BASE_URL
@@ -17,16 +17,17 @@ from ._io import run_io
 from .client import VadaHubClient, _open_page, _SPACE_PATH, _check_status
 from .exceptions import ArchiveError, DownloadUnavailableError, ProviderError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer, SpatialFeature
+from .models import LibraryResource, LibraryArchiveReceipt
 from . import parse
 
 
-def _stage(source: Path, temporary: Path, table: str, limits: ArchiveLimits) -> tuple:
+def _stage(source: Path, temporary: Path, table: str | None, limits: ArchiveLimits) -> tuple:
     if source.stat().st_size > limits.archive_bytes:
         raise ArchiveError('다운로드 원문 크기 제한 초과')
     if shutil.disk_usage(temporary.parent).free < source.stat().st_size * 2:
         raise ArchiveError('검증·공개용 로컬 여유 공간 부족')
     shutil.copyfile(source, temporary)
-    checksum, members = inspect_archive(temporary, limits, table)
+    checksum, members = inspect_archive(temporary, limits, table, allow_directories=table is None)
     return checksum, members, temporary.stat().st_size
 
 
@@ -99,66 +100,94 @@ class VadaHubFileClient(VadaHubClient):
                 raise DownloadUnavailableError('공개 다운로드 버튼이 없습니다')
             if not await button.first.is_visible():
                 await page.get_by_role('button', name='전체보기').click()
-            loop = asyncio.get_running_loop()
-            received: asyncio.Future[Download] = loop.create_future()
-            failure: asyncio.Future[Exception] = loop.create_future()
+            checksum, members, size = await self._download_zip(page,button,path,current.table_name,limits)
+            return ArchiveReceipt(current,current.source_url,datetime.now(timezone.utc),checksum,size,path,members)
 
-            def on_download(item: Download) -> None:
-                if not received.done():
-                    received.set_result(item)
+    async def download_library(self, resource: LibraryResource, destination: str | Path, *,
+                               limits: ArchiveLimits = ArchiveLimits()) -> LibraryArchiveReceipt:
+        """실제 확인한 연안기본조사 공개 ZIP 버튼만 사용한다. PDF 미리보기는 다운로드하지 않는다."""
+        path = Path(destination).absolute()
+        if path.exists():
+            raise FileExistsError(path)
+        await run_io(path.parent.mkdir,0o777,True,True)
+        async with self._browser.operation() as page:
+            current = await self._current_resource(page,resource)
+            if (current.dataset.catalog != 'documents' or current.dataset.dataset_id != '700101'
+                    or not current.download_available or not current.source_name.startswith('CoastalBasicSurvey')
+                    or not current.source_name.endswith('.zip')):
+                raise DownloadUnavailableError('검증한 공개 자료실 ZIP 다운로드가 아닙니다')
+            meta, hist, rid = identifier(current.dataset.dataset_id), history(current.dataset.history_date), identifier(current.resource_id)
+            source_url = BASE_URL + f'/renew/docData/detail.do?metaSn={meta}&histDe={hist}'
+            await _open_page(page,source_url,'#metaSn')
+            button = page.locator(f'button[onclick*="zipDown(\'{rid}\',"]')
+            if not await button.count():
+                raise DownloadUnavailableError('자료실 공개 ZIP 버튼이 없습니다')
+            if not await button.first.is_visible():
+                await page.get_by_role('button',name='전체보기').click()
+            checksum,members,size = await self._download_zip(page,button,path,None,limits)
+            return LibraryArchiveReceipt(current,source_url,datetime.now(timezone.utc),checksum,size,path,members)
 
-            def on_response(response: Response) -> None:
-                if response.url.startswith(BASE_URL + '/') and response.status in (401, 403, 429):
-                    try:
-                        _check_status(response.status)
-                    except Exception as exc:
-                        if not failure.done():
-                            failure.set_result(exc)
+    async def _download_zip(self, page: Page, button: Locator, path: Path, table: str | None, limits: ArchiveLimits) -> tuple:
+        loop = asyncio.get_running_loop()
+        received: asyncio.Future[Download] = loop.create_future()
+        failure: asyncio.Future[Exception] = loop.create_future()
 
-            async def on_dialog(dialog: Dialog) -> None:
-                if not failure.done():
-                    failure.set_result(ProviderError('다운로드 UI가 오류/접근 안내를 표시했습니다'))
-                await dialog.dismiss()
+        def on_download(item: Download) -> None:
+            if not received.done():
+                received.set_result(item)
 
-            page.on('download', on_download)
-            page.on('response', on_response)
-            page.on('dialog', on_dialog)
+        def on_response(response: Response) -> None:
+            if response.url.startswith(BASE_URL + '/') and response.status in (401, 403, 429):
+                try:
+                    _check_status(response.status)
+                except Exception as exc:
+                    if not failure.done():
+                        failure.set_result(exc)
+
+        async def on_dialog(dialog: Dialog) -> None:
+            if not failure.done():
+                failure.set_result(ProviderError('다운로드 UI가 오류/접근 안내를 표시했습니다'))
+            await dialog.dismiss()
+
+        page.on('download', on_download)
+        page.on('response', on_response)
+        page.on('dialog', on_dialog)
+        item = None
+        temporary = None
+        cleaned = False
+        try:
+            await button.first.click()
+            waiters: list[asyncio.Future[Any]] = [received, failure]
+            await asyncio.wait(waiters, return_when=asyncio.FIRST_COMPLETED)
+            if failure.done():
+                raise failure.result()
+            item = received.result()
+            source = await item.path()
+            if source is None:
+                raise ArchiveError('다운로드 파일 경로가 없습니다')
+            if failure.done():
+                raise failure.result()
+            fd, name = tempfile.mkstemp(prefix='.vadahub-', suffix='.part', dir=path.parent)
+            os.close(fd)
+            temporary = Path(name)
+            checksum, members, size = await run_io(_stage, Path(source), temporary, table, limits)
+            # worker 완료·취소 반영과 모든 await 정리 뒤에만 원자 commit한다.
+            await _cleanup_download(item, self._browser.cleanup_timeout)
+            cleaned = True
             item = None
-            temporary = None
-            cleaned = False
-            try:
-                await button.first.click()
-                waiters: list[asyncio.Future[Any]] = [received, failure]
-                await asyncio.wait(waiters, return_when=asyncio.FIRST_COMPLETED)
-                if failure.done():
-                    raise failure.result()
+            if failure.done():
+                raise failure.result()
+            os.link(temporary, path)
+            return checksum, members, size
+        finally:
+            page.remove_listener('download', on_download)
+            page.remove_listener('response', on_response)
+            page.remove_listener('dialog', on_dialog)
+            if not cleaned and item is None and received.done() and not received.cancelled():
                 item = received.result()
-                source = await item.path()
-                if source is None:
-                    raise ArchiveError('다운로드 파일 경로가 없습니다')
-                if failure.done():
-                    raise failure.result()
-                fd, name = tempfile.mkstemp(prefix='.vadahub-', suffix='.part', dir=path.parent)
-                os.close(fd)
-                temporary = Path(name)
-                checksum, members, size = await run_io(_stage, Path(source), temporary, current.table_name, limits)
-                # worker 완료·취소 반영과 모든 await 정리 뒤에만 원자 commit한다.
+            received.cancel()
+            failure.cancel()
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+            if item is not None:
                 await _cleanup_download(item, self._browser.cleanup_timeout)
-                cleaned = True
-                item = None
-                if failure.done():
-                    raise failure.result()
-                os.link(temporary, path)
-                return ArchiveReceipt(current, current.source_url, datetime.now(timezone.utc), checksum, size, path, members)
-            finally:
-                page.remove_listener('download', on_download)
-                page.remove_listener('response', on_response)
-                page.remove_listener('dialog', on_dialog)
-                if not cleaned and item is None and received.done() and not received.cancelled():
-                    item = received.result()
-                received.cancel()
-                failure.cancel()
-                if temporary is not None:
-                    temporary.unlink(missing_ok=True)
-                if item is not None:
-                    await _cleanup_download(item, self._browser.cleanup_timeout)

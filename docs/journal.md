@@ -1,5 +1,17 @@
 # 작업 기록
 
+## 2026-10-24 KST — T007A 공개 안내·자료실
+
+- T006 최종 리뷰2/live2/CI와 머지 `0a1a53a` 확인 후 분기했다.
+- OpenAPI 원40/분석25/지도1, 문서451/통계73 목록을 Chromium으로 조사했다.
+  분석 안내에 동일 meta/history의 서로 다른 API ID가 있어 식별을 보강했다.
+- PDF 미리보기와 다운로드 허용을 분리하고 통계 sample JSON은 partial snapshot으로 제공한다.
+- 연안기본조사 ZIP 공개 버튼과 파일 내부 XLSX 폴더를 확인해 안전한 디렉터리 ZIP 검증과
+  LibraryArchiveReceipt·기존 immutable store 통합을 구현했다. PRIVATE resource는 거부한다.
+- B의 PDF URL 외부 origin P1 수정 후 `6995005` 리뷰2 통과. unit219/94.51%,
+  실제 5종 목록/PDF/통계216행/ZIP12멤버/보관live1(skip0), 구현CI 통과.
+  66개 API 안내의 실제 backing resource 전수 조사를 후속 T007A2에 반영했다.
+
 ## 2026-10-24 KST — T006 원문 보관
 
 - T005 PR #5 리뷰2/live/최종CI와 머지 `7efc1a4`를 확인하고 분기했다.

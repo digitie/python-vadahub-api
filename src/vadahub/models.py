@@ -4,7 +4,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, Literal
+
+CatalogKind = Literal['space', 'documents', 'statistics', 'api_original', 'api_analysis', 'api_map']
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,6 +26,10 @@ class Dataset:
     title: str
     description: str
     source_url: str
+    catalog: CatalogKind = 'space'
+    api_id: str | None = None
+    api_request_url: str | None = None
+    formats: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,3 +78,49 @@ class SpatialFeature:
     wgs84_wkb: bytes | None
     source_sha256: str
     source_collected_at: datetime | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class LibraryResource:
+    """자료실 파일/테이블의 원본 이름과 공개·조회·다운로드를 구분한 참조."""
+    dataset: Dataset
+    resource_id: str
+    title: str
+    source_name: str
+    format: str | None
+    attribute_kind: str
+    service_auth: str
+    open_scope: str
+    grid_available: bool
+    download_available: bool
+    masked: bool
+
+
+@dataclass(frozen=True, slots=True)
+class DocumentPreview:
+    resource: LibraryResource
+    preview_url: str
+    collected_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class TablePreview:
+    """공개 UI snapshot. 권위 total이 없으므로 전체 OpenAPI 응답으로 주장하지 않는다."""
+    resource: LibraryResource
+    columns: tuple[str, ...]
+    labels: tuple[str, ...]
+    rows: tuple[Mapping[str, Any], ...]
+    collected_at: datetime
+    partial: bool = True
+
+
+@dataclass(frozen=True, slots=True)
+class LibraryArchiveReceipt:
+    resource: LibraryResource
+    source_url: str
+    collected_at: datetime
+    sha256: str
+    byte_size: int
+    local_path: Path
+    member_sha256: tuple[tuple[str, str], ...]
+    schema_version: str = '1'

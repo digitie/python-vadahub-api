@@ -8,8 +8,11 @@ T004 PR #4를 `467208d`로 머지했다. 최종 구현 `e3abca4`, 증빙 `60961f
 리뷰2·unit151/93.79%·새 ZIP live4+GDAL live1·CI를 통과했다.
 T005 PR #5를 `7efc1a4`로 머지했다. 구현 `59b4a4c`에서 리뷰2·unit172/94.80%·live3,
 증빙 `eaef6ca` 최종CI 통과를 확인했다.
-현재 `codex/t006-archive-store`에서 immutable 원문·원자 manifest·고아복구를 구현 중이다.
-T006 리뷰2/live/CI/머지 후 T007A로 진행한다. T005E 외부 제약은 미해결 유지한다.
+T006 PR #6을 `0a1a53a`로 머지했다. 구현 `4587d74` 리뷰2·unit190/94.80%·live2,
+증빙 `cb8064f`의 최종 CI 통과를 확인했다.
+현재 `codex/t007a-public-catalogs`에서 5종 카탈로그, 자료실 PDF URL/통계 snapshot,
+연안기본조사 ZIP 다운로드 및 보관을 구현 중이다. T007A 리뷰2/live/CI/머지 후 T007B로 진행한다.
+T005E 외부 제약은 미해결 유지한다.
 
 추가 관광자료 요청은 T007B에 반영했다. 해수욕장·전망대·체험마을·낚시·마리나는
 실제 버튼/ZIP/필드/시점을 조사해 제공한다. metadata Y만으로 가용 판정하지 않는다.
