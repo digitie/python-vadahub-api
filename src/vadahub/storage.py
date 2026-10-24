@@ -19,7 +19,7 @@ from filelock import FileLock
 from ._archive import ArchiveLimits, inspect_archive
 from ._catalog import identifier, history
 from ._io import run_io
-from .exceptions import ArchiveError
+from .exceptions import ArchiveError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer
 
 
@@ -55,12 +55,12 @@ def _serialize(receipt: ArchiveReceipt) -> dict:
 
 
 def _json(path: Path, cap: int) -> Any:
-    if path.stat().st_size > cap:
-        raise ArchiveError('보관 metadata 크기 상한 초과')
     try:
+        if path.stat().st_size > cap:
+            raise ArchiveError('보관 metadata 크기 상한 초과')
         return json.loads(path.read_text(encoding='utf-8'))
-    except (ValueError, UnicodeError):
-        raise ArchiveError('보관 metadata JSON 오류') from None
+    except (ValueError, UnicodeError, OSError):
+        raise ArchiveError('보관 metadata 누락/읽기/JSON 오류') from None
 
 
 def _atomic_json(path: Path, value: Any) -> None:
@@ -132,12 +132,17 @@ class LocalArchiveStore:
             receipt = ArchiveReceipt(layer,item['source_url'],collected,checksum,size,
                                      self.root/object_key/'archive.zip',members)
             return StoredArchive(receipt,_fingerprint(members),object_key)
-        except (KeyError,TypeError,ValueError):
+        except (KeyError,TypeError,ValueError,SchemaError):
             raise ArchiveError('receipt 필드 형식 오류') from None
 
-    def _verify(self, stored: StoredArchive) -> None:
+    def _verify(self, stored: StoredArchive, *, sidecar: bool = False) -> None:
         receipt = stored.receipt
-        checksum,members = inspect_archive(receipt.local_path,self.limits,receipt.layer.table_name)
+        if sidecar and self._decode(_json(receipt.local_path.parent/'receipt.json',1024*1024)) != stored:
+            raise ArchiveError('manifest와 object receipt 불일치')
+        try:
+            checksum,members = inspect_archive(receipt.local_path,self.limits,receipt.layer.table_name)
+        except OSError:
+            raise ArchiveError('보관 원문 누락/읽기 오류') from None
         if (checksum != receipt.sha256 or members != receipt.member_sha256
                 or receipt.local_path.stat().st_size != receipt.byte_size):
             raise ArchiveError('보관 원문/receipt 해시·멤버·크기 불일치')
@@ -170,7 +175,7 @@ class LocalArchiveStore:
                 existing = self._decode(_json(target/'receipt.json',1024*1024))
                 if existing.object_key != stored.object_key:
                     raise ArchiveError('기존 원문 receipt 식별 불일치')
-                self._verify(existing)
+                self._verify(existing,sidecar=True)
                 stored, item = existing, _serialize(existing.receipt)
             else:
                 target.parent.mkdir(parents=True,exist_ok=True)
@@ -195,7 +200,7 @@ class LocalArchiveStore:
             data = self._read_manifest()
             values = tuple(self._decode(item) for item in data['entries'].get(_key(layer),[]))
             for stored in values:
-                self._verify(stored)
+                self._verify(stored,sidecar=True)
             return values
 
     async def versions(self, layer: DatasetLayer) -> tuple[StoredArchive, ...]:
@@ -205,6 +210,9 @@ class LocalArchiveStore:
     def _recover(self) -> tuple[StoredArchive, ...]:
         with self._lock():
             manifest = self._read_manifest()
+            for values in manifest['entries'].values():
+                for item in values:
+                    self._verify(self._decode(item),sidecar=True)
             recovered = []
             count = 0
             for path in (self.root/'objects').glob('*/*/*/*/*/receipt.json'):
@@ -215,7 +223,7 @@ class LocalArchiveStore:
                 stored = self._decode(item)
                 if stored.receipt.local_path.parent != path.parent:
                     raise ArchiveError('고아 receipt 경로/식별 불일치')
-                self._verify(stored)
+                self._verify(stored,sidecar=True)
                 values = manifest['entries'].setdefault(_key(stored.receipt.layer),[])
                 if not any(entry['sha256'] == stored.receipt.sha256 for entry in values):
                     values.append(item)

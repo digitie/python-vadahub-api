@@ -69,6 +69,17 @@ async def test_corruption_never_silently_replaced(tmp_path):
     assert stored.receipt.local_path.read_bytes()==b'corrupt'
 
 
+@pytest.mark.parametrize('names',[('archive.zip',),('receipt.json',),('archive.zip','receipt.json')])
+async def test_recover_reports_missing_manifest_objects(tmp_path,names):
+    store=LocalArchiveStore(tmp_path/'store')
+    stored=await store.put(receipt(tmp_path))
+    manifest=(store.root/'manifest.json').read_bytes()
+    for name in names: (stored.receipt.local_path.parent/name).unlink()
+    with pytest.raises(ArchiveError): await store.recover()
+    with pytest.raises(ArchiveError): await store.versions(LAYER)
+    assert (store.root/'manifest.json').read_bytes()==manifest
+
+
 async def test_wrong_receipt_and_manifest_schema(tmp_path):
     source=receipt(tmp_path)
     store=LocalArchiveStore(tmp_path/'store')
