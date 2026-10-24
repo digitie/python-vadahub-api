@@ -14,6 +14,7 @@ from .exceptions import ArchiveError, DownloadUnavailableError, SpatialDependenc
 from .models import SpatialFeature
 from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, EndpointMatch, MappedRoute,
                       route_endpoints, ports_from_features, port_from_transport, map_route)
+from .storage import LocalArchiveStore, StoredArchive
 
 __all__ = [
     "AccessDeniedError", "AsyncTokenBucket", "ClientClosedError", "NetworkError",
@@ -24,4 +25,5 @@ __all__ = [
     "SpatialFeature", "SpatialDependencyError", "UnknownCrsError",
     "PortReference", "EndpointCrosswalk", "RouteEndpoints", "EndpointMatch", "MappedRoute",
     "route_endpoints", "ports_from_features", "port_from_transport", "map_route",
+    "LocalArchiveStore", "StoredArchive",
 ]

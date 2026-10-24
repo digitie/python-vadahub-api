@@ -6,3 +6,4 @@
 | T002 | 2026-10-24, [PR #2](https://github.com/digitie/python-vadahub-api/pull/2), `37a5dd3e6ad083307e2d4b1c68e66f678c1b6ddd` | [증빙](validation/t002.md); 독립 리뷰 2명, unit 72/live 3/최종 CI 통과 |
 | T003 | 2026-10-24, [PR #3](https://github.com/digitie/python-vadahub-api/pull/3), `d342204e48104ba05b1f350fc63abc2a8bfb462a` | [증빙](validation/t003.md); 독립 리뷰 2명, unit132/96.49%, live4, 최종 CI 통과 |
 | T004 | 2026-10-24, [PR #4](https://github.com/digitie/python-vadahub-api/pull/4), `467208db627c09ca1e918ab1ad3893d00f039ed5` | [증빙](validation/t004.md); 독립 리뷰2, unit151/93.79%, 새ZIP live4+GDAL live1(skip0), 최종CI 통과 |
+| T005 | 2026-10-24, [PR #5](https://github.com/digitie/python-vadahub-api/pull/5), `7efc1a4b84a4c2baa02e22318d6c35f44730687d` | [증빙](validation/t005.md); 독립 리뷰2, unit172/94.80%, 새ZIP live1+GDAL/매핑live2, 최종CI 통과. T005E 미해결 유지 |
