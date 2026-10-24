@@ -11,6 +11,37 @@ WaveMeasure = Literal['height', 'period']
 
 
 @dataclass(frozen=True, slots=True)
+class TerminalFileReceipt:
+    """공식 보완 CSV 원문. VadaHub SHP receipt와 별도 출처다."""
+    source_url: str
+    download_url: str
+    collected_at: datetime
+    sha256: str
+    byte_size: int
+    local_path: Path
+    source: Literal['data.go.kr:15148558'] = 'data.go.kr:15148558'
+    content_date: date = date(2014, 12, 31)
+    schema_version: str = '1'
+
+
+@dataclass(frozen=True, slots=True)
+class PassengerTerminal:
+    """보완 파일의 터미널 정보와 미확인 CRS·원문 계보."""
+    source: str
+    record_id: str
+    name: str | None
+    address: str | None
+    survey_year: int | None
+    raw_attributes: Mapping[str, str]
+    geometry_wkb: bytes | None
+    geometry_valid: bool | None
+    source_sha256: str
+    source_url: str | None
+    source_collected_at: datetime | None
+    source_crs: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class WaveStatistic:
     """공개 웹 날짜별 통계. 시간별 원행/전체 기간의 통계라는 의미가 아니다."""
     grid_code: str

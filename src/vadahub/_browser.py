@@ -22,25 +22,29 @@ from ._ratelimit import AsyncTokenBucket
 from .exceptions import ClientClosedError, NetworkError
 
 BASE_URL = "https://vadahub.go.kr"
+_HOSTS = {'vadahub': 'vadahub.go.kr', 'official_terminal': 'www.data.go.kr'}
 T = TypeVar("T")
 _CONTEXT_LOCKS: WeakKeyDictionary[BrowserContext, asyncio.Lock] = WeakKeyDictionary()
 
 
-def _allowed_resource(raw_url: str, resource_type: str) -> bool:
+def _allowed_resource(raw_url: str, resource_type: str, *, provider: str = 'vadahub') -> bool:
     """소유 page의 허용 origin·자원 종류를 판정한다."""
-    url = urlsplit(raw_url)
+    try:
+        url = urlsplit(raw_url)
+    except ValueError:
+        return False
     return (
         url.scheme == "https"
-        and url.netloc == "vadahub.go.kr"
+        and provider in _HOSTS and url.netloc == _HOSTS[provider]
         and resource_type.lower() in {"document", "script", "stylesheet", "xhr", "fetch"}
     )
 
 
-async def _intercept_request(session: CDPSession, event: dict[str, Any]) -> None:
+async def _intercept_request(session: CDPSession, event: dict[str, Any], *, provider: str = 'vadahub') -> None:
     """리디렉션을 포함한 각 전송 전에 Chromium 요청을 종결한다."""
     request_id = event["requestId"]
     try:
-        if _allowed_resource(event["request"]["url"], event["resourceType"]):
+        if _allowed_resource(event["request"]["url"], event["resourceType"], provider=provider):
             await session.send("Fetch.continueRequest", {"requestId": request_id})
         else:
             await session.send("Fetch.failRequest", {"requestId": request_id, "errorReason": "BlockedByClient"})
@@ -61,7 +65,11 @@ class BrowserSession:
         rate_limiter: AsyncTokenBucket | None,
         browser_context: BrowserContext | None,
         executable_path: str | None,
+        provider: str = 'vadahub',
     ) -> None:
+        if provider not in _HOSTS:
+            raise ValueError('지원하지 않는 고정 원천입니다')
+        self._provider = provider
         if isinstance(timeout, bool) or not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout은 유한한 양수여야 합니다")
         if isinstance(cleanup_timeout, bool) or not math.isfinite(cleanup_timeout) or cleanup_timeout <= 0:
@@ -119,7 +127,7 @@ class BrowserSession:
 
         async def intercept(event: dict[str, Any]) -> None:
             assert session is not None
-            await _intercept_request(session, event)
+            await _intercept_request(session, event, provider=self._provider)
 
         page = await self._acquire(context.new_page(), close_page)
         # page를 닫으면 생성 도중의 CDP session도 함께 해제된다.

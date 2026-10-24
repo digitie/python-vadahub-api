@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 from playwright.async_api import async_playwright
 import pytest
 
-from vadahub import VadaHubClient, ClientClosedError, NetworkError
+from vadahub import VadaHubClient, OfficialTerminalClient, ClientClosedError, NetworkError
 
 pytestmark = pytest.mark.live
 
@@ -49,7 +49,8 @@ async def test_injected_context_remains_usable_after_client_closes():
             await browser.close()
 
 
-async def test_redirect_each_hop_is_filtered_before_network(monkeypatch):
+@pytest.mark.parametrize('provider,client_type', [('vadahub', VadaHubClient), ('official_terminal', OfficialTerminalClient)])
+async def test_redirect_each_hop_is_filtered_before_network(monkeypatch, provider, client_type):
     """실제 Chromium이 차단 대상 redirect를 서버에 전송하지 않는지 확인한다."""
     received = []
 
@@ -73,12 +74,16 @@ async def test_redirect_each_hop_is_filtered_before_network(monkeypatch):
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
     authority = f"localhost:{server.server_port}"
-    monkeypatch.setattr(
-        "vadahub._browser._allowed_resource",
-        lambda url, kind: urlsplit(url).netloc == authority and kind.lower() == "document",
-    )
+    from vadahub._browser import _allowed_resource
+    seen_providers = []
+    def allowed(url, kind, *, provider='vadahub'):
+        seen_providers.append(provider)
+        if urlsplit(url).netloc == authority:
+            return kind.lower() == 'document'
+        return _allowed_resource(url, kind, provider=provider)
+    monkeypatch.setattr('vadahub._browser._allowed_resource', allowed)
     try:
-        async with VadaHubClient(executable_path=os.getenv("VADAHUB_CHROMIUM_EXECUTABLE")) as client:
+        async with client_type(executable_path=os.getenv("VADAHUB_CHROMIUM_EXECUTABLE")) as client:
             with pytest.raises(NetworkError):
                 async with client._browser.operation() as page:
                     await page.goto(f"http://{authority}/start")
@@ -86,6 +91,7 @@ async def test_redirect_each_hop_is_filtered_before_network(monkeypatch):
                 response = await page.goto(f"http://{authority}/allowed-start")
                 assert response.status == 200
         assert received == ["/start", "/allowed-start", "/ok"]
+        assert seen_providers and set(seen_providers) == {provider}
     finally:
         await asyncio.to_thread(server.shutdown)
         server.server_close()

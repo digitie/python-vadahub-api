@@ -72,7 +72,7 @@ CSV는16MiB 상한·CP949 strict·고정 필드·고유 문자열 ID·행상한�
 보존하며 임의 형식 변환한 파일을 원본SHP라고 하지 않는다. 헤더/파일/리다이렉트 변경은 명시적 오류다.
 전용 typed receipt에 source=data.go.kr:15148558,source_url,수집시점,SHA,bytes,local_path를 둔다.
 CSV의 CP949 strict 디코딩·필드 읽기는 stdlib csv, WKT 해석은 GDAL OGR binding으로 수행한다.
-`load_terminal_file`/bounded `iter_terminal_file`은 같은 worker에서 native geometry를 생성·해제하고
+`OfficialTerminalClient.load_file`/bounded `iter_file`은 같은 worker에서 native geometry를 생성·해제하고
 복사한 WKB/속성만 반환한다. 취소는 worker 종료를 기다린다.
 
 typed 터미널에는 source/record ID·nullable 명칭/주소·조사년도·원문속성·WKB·geometry_valid,

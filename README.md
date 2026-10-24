@@ -7,6 +7,7 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 원문 SHA 버전 보관과 manifest 복구, 공개 안내·자료실과 웹 테이블 질의를 제공한다.
 추가 [관광9종](docs/tourism.md)의 카탈로그·SHP·검색과 [실행 예제](examples/tourism.py)를 제공한다.
 [파랑 날짜·격자 웹 통계](docs/wave-statistics.md)는 일반 테이블 원행과 구분해 제공한다.
+[공식 터미널 CSV 보완](docs/terminal-supplement.md)은 별도 출처로 명시적으로 선택할 수 있다.
 T008까지 구현 PR 머지와 격리 설치본 검증을 완료했다. [완료 기록](docs/tasks-done.md)과
 [외부 미해결 항목](docs/tasks.md)을 구분해 확인할 수 있다.
 

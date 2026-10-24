@@ -117,3 +117,20 @@ API139 일반grid는 gid필터에서도45초timeout이나, 같은 VadaHub의 날
 전체작업 timeout·공개상태 재조회·schema/중복/nullable 검증을 구현했다. wave 단위35개 통과.
 T007A2E1 소스9575145의 독립리뷰2 차단없음, 전체309/94.82%, 실제2일 파고/주기 live1(skip0),
 구현CI7개 통과. 최종증빙head 정산 후 머지한다. 일반API139 원행실패를 성공으로 바꾸지 않았다.
+
+## 2026-10-24 KST — T005E1 공식 터미널 보완
+
+T007A2E1 PR #13의 최종리뷰2/live/CI와37e0ced머지를 확인 후 분기했다.
+기존VadaHub origin을 확장하지 않는 전용OfficialTerminalClient를 구현했다. 공개첨부/파일identity,
+strictCP949·OGR WKT의boundedworker와nullable/CRS미상·별도출처를 보존한다.
+CSV도 LocalArchiveStore의별도scope에서 해시버전/멱등성/복구를 제공한다.
+실제개발probe CSV다운로드/76행OGR/76참조터미널 변환은 통과했으며 최종SHA의리뷰/live/CI를 진행한다.
+
+T005E1 리뷰의P2 세건(WKT suffix, 로더 첨부출처, redirect live fixture)을 수정했다.
+370 unit/95.02%, Win·WSL 신규다운로드6live와 GDAL/보관3live·격리wheel76행 통과.
+Windows Playwright1.63.0의 teardown 미종료를 관측했고 같은 검증의1.64.1 정상종료를
+근거로 지원하한을 올린다. 마지막 구현SHA의 재리뷰·재live·CI를 다시 확인한다.
+
+최종bc14a36의 독립리뷰2 차단없음, unit370/95.02%, 새Win Chromium6live44.89초·
+동일원문GDAL/보관3live(skip0), 새격리wheel51exports/76행, 구현CI7개 모두통과.
+검증증빙만 추가한 head의 소스동일성·리뷰정산·CI를 확인한 뒤 PR #14를 머지한다.
