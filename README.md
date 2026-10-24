@@ -3,7 +3,8 @@
 VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자료 ZIP/SHP를
 키 없이 수집·해석하는 **비동기 Python provider 라이브러리**다.
 상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
-공간자료 목록·다운로드·GDAL 파싱·매핑은 이후 task이며 아직 제공하지 않는다.
+T003에서 공간자료 카탈로그·기초자료·공개 ZIP 다운로드를 구현했다.
+GDAL 파싱·매핑·버전 관리는 이후 task다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
 관광지정보, 여객터미널, 도선항로, 여객항로다. 웹 접근은 Chromium을 사용한다.
@@ -54,7 +55,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-이 결과는 공개 공간자료 페이지 접근 확인이며 4종 자료를 수집한 결과가 아니다.
+이 결과는 공개 공간자료 페이지 접근 확인이다. 자료 수집은 다음 카탈로그/파일 API를 사용한다.
 `executable_path`로 설치된 Chromium을 지정하거나 `browser_context`로 Chromium context를
 주입할 수 있다. 주입한 context는 호출자가 닫고 SDK가 만든 page는 SDK가 닫는다.
 동일 loop의 여러 SDK가 `AsyncTokenBucket`을 공유할 수 있다. 기본 1 RPS·burst 1은
@@ -67,6 +68,30 @@ operation 제한이며 브라우저 자산 요청량 제한이 아니다. 자동
 operation을 차단하고, 늦게 생성/종료되는 소유 자원은 background로 추적한다.
 외부 context는 이때도 닫지 않는다. 응답이 끝내 오지 않으면 pending 정리가 해당 context/
 driver 종료까지 남을 수 있다. `aclose()`의 반복 호출은 이 pending 응답을 무한 대기하지 않는다.
+
+## 카탈로그·공개 ZIP 다운로드
+
+```python
+from pathlib import Path
+from vadahub import VadaHubFileClient
+
+async def download_ferry() -> None:
+    async with VadaHubFileClient(timeout=120) as client:
+        datasets = await client.list_datasets()
+        dataset = next(item for item in datasets if item.title == '도선항로')
+        layers = await client.list_layers(dataset)
+        receipt = await client.download(layers[0], Path('dosun.zip'))
+        print(receipt.sha256, receipt.byte_size)
+```
+
+`list_datasets(page_size=50,max_pages=20)`는 total·중복·중간 빈 페이지와 페이지 상한을
+검증한다. `list_layers(dataset)`는 meta의 이력키를 보존한다. `get_availability(layer)`로
+현재 상태를 다시 확인한다. 다운로드도 매번 원천 상태를 재조회한다.
+동일 주입 BrowserContext를 사용하는 여러 SDK의 operation은 같은 잠금으로 직렬화한다.
+기존 출력 파일은 덮어쓰지 않으며 신규 파일을 임시 저장·ZIP 검증 뒤 원자 공개한다.
+`ArchiveLimits`로 원문/해제크기·멤버수·압축비를 제한한다. 브라우저의 원문 수신이 끝난 뒤
+적용되는 상한이므로 수신 중 브라우저 임시 디스크의 사용량을 제한한다고 보장하지 않는다.
+`DownloadUnavailableError`는 미제공 자료이며 정상 빈 결과가 아니다.
 
 ```bash
 python -m pip install -e '.[dev]'

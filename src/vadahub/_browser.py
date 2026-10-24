@@ -8,6 +8,7 @@ from contextlib import AsyncExitStack, asynccontextmanager
 import math
 from typing import Any, TypeVar
 from urllib.parse import urlsplit
+from weakref import WeakKeyDictionary
 
 from playwright.async_api import (
     BrowserContext,
@@ -22,6 +23,7 @@ from .exceptions import ClientClosedError, NetworkError
 
 BASE_URL = "https://vadahub.go.kr"
 T = TypeVar("T")
+_CONTEXT_LOCKS: WeakKeyDictionary[BrowserContext, asyncio.Lock] = WeakKeyDictionary()
 
 
 def _allowed_resource(raw_url: str, resource_type: str) -> bool:
@@ -73,7 +75,9 @@ class BrowserSession:
         self._executable_path = executable_path
         self._page: Page | None = None
         self._stack: AsyncExitStack | None = None
-        self._lock = asyncio.Lock()
+        # 동일 주입 context는 서버 cookie/session을 공유하므로 서로 다른 SDK도 직렬화한다.
+        self._lock = (asyncio.Lock() if browser_context is None
+                      else _CONTEXT_LOCKS.setdefault(browser_context, asyncio.Lock()))
         self._loop: asyncio.AbstractEventLoop | None = None
         self._closed = False
         self._pending: set[asyncio.Task[Any]] = set()

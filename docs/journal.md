@@ -1,5 +1,12 @@
 # 작업 기록
 
+## 2026-10-24 KST — T003 카탈로그·다운로드
+
+- PR #2 머지 확인 후 `codex/t003-catalog-download`에서 구현.
+- 공개 카탈로그 페이지네이션·기초 layer·상태 재조회, UI ZIP 검증/공개 및 공유 context 잠금 추가.
+- 실제 SDK로 183 meta/7 layer/6 ZIP/여객터미널 미제공 확인, 초기 unit129/95.46%.
+- 각 task의 독립 리뷰2·live·CI·머지 후 다음 task로 계속 진행한다.
+
 ## 2026-10-24 KST — T001 조사·문서
 
 - 원격 저장소를 현재 빈 workspace에 clone하고 `origin/main`과 `codex/vadahub-specifications` 구성.

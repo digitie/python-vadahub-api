@@ -7,6 +7,13 @@ from unittest.mock import AsyncMock, Mock
 from vadahub._browser import BASE_URL
 
 
+class FakeContext:
+    """실제 context처럼 identity hash와 weakref를 지원하는 소유권 fixture."""
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
 @pytest.fixture
 def browser(monkeypatch):
     """기본 테스트가 외부 네트워크·실제 브라우저를 시작하지 못하도록 경계를 모의한다."""
@@ -19,7 +26,7 @@ def browser(monkeypatch):
     page.locator = Mock(side_effect=lambda selector: SimpleNamespace(
         count=AsyncMock(return_value=0 if ":visible" in selector else 1)))
     session = SimpleNamespace(send=AsyncMock(), on=Mock(), remove_listener=Mock(), detach=AsyncMock())
-    context = SimpleNamespace(new_page=AsyncMock(return_value=page), close=AsyncMock(),
+    context = FakeContext(new_page=AsyncMock(return_value=page), close=AsyncMock(),
                               new_cdp_session=AsyncMock(return_value=session))
     engine = SimpleNamespace(new_context=AsyncMock(return_value=context), close=AsyncMock())
     playwright = SimpleNamespace(chromium=SimpleNamespace(launch=AsyncMock(return_value=engine)),
