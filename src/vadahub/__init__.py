@@ -16,6 +16,8 @@ from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, Endpoint
                       route_endpoints, ports_from_features, port_from_transport, map_route)
 from .storage import LocalArchiveStore, StoredArchive
 from .models import CatalogKind, LibraryResource, LibraryArchiveReceipt, DocumentPreview, TablePreview, WebTablePage
+from .tourism import (TOURISM_SOURCES, TourismSource, TourismLayer, TourismPlace,
+                      tourism_source, tourism_from_feature, search_tourism)
 
 __all__ = [
     "AccessDeniedError", "AsyncTokenBucket", "ClientClosedError", "NetworkError",
@@ -29,4 +31,6 @@ __all__ = [
     "LocalArchiveStore", "StoredArchive",
     "CatalogKind", "LibraryResource", "LibraryArchiveReceipt", "DocumentPreview", "TablePreview",
     "WebTablePage",
+    "TOURISM_SOURCES", "TourismSource", "TourismLayer", "TourismPlace",
+    "tourism_source", "tourism_from_feature", "search_tourism",
 ]

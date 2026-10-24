@@ -20,6 +20,7 @@ from .exceptions import AccessDeniedError, ArchiveError, DownloadUnavailableErro
 from .models import ArchiveReceipt, DatasetLayer, SpatialFeature
 from .models import LibraryResource, LibraryArchiveReceipt
 from . import parse
+from .tourism import TOURISM_SOURCES, TourismLayer, TourismPlace, tourism_source, tourism_from_feature
 
 
 def _stage(source: Path, temporary: Path, table: str | None, limits: ArchiveLimits) -> tuple:
@@ -43,6 +44,41 @@ async def _cleanup_download(item: Download, timeout: float) -> None:
 
 class VadaHubFileClient(VadaHubClient):
     """카탈로그와 같은 세션에서 create→download를 직렬화하는 파일 클라이언트."""
+
+    async def list_tourism_layers(self, category: str | None = None) -> tuple[TourismLayer, ...]:
+        """검증한 관광자료를 현재 이력의 catalog에서 찾는다."""
+        sources = TOURISM_SOURCES if category is None else (tourism_source(category),)
+        datasets = await self.list_datasets(catalog='space')
+        result = []
+        for source in sources:
+            matches = [item for item in datasets if item.dataset_id == source.dataset_id]
+            if len(matches) != 1:
+                raise SchemaError(f'관광 meta가 없거나 중복입니다: {source.dataset_id}')
+            layers = [layer for layer in await self.list_layers(matches[0]) if layer.layer_id == source.layer_id]
+            if len(layers) != 1 or layers[0].table_name != source.table_name:
+                raise SchemaError(f'관광 layer identity가 바뀌었습니다: {source.layer_id}')
+            result.append(TourismLayer(source, layers[0]))
+        return tuple(result)
+
+    async def iter_tourism(self, category: str, *, source_crs: str | None = None,
+            encoding: str | None = None, batch_size: int = 64, max_features: int = 1000000,
+            limits: ArchiveLimits = ArchiveLimits(),
+            invalid_geometry: Literal['raise', 'preserve'] = 'raise') -> AsyncGenerator[TourismPlace, None]:
+        """현재 카탈로그→공개 ZIP→GDAL→관광 요약. 조기 종료 시 aclosing을 사용한다."""
+        from contextlib import aclosing
+        selected = (await self.list_tourism_layers(category))[0]
+        async with aclosing(self.iter(selected.layer, source_crs=source_crs, encoding=encoding,
+                batch_size=batch_size, max_features=max_features, limits=limits, invalid_geometry=invalid_geometry)) as stream:
+            async for feature in stream:
+                yield tourism_from_feature(feature, category=category)
+
+    async def load_tourism(self, category: str, *, source_crs: str | None = None,
+            encoding: str | None = None, max_features: int = 1000000,
+            limits: ArchiveLimits = ArchiveLimits(),
+            invalid_geometry: Literal['raise', 'preserve'] = 'raise') -> list[TourismPlace]:
+        """크기 상한 내 관광자료 전량 적재. 시점과 원본이 다른 마을은 합치지 않는다."""
+        return [item async for item in self.iter_tourism(category, source_crs=source_crs, encoding=encoding,
+            max_features=max_features, limits=limits, invalid_geometry=invalid_geometry)]
 
     def iter_file(self, path: str | Path, *, layer: DatasetLayer, source_crs: str | None = None,
                   encoding: str | None = None, batch_size: int = 64, max_features: int = 1000000,
