@@ -1,0 +1,493 @@
+{
+  "source_sha": "929a36bcc0074e195c3a30b264371f5d05cfd8ff",
+  "downloads": [
+    {
+      "layer": {
+        "dataset_id": "520621",
+        "history_date": "2023-10-23",
+        "layer_id": "520621",
+        "table_name": "beach",
+        "title": "해수욕장",
+        "service_auth": "OPEN",
+        "open_scope": "ALL",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=520621&histDe=2023-10-23",
+      "collected_at": "2026-10-24T04:50:58.403543+00:00",
+      "sha256": "a4b2392c3f8c2e5cb12d11087adbf7940cf5a6387f0cce020e74ec092fe99479",
+      "byte_size": 176289,
+      "local_path": "beach.zip",
+      "member_sha256": [
+        [
+          "beach.dbf",
+          "f8b2a3dfb802f736a1ad001363676f5c6f696a0c61fd012e6aae526ef58cd0f3"
+        ],
+        [
+          "beach.shp",
+          "124e8ada545adab00f523f6814f7705e4aaf6b98bb51076912575e00b9974a0b"
+        ],
+        [
+          "beach.shx",
+          "6ef9b1f2bff151d7b9628d452bca4ef6d3432533cf0858e59b256cac13a1de90"
+        ],
+        [
+          "beach.txt",
+          "8cd27f99e8be8ab98ebe5abda0e79cab84c5aa517425dd42be5e476ba099c53a"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "beach"
+    },
+    {
+      "layer": {
+        "dataset_id": "520624",
+        "history_date": "2023-10-23",
+        "layer_id": "520624",
+        "table_name": "fsvlg_exprnc_vlg",
+        "title": "어촌체험마을",
+        "service_auth": "OPEN",
+        "open_scope": "ALL",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=520624&histDe=2023-10-23",
+      "collected_at": "2026-10-24T04:51:01.035400+00:00",
+      "sha256": "f1fd1f1c7c2d9eeedcf260474662d6c52a5e7b9e2af8b81736ddbf35a17bcc00",
+      "byte_size": 33675,
+      "local_path": "experience_village.zip",
+      "member_sha256": [
+        [
+          "fsvlg_exprnc_vlg.dbf",
+          "bdb067b5da83c94dee5433d2333e2583b1b5c09476d9c37eda863122a82bc6ff"
+        ],
+        [
+          "fsvlg_exprnc_vlg.shp",
+          "3d43047ae9139ec65fc3f2196ebed2ebdd9b168e2e0dd4e0585ac75d1443ae1f"
+        ],
+        [
+          "fsvlg_exprnc_vlg.shx",
+          "be02f6f633fbb4262ea08717e80d1adca6c60e8eb20da81529870a69125eea63"
+        ],
+        [
+          "fsvlg_exprnc_vlg.txt",
+          "b891fe604203d2100ec94aac26ee1fc137c63d6f4c05e11448714bd41881ec63"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "experience_village"
+    },
+    {
+      "layer": {
+        "dataset_id": "113",
+        "history_date": "2019-12-10",
+        "layer_id": "500113",
+        "table_name": "obpv_p",
+        "title": "전망대",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=113&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:04.773020+00:00",
+      "sha256": "b7e4011f7503f5eb0581ff576ec2dd931764c7211d8458847de5dd222773ff59",
+      "byte_size": 11930,
+      "local_path": "observatory.zip",
+      "member_sha256": [
+        [
+          "obpv_p.dbf",
+          "203329657d4cf028fdf0ce70eecd1c1b0f3c1bdfb2b3966b5b0b3f2de305d81d"
+        ],
+        [
+          "obpv_p.shp",
+          "228bb8367767f3ff7949b1242aaf1a55b26982ced2d5db1eab24d019c8e88feb"
+        ],
+        [
+          "obpv_p.shx",
+          "9f0c524f3368b9f5698eda1f51d1718df34340b369855e7be77c2b02a48f9686"
+        ],
+        [
+          "obpv_p.txt",
+          "530aa0046e31f747c53bd247bb98d121b7a78af5cdc66a76fb640bbbe03bd5d8"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "observatory"
+    },
+    {
+      "layer": {
+        "dataset_id": "49",
+        "history_date": "2019-12-10",
+        "layer_id": "500045",
+        "table_name": "fwtr_fshlc_p",
+        "title": "민물낚시터",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=49&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:07.466321+00:00",
+      "sha256": "930c37127e8e772e3e3ff93344e2863348b42c19423652b47adb3e5182fead6b",
+      "byte_size": 51285,
+      "local_path": "freshwater_fishing.zip",
+      "member_sha256": [
+        [
+          "fwtr_fshlc_p.dbf",
+          "8dc5822d0d7ee3e3d12e1b138ebc5700cf7dc9118b1a55a80a9ff5708bde670b"
+        ],
+        [
+          "fwtr_fshlc_p.shp",
+          "fbd60a00de4bb60338918c95f501dba37d5e3852b436c296ce3bba849962e782"
+        ],
+        [
+          "fwtr_fshlc_p.shx",
+          "7ed5521b3367db71f24dcb5d39358c0adf8bde0a750f46c4ae9ccba0eac206a6"
+        ],
+        [
+          "fwtr_fshlc_p.txt",
+          "ae3c0932102ea070dbbbab11cccbdb5a6434b832717491b79348eff2cae40df9"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "freshwater_fishing"
+    },
+    {
+      "layer": {
+        "dataset_id": "50",
+        "history_date": "2019-12-10",
+        "layer_id": "500046",
+        "table_name": "sea_fshlc_p",
+        "title": "바다낚시터",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=50&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:10.151180+00:00",
+      "sha256": "686aeff476af8bd42e783b1a0b08a12b60f27dc0a0699c5fbb7e983b969ae240",
+      "byte_size": 22294,
+      "local_path": "sea_fishing.zip",
+      "member_sha256": [
+        [
+          "sea_fshlc_p.dbf",
+          "7b6184135e41ea8d3dcc3f4fc8d7fc9952c32d029712008f7b4dbfd9f9cee065"
+        ],
+        [
+          "sea_fshlc_p.shp",
+          "3399e9b9e398244b9f1214aa413bb9989bc88080b54c7858979d954c7bd56f80"
+        ],
+        [
+          "sea_fshlc_p.shx",
+          "e86accae58c28a7d7a6d3cc3af1183f24bdae77a53fef05dd183e254b23acd08"
+        ],
+        [
+          "sea_fshlc_p.txt",
+          "ed2faa83c512305b8f226c5b050b35ad0db357c202708f9742d917887a2d2ed2"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "sea_fishing"
+    },
+    {
+      "layer": {
+        "dataset_id": "115",
+        "history_date": "2019-12-10",
+        "layer_id": "500115",
+        "table_name": "cwlk_p",
+        "title": "해안산책로",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=115&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:12.732063+00:00",
+      "sha256": "005d8a68b66020213e37765801310d41bf1d450b8f0410b0aecf23106b492c7c",
+      "byte_size": 12179,
+      "local_path": "coastal_walk.zip",
+      "member_sha256": [
+        [
+          "cwlk_p.dbf",
+          "e3eb4d8621569d6d4502d77f272a988b744f1e364b69b9b2cec5c322fed9c0f3"
+        ],
+        [
+          "cwlk_p.shp",
+          "ae02c56a3fcb09c93ab801d375312a3a7560812008a49431f0581b26f800c45f"
+        ],
+        [
+          "cwlk_p.shx",
+          "d34a06f8d58ce757bbdaf099a306c6b8d276424129858920e6c66e113095bb2d"
+        ],
+        [
+          "cwlk_p.txt",
+          "2b7a330cbef91f20bd44ed4c75624d5307e98bd293a5fc85bbc774d6b1094c68"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "coastal_walk"
+    },
+    {
+      "layer": {
+        "dataset_id": "106",
+        "history_date": "2019-12-10",
+        "layer_id": "500106",
+        "table_name": "mrn_info_a",
+        "title": "마리나정보",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=106&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:15.604279+00:00",
+      "sha256": "7b86e5746e0e4b504aebee5f4ac943f68a4faa0241df6ebdb2af52db0336edb1",
+      "byte_size": 27169,
+      "local_path": "marina.zip",
+      "member_sha256": [
+        [
+          "mrn_info_a.dbf",
+          "63e98b8d89d590043840a8dad444519154042561caa54c13a92ccedb357b9964"
+        ],
+        [
+          "mrn_info_a.shp",
+          "23aa735b985dc8ca67a5f43b6da950b27c1bf0b39bad5041ac2a52689c7bbbbe"
+        ],
+        [
+          "mrn_info_a.shx",
+          "1a0f143f630ad610613aaa39846c5008bf76b9e427b4ad3f3a2fbdd9f23304bf"
+        ],
+        [
+          "mrn_info_a.txt",
+          "6b6c908c6c8cb2dcadfa2ebc50cf5231c5baba65904f331bf598d71e35538f0b"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "marina"
+    },
+    {
+      "layer": {
+        "dataset_id": "108",
+        "history_date": "2019-12-10",
+        "layer_id": "500108",
+        "table_name": "rsp_p",
+        "title": "갯바위낚시포인트",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=108&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:18.476509+00:00",
+      "sha256": "d80c3c5a88ada138c476c4269deeed7ed8661758eb61cfab6ad2a7028b3bc998",
+      "byte_size": 120861,
+      "local_path": "rock_fishing.zip",
+      "member_sha256": [
+        [
+          "rsp_p.dbf",
+          "8aa601b5ac58ac172f5167a6df893766ede861a59d0fb5e4f6ae524c86b0c93a"
+        ],
+        [
+          "rsp_p.shp",
+          "04d9bf2f739d886821ac70e8472c7d95a6192afe4c8529b3012509d1c97b92f9"
+        ],
+        [
+          "rsp_p.shx",
+          "4134ca304a40a751a50ab99dfd38706852890d056190e83bf6444f30625fa4de"
+        ],
+        [
+          "rsp_p.txt",
+          "a2316489cff4d1eda7cd05add1eea75bd91e9c3206679362e21cb4c83b9b1d1a"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "rock_fishing"
+    },
+    {
+      "layer": {
+        "dataset_id": "3078",
+        "history_date": "2019-12-10",
+        "layer_id": "501308",
+        "table_name": "fvex_vllg_p",
+        "title": "어촌체험마을",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3078&histDe=2019-12-10",
+      "collected_at": "2026-10-24T04:51:21.177613+00:00",
+      "sha256": "6b0c4d4bb8f3e4ec4e8cfb61a8042149241bace24fc56ca587117a625da3e6c1",
+      "byte_size": 19098,
+      "local_path": "experience_village_legacy.zip",
+      "member_sha256": [
+        [
+          "fvex_vllg_p.dbf",
+          "6d7150ea7d87ed8072aad78fdc760099dec9f245c6f7b7c6f0b787c030370714"
+        ],
+        [
+          "fvex_vllg_p.shp",
+          "a4d3c8dfcaedc9236e3962495a45070d29297cd344304fcf62addc66d66ef389"
+        ],
+        [
+          "fvex_vllg_p.shx",
+          "c164acf2872e1edb139109754919fa53980fc237d8a225a98848c0e14368fba4"
+        ],
+        [
+          "fvex_vllg_p.txt",
+          "e71bb60772923420160d1447f596f059e77ac128e9b7f2fa69bf419120f93ee5"
+        ]
+      ],
+      "schema_version": "1",
+      "category": "experience_village_legacy"
+    }
+  ],
+  "gdal": [
+    {
+      "category": "beach",
+      "count": 410,
+      "invalid": 2,
+      "missing_names": 0,
+      "sha256": "a4b2392c3f8c2e5cb12d11087adbf7940cf5a6387f0cce020e74ec092fe99479",
+      "geometry_types": [
+        "MULTIPOLYGON",
+        "POLYGON"
+      ],
+      "survey_years": [],
+      "source_dates": []
+    },
+    {
+      "category": "experience_village",
+      "count": 119,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "f1fd1f1c7c2d9eeedcf260474662d6c52a5e7b9e2af8b81736ddbf35a17bcc00",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [],
+      "source_dates": [
+        "2023-04-24"
+      ]
+    },
+    {
+      "category": "observatory",
+      "count": 112,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "b7e4011f7503f5eb0581ff576ec2dd931764c7211d8458847de5dd222773ff59",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [
+        2014,
+        2017,
+        2018
+      ],
+      "source_dates": []
+    },
+    {
+      "category": "freshwater_fishing",
+      "count": 554,
+      "invalid": 0,
+      "missing_names": 8,
+      "sha256": "930c37127e8e772e3e3ff93344e2863348b42c19423652b47adb3e5182fead6b",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [],
+      "source_dates": [
+        "2016-12-04"
+      ]
+    },
+    {
+      "category": "sea_fishing",
+      "count": 219,
+      "invalid": 0,
+      "missing_names": 2,
+      "sha256": "686aeff476af8bd42e783b1a0b08a12b60f27dc0a0699c5fbb7e983b969ae240",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [],
+      "source_dates": [
+        "2016-12-04"
+      ]
+    },
+    {
+      "category": "coastal_walk",
+      "count": 142,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "005d8a68b66020213e37765801310d41bf1d450b8f0410b0aecf23106b492c7c",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [
+        2014,
+        2017
+      ],
+      "source_dates": []
+    },
+    {
+      "category": "marina",
+      "count": 39,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "7b86e5746e0e4b504aebee5f4ac943f68a4faa0241df6ebdb2af52db0336edb1",
+      "geometry_types": [
+        "MULTIPOINT"
+      ],
+      "survey_years": [],
+      "source_dates": []
+    },
+    {
+      "category": "rock_fishing",
+      "count": 1076,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "d80c3c5a88ada138c476c4269deeed7ed8661758eb61cfab6ad2a7028b3bc998",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [],
+      "source_dates": []
+    },
+    {
+      "category": "experience_village_legacy",
+      "count": 226,
+      "invalid": 0,
+      "missing_names": 0,
+      "sha256": "6b0c4d4bb8f3e4ec4e8cfb61a8042149241bace24fc56ca587117a625da3e6c1",
+      "geometry_types": [
+        "POINT"
+      ],
+      "survey_years": [
+        2014,
+        2017,
+        2018
+      ],
+      "source_dates": []
+    }
+  ]
+}

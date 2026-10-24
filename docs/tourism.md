@@ -9,13 +9,13 @@
 |---|---|---:|---|
 | beach | 해수욕장 / 520621 / 520621 / beach | 410 | polygon, invalid2; created_date는 공개 시스템 생성일이며 개장일이 아님 |
 | experience_village | 어촌체험마을 / 520624 / 520624 / fsvlg_exprnc_vlg | 119 | data_std 기준일2023-04-24, 체험 프로그램·주소·홈페이지 |
-| observatory | 전망대 / 113 / 500113 / obpv_p | 112 | invs_yr 조사2014, 시설·주소 |
+| observatory | 전망대 / 113 / 500113 / obpv_p | 112 | invs_yr 조사2014/2017/2018, 시설·주소 |
 | freshwater_fishing | 민물낚시터 / 49 / 500045 / fwtr_fshlc_p | 554 | mfgg_ymd 제작2016-12-04, 이름 결측 행 보존 |
 | sea_fishing | 바다낚시터 / 50 / 500046 / sea_fshlc_p | 219 | mfgg_ymd 제작2016-12-04, 어종·주소 |
-| coastal_walk | 해안산책로 / 115 / 500115 / cwlk_p | 142 | 조사2014, POINT 지점과 거리 설명; 전체 선형 코스 아님 |
+| coastal_walk | 해안산책로 / 115 / 500115 / cwlk_p | 142 | 조사2014/2017, POINT 지점과 거리 설명; 전체 선형 코스 아님 |
 | marina | 마리나정보 / 106 / 500106 / mrn_info_a | 39 | MULTIPOINT, 주소·대표전화·홈페이지·이용 설명, 조사시점 미상 |
 | rock_fishing | 갯바위낚시포인트 / 108 / 500108 / rsp_p | 1076 | 지역명·낚시방법·대상어종, 조사시점 미상 |
-| experience_village_legacy | 어촌체험마을 / 3078 / 501308 / fvex_vllg_p | 226 | 조사2014, 대표전화·체험 설명; 119건 자료와 별도 원본 |
+| experience_village_legacy | 어촌체험마을 / 3078 / 501308 / fvex_vllg_p | 226 | 조사2014/2017/2018, 대표전화·체험 설명; 119건 자료와 별도 원본 |
 
 총2897행은 조사 snapshot이다. 미래 건수를 보장하지 않는다. 모두 원 ZIP에 PRJ/CPG가
 없어 source_crs/WGS84는 미상으로 둔다. 속성 위경도나 DMS 값으로 geometry CRS를
