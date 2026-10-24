@@ -1,0 +1,87 @@
+{
+  "documentation_source_sha": "47841c9ff05bada88c2eab29eda13f577a51fb2b",
+  "runtime_source_sha": "bc14a363c76c65aaa9cf2bb31367c4a519b1185c",
+  "merged_terminal_pr_sha": "7f74917fb7d44b82096dfdbc62af694f02296654",
+  "terminal_receipt": {
+    "source_url": "https://www.data.go.kr/data/15148558/fileData.do",
+    "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003250090&fileDetailSn=1&dataNm=%ED%95%B4%EC%96%91%EC%88%98%EC%82%B0%EB%B6%80_%EA%B3%B5%EB%8F%99%ED%99%9C%EC%9A%A9%EC%B2%B4%EA%B3%84_%EC%97%AC%EA%B0%9D%ED%84%B0%EB%AF%B8%EB%84%90_20141231",
+    "collected_at": "2026-10-24T06:36:30.061762+00:00",
+    "sha256": "9818019e52919af3afb4e6791c571ea48b821c4f38bbb5ce6cfc24e5d166b5c5",
+    "byte_size": 13811,
+    "source": "data.go.kr:15148558",
+    "content_date": "2014-12-31",
+    "schema_version": "1"
+  },
+  "terminal_native": {
+    "count": 76,
+    "sha256": "9818019e52919af3afb4e6791c571ea48b821c4f38bbb5ce6cfc24e5d166b5c5",
+    "source": "data.go.kr:15148558",
+    "crs": null,
+    "terminal_port_references": 76,
+    "mapped_do_seon_routes": 0,
+    "store_idempotent": true,
+    "orphan_count": 0
+  },
+  "vadahub_native": [
+    {
+      "layer_id": "500048",
+      "count": 34,
+      "source_sha256": "0b7eeb27e37157901aff463d38375590299dfd6e1793641bf0b4c0f5684173a4",
+      "crs": null
+    },
+    {
+      "layer_id": "500059",
+      "count": 424,
+      "source_sha256": "b4b5bce2e65cd075fffbba7e9ae8938aecdda60d09fa8abf24bed0105a755024",
+      "crs": null
+    },
+    {
+      "layer_id": "501297",
+      "count": 38,
+      "source_sha256": "8fb4ebd3bc20538c3ac80edf4260f7a5ff579b2d6c1834375176179ae9d69e42",
+      "crs": null
+    },
+    {
+      "layer_id": "501298",
+      "count": 142,
+      "source_sha256": "894314ce2ba3cfd413f91d8781146f5c63510d9ae4c145939b32faa1568e59b0",
+      "crs": null
+    },
+    {
+      "layer_id": "501304",
+      "count": 109,
+      "source_sha256": "6ca97fccc9b42b4c0183895ebff3d2498bddba9ef8ae0e358f3473feb78d156f",
+      "crs": null
+    },
+    {
+      "layer_id": "501991",
+      "count": 110,
+      "source_sha256": "926f7581db1dc9661dde8321bfe8db8a81b4b71b1fb0d567d4ae85b40afc7817",
+      "crs": null
+    }
+  ],
+  "vadahub_storage": {
+    "archive_count": 6,
+    "parsed_rows": 857,
+    "idempotent": true,
+    "orphan_recovered": true,
+    "hashes": [
+      "0b7eeb27e37157901aff463d38375590299dfd6e1793641bf0b4c0f5684173a4",
+      "b4b5bce2e65cd075fffbba7e9ae8938aecdda60d09fa8abf24bed0105a755024",
+      "8fb4ebd3bc20538c3ac80edf4260f7a5ff579b2d6c1834375176179ae9d69e42",
+      "894314ce2ba3cfd413f91d8781146f5c63510d9ae4c145939b32faa1568e59b0",
+      "6ca97fccc9b42b4c0183895ebff3d2498bddba9ef8ae0e358f3473feb78d156f",
+      "926f7581db1dc9661dde8321bfe8db8a81b4b71b1fb0d567d4ae85b40afc7817"
+    ]
+  },
+  "live": {
+    "browser_passed": 6,
+    "browser_seconds": 44.16,
+    "native_passed": 3,
+    "skipped": 0
+  },
+  "remaining_external_tasks": [
+    "T005E",
+    "T007A2E"
+  ]
+}

@@ -141,3 +141,7 @@ PR #14 최종head0b3961a의 독립A/B 차단없음·live9(skip0)·CI7개 성공 
 7f74917fb7d44b82096dfdbc62af694f02296654 머지를 확인했다. T005E1을 실제SHA와 함께 완료목록으로
 옮기고 재개 문서를 정산한다. 이 PR은 문서만 바꾸며 마지막 검증한bc14a36과
 provider/테스트/예제/빌드설정이 동일하다. 원천 확보 T005E/T007A2E는 미완료로 유지한다.
+
+정산PR의47841c9도 A/B 차단없음과 새CSV/6ZIP Chromium6live44.16초,
+동일원문GDAL/보관3live(skip0)를 통과했다. [정산증빙](validation/remaining-closeout.md)에
+기록했다. 증빙만 추가한 최종head의 리뷰정산·CI 확인 후 문서 PR도 머지한다.
