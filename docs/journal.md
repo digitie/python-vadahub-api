@@ -7,6 +7,8 @@
   nullable CRS와 근거 있는 변환, 날짜/코드 보존, async load/iter/local API를 추가했다.
 - 공간 CI를 필수로 추가하고 PR의 중복 push workflow를 줄였다.
 - 추가 관광자료 요구는 T007B로 task화했으며 실제 가용성 조사는 계속한다.
+- A의 WGS84 범위, B의 native traceback 수명 P2를 수정하고 `e3abca4` 재리뷰2 통과.
+  unit151/93.79%, 새 원문 Chromium live4→동일 SHA GDAL live1(skip0), 필수 spatial CI 통과.
 
 ## 2026-10-24 KST — T003 카탈로그·다운로드
 
