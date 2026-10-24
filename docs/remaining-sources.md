@@ -29,7 +29,8 @@
 
 3분은 공간 격자 해상도다. 원행 API의 응답 동등성이나 실시간 자료를 뜻하지 않는다.
 `VadaHubClient.get_wave3min_statistics(grid_code,start_date,end_date,measure='height')`를 제공한다.
-date 인자(날짜)·최대7일·격자1개·GR3 ASCII 식별자만 받는다. datetime은 date로 묵시 변환하지 않는다.
+date 인자(날짜)·양끝 포함 최대7개 날짜·격자1개·GR3 ASCII 식별자만 받는다.
+datetime은 date로 묵시 변환하지 않는다.
 measure는height/period만 허용하며 table/URL/SQL/임의 파라미터를 받지 않는다.
 
 1. 실제 API139 안내와 연결자료의 OPEN/ALL/비마스킹 상태를 재확인한다.
@@ -53,12 +54,26 @@ unit은 입력/공개상태/잘못된 응답·취소를 검증하고 live는 두
 사용하며 인증 API·로그인·CAPTCHA·비공개 경로를 사용하지 않는다. 공개 보완원천 사용 선호를
 사용자에게 물었고, 구현 시 답변을 반영한다.
 
+전용 `OfficialTerminalClient`와 원천별 고정 origin 세션을 사용한다. 기존 VadaHub 세션의
+허용범위를 넓히지 않는다. 보완 세션은 `https://www.data.go.kr`만 허용하고 호출자가 origin이나
+임의 URL을 지정할 수 없다. 시작 페이지는15148558/fileData.do로 고정하며 실제 버튼에서
+관측한 `/cmm/cmm/fileDownload.do`와 첨부ID/파일순번/자료명을 대조한다. download 이벤트의
+URL·redirect 각 hop을 검사하며 다른 origin으로의 이동은 거부한다. CDP의 서비스워커 우회와
+소유 page/session 정리를 유지한다. 주입 context는 닫지 않고 자체 생성 context만 종료한다.
+클라이언트는 기존 공유 limiter를 받을 수 있으며 페이지 이동부터 다운로드·검증까지 전체
+operation timeout을 적용한다. 취소는 수신 download/임시 파일·worker 정리를 기다리고,
+정리 실패/시간 초과 시 SDK의 유한 cleanup 유예·재사용 불가 정책을 유지한다.
+기존 파일을 덮어쓰지 않고 검증/정리를 마친 파일만 원자 공개한다. CSV 읽기 실패나 접근거부는
+정상 빈 결과로 바꾸지 않는다. 두 원천을 같은 외부 context에 주입해도 페이지별 origin 정책과
+공유 context lock을 보존하는 회귀를 검증한다.
+
 고정 공식 dataset의 페이지/첨부 identity를 검증해 호출자 지정 신규 경로에 원자 저장한다.
 CSV는16MiB 상한·CP949 strict·고정 필드·고유 문자열 ID·행상한으로 검증한다. 원문은 그대로
 보존하며 임의 형식 변환한 파일을 원본SHP라고 하지 않는다. 헤더/파일/리다이렉트 변경은 명시적 오류다.
 전용 typed receipt에 source=data.go.kr:15148558,source_url,수집시점,SHA,bytes,local_path를 둔다.
-`load_terminal_file`/bounded `iter_terminal_file`은 GDAL Python binding의 CSV/WKT 해석을
-같은 worker에서 수행하고 native 객체를 밖으로 내보내지 않는다. 취소는 worker 종료를 기다린다.
+CSV의 CP949 strict 디코딩·필드 읽기는 stdlib csv, WKT 해석은 GDAL OGR binding으로 수행한다.
+`load_terminal_file`/bounded `iter_terminal_file`은 같은 worker에서 native geometry를 생성·해제하고
+복사한 WKB/속성만 반환한다. 취소는 worker 종료를 기다린다.
 
 typed 터미널에는 source/record ID·nullable 명칭/주소·조사년도·원문속성·WKB·geometry_valid,
 CRS 근거·SHA/수집시점을 제공한다. 전화·경위도·현재영업 정보는 만들어내지 않는다.
