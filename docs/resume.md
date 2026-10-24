@@ -3,9 +3,12 @@
 2026-10-24 사용자 재개: [보완 사양](remaining-sources.md) PR #12를
 `c376b275b7d1636af51b8967c0f0e1b8933fa09f`로 머지했다(리뷰2·새6ZIP/GDAL857행·CI7개).
 T007A2E1 [파랑 웹 통계](wave-statistics.md) PR #13을37e0ced로 머지했다.
-현재 PR #14의 [공식 터미널 보완 파일](terminal-supplement.md) 구현bc14a36은
-리뷰2 차단없음/unit370·95.02%/실제Win live6·GDAL live3/격리wheel76행/구현CI7개 통과했다.
-[증빙](validation/t005e1.md)만 추가한 최종head 정산·CI 뒤 머지한다.
+T005E1 [공식 터미널 보완 파일](terminal-supplement.md) PR #14를
+`7f74917fb7d44b82096dfdbc62af694f02296654`로 머지했다. 최종소스bc14a36/증빙head0b3961a에서
+독립리뷰2·unit370/95.02%·실제Win live6/GDAL live3(skip0)·격리wheel76행·최종CI7개 통과.
+진행 가능한 보완 구현은 모두 머지됐으며 예정/진행중 구현 task는 없다.
+남은 항목은 T005E와 T007A2E의 원천 확보 제약이다. 새 출도착지 근거·원본SHP·
+일반 API139 실제 조회 성공이 확보될 때 새 사양/PR부터 재개한다.
 도선 출도착지/원본터미널 SHP/일반 API139 grid 통신 제약은 해결했다고 표시하지 않는다.
 
 **T001~T008의 가능한 구현·검증·PR 머지 완료.** 최종 구현 PR #10은
