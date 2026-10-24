@@ -7,7 +7,7 @@ import json
 import zipfile
 import pytest
 from vadahub import (Dataset, VadaHubFileClient, ArchiveError, ArchiveLimits, LibraryArchiveReceipt,
-    LocalArchiveStore, SchemaError, AccessDeniedError, DownloadUnavailableError)
+    LocalArchiveStore, AsyncTokenBucket, SchemaError, AccessDeniedError, DownloadUnavailableError)
 from vadahub import _catalog
 from vadahub._archive import inspect_archive
 
@@ -37,7 +37,7 @@ async def test_catalog_family_and_api_identity(browser,kind):
     if kind.startswith('api_'):
         rows=[META|{'odtaId':'141'},META|{'odtaId':'142','odtaReqstUrl':'https://example.org/info','extsnType':'JSON'}]
     prepare(browser,[{'paginationInfo':{'totalRecordCount':len(rows)},'resultList':rows}])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         values=await client.list_datasets(catalog=kind)
         assert len(values)==len(rows) and values[0].catalog==kind
         if kind.startswith('api_'):
@@ -50,7 +50,7 @@ async def test_catalog_family_and_api_identity(browser,kind):
 
 async def test_resource_identity_counts_and_flags(browser):
     prepare(browser,[related()])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         assert await client.list_resources(DATASET)==(RESOURCE,)
         with pytest.raises(ValueError): await client.list_resources(replace(DATASET,catalog='space'))
     for change in ({'metaSn':1},{'maskingYn':'bad'},{'atrbSpceSe':None},{'relateDtaNm':''}):
@@ -60,7 +60,7 @@ async def test_resource_identity_counts_and_flags(browser):
 @pytest.mark.parametrize('payload',[{'resultList':[ROW],'resultListTotCnt':2},{'resultList':[ROW,ROW],'resultListTotCnt':2}])
 async def test_resource_bad_totals_and_duplicate(browser,payload):
     prepare(browser,[payload])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         with pytest.raises(SchemaError):await client.list_resources(DATASET)
 
 
@@ -68,9 +68,9 @@ async def test_document_preview_is_separate_from_download(browser):
     row=ROW|{'dwldPosblYn':'N','relateDtaNm':'자료.pdf'}
     resource=_catalog.parse_resource(row,DATASET)
     prepare(browser,[related(row),{'fileYn':'Y','pdfFile':'/resource/publish/pdf/test/자료.pdf'}])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         result=await client.get_document_preview(resource)
-    assert not result.resource.download_available and result.preview_url.endswith('/자료.pdf')
+    assert not result.resource.download_available and result.preview_url.endswith('/%EC%9E%90%EB%A3%8C.pdf')
 
 
 @pytest.mark.parametrize('payload,error',[
@@ -79,10 +79,12 @@ async def test_document_preview_is_separate_from_download(browser):
     ({'fileYn':'Y','pdfFile':'/resource/publish/pdf/../secret.pdf'},SchemaError),
     ({'fileYn':'Y','pdfFile':'/resource/publish/pdf/%252e%252e/x.pdf'},SchemaError),
     ({'fileYn':'Y','pdfFile':'/resource/publish/pdf/a.pdf?bad'},SchemaError),
+    ({'fileYn':'Y','pdfFile':'%2Fresource%2Fpublish%2Fpdf%2F@evil.example/file.pdf'},SchemaError),
+    ({'fileYn':'Y','pdfFile':'/resource/publish/pdf/a%0A.pdf'},SchemaError),
 ])
 async def test_bad_preview_paths(browser,payload,error):
     prepare(browser,[related(),payload])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         with pytest.raises(error):await client.get_document_preview(RESOURCE)
 
 
@@ -93,7 +95,7 @@ async def test_bad_preview_paths(browser,payload,error):
 ])
 async def test_preview_rechecks_public_resource(browser,change,error):
     prepare(browser,[related(ROW|change)])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         with pytest.raises(error):await client.get_document_preview(RESOURCE)
 
 
@@ -102,7 +104,7 @@ async def test_table_snapshot_preserves_extra_columns_and_partial(browser):
     resource=_catalog.parse_resource(row,DATASET)
     payload={'resultOriginalOrder':['code'],'resultOrder':['코드'],'jsonArr':[{'code':'001','extra':'keep'}]}
     prepare(browser,[related(row),payload])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         result=await client.get_table_preview(resource)
     assert result.partial and result.rows[0]['extra']=='keep' and result.rows[0]['code']=='001'
     assert browser.page.evaluate.await_args_list[1].args[1]['method']=='GET'
@@ -115,13 +117,13 @@ async def test_table_snapshot_preserves_extra_columns_and_partial(browser):
 async def test_bad_table_schema(browser,payload):
     row=ROW|{'atrbSpceSe':'ATTRIBUTE'}
     prepare(browser,[related(row),payload])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         with pytest.raises(SchemaError):await client.get_table_preview(_catalog.parse_resource(row,DATASET))
 
 
 async def test_library_download_wiring_and_store_roundtrip(browser,tmp_path,monkeypatch):
     prepare(browser,[related()])
-    async with VadaHubFileClient() as client:
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
         helper=AsyncMock(return_value=('a'*64,(('safe.xlsx','b'*64),),10))
         monkeypatch.setattr(client,'_download_zip',helper)
         # 공개 버튼 동작 자체는 기존 download 상태기계/취소 테스트가 검증한다.

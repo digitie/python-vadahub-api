@@ -7,7 +7,7 @@ import json
 import re
 from typing import Literal
 from types import MappingProxyType
-from urllib.parse import urlsplit, unquote
+from urllib.parse import urlsplit, unquote, quote
 
 from playwright.async_api import BrowserContext, Page
 
@@ -247,11 +247,18 @@ class VadaHubClient:
                 raise SchemaError('PDF 미리보기 경로 누락')
             parts = urlsplit(path)
             decoded = unquote(parts.path)
-            if (parts.scheme or parts.netloc or parts.query or parts.fragment or '\\' in decoded
+            if (not path.startswith('/resource/publish/pdf/')
+                    or parts.scheme or parts.netloc or parts.query or parts.fragment or '\\' in decoded
                     or '..' in decoded.split('/') or not decoded.startswith('/resource/publish/pdf/')
-                    or not decoded.lower().endswith('.pdf') or '%' in decoded):
+                    or not decoded.lower().endswith('.pdf') or '%' in decoded
+                    or any(ord(char) < 32 or ord(char) == 127 for char in decoded)):
                 raise SchemaError('안전하지 않은 PDF 미리보기 경로')
-            return DocumentPreview(current,BASE_URL + path,datetime.now(timezone.utc))
+            url = BASE_URL + quote(decoded,safe='/')
+            final = urlsplit(url)
+            if (final.scheme != 'https' or final.hostname != 'vadahub.go.kr' or final.port is not None
+                    or final.username is not None or final.password is not None):
+                raise SchemaError('PDF 미리보기 origin이 다릅니다')
+            return DocumentPreview(current,url,datetime.now(timezone.utc))
 
     async def get_table_preview(self, resource: LibraryResource) -> TablePreview:
         """공개 UI sample JSON snapshot만 제공한다. 완전한 OpenAPI 응답으로 가장하지 않는다."""
