@@ -27,6 +27,8 @@ UI와 같은 column 검색/정렬 요청을 전송하며 SQL table이나 필드�
 JSON은 최대2MiB이며 통신/lock대기/질의를 포함한 operation timeout과 기본1RPS를 적용한다.
 원천의 setRecordsTotal과 recordsFiltered를 각각 total/filtered_total로 보존하며 단일 페이지의
 행수가 선언된 범위를 채우지 못하면 오류다. 다중 호출은 일관된 DB snapshot이라고 보장하지 않는다.
+total은 원천 counter의 원문 의미를 보존하며, 모든 서비스에서 필터 전 전체 건수라고
+보장하지 않는다. 필터 조건에 따른 서버 counter의 해석도 원천별로 확인해야 한다.
 대규모 전체 순회를 기본 실행하지 않는다. 범위를 좁혀 페이지를 요청하는 것은 소비자의 책임이다.
 
 WebTablePage.columns는 JSON camelCase 키, source_columns는 원 schema의 snake_case 키다.

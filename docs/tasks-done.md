@@ -10,3 +10,4 @@
 | T006 | 2026-10-24, [PR #6](https://github.com/digitie/python-vadahub-api/pull/6), `0a1a53a97e7038741c75b26bdafc8f6a98af6b78` | [증빙](validation/t006.md); 독립 리뷰2, unit190/94.80%, 새 ZIP·857행 보관 재로딩·복구 live2, 최종 CI 통과 |
 | T007A | 2026-10-24, [PR #7](https://github.com/digitie/python-vadahub-api/pull/7), `0f76224c58a48b88fd40e1d35dc733f6fb2ec494` | [증빙](validation/t007a.md); 독립 리뷰2, unit219/94.51%, 5종 안내/PDF/통계216행/ZIP12멤버/보관live1, 최종CI 통과 |
 | T007A2 | 2026-10-24, [PR #8](https://github.com/digitie/python-vadahub-api/pull/8), `dc977f1b8ec3b495a44987ef8e4d3b9c109dd3ea` | [증빙](validation/t007a2.md); 독립 리뷰2, unit250/94.30%, 실제66안내·49조회성공·API144ZIP/GDAL live2, 최종CI 통과. T007A2E 미해결 |
+| T007B | 2026-10-24, [PR #9](https://github.com/digitie/python-vadahub-api/pull/9), `d6ea2ea905957b99a906b31f2b9d17201229c32d` | [증빙](validation/t007b.md); 독립 리뷰2, unit274/94.66%, 새9ZIP/GDAL2897행 live2(skip0), 최종CI7개 통과 |

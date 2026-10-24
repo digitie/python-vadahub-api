@@ -53,8 +53,10 @@ T002 이후에는 다음과 PR별 live E2E를 통과해야 한다.
 python -m compileall src/vadahub tests
 python -m mypy src/vadahub
 python -m pytest -m "not live" --cov=vadahub --cov-fail-under=90
-python -m pytest -m live --run-live
 ```
+
+live는 [단계별 절차](docs/runbooks/live.md)의 환경변수·신규 원문 경로를 준비해 해당
+테스트를 실행한다. clean wheel 소비자 E2E는 [설치 문서](docs/installation.md)를 따른다.
 
 live 테스트의 skip은 성공이 아니다. unit 테스트는 네트워크를 사용하지 않는다.
 종료·취소·할당량·깨진 ZIP·동명 항구·CRS 미상 같은 실패 경계를 우선 검증한다.
