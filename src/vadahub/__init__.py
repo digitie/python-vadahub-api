@@ -12,6 +12,8 @@ from .files import VadaHubFileClient
 from ._archive import ArchiveLimits
 from .exceptions import ArchiveError, DownloadUnavailableError, SpatialDependencyError, UnknownCrsError
 from .models import SpatialFeature
+from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, EndpointMatch, MappedRoute,
+                      route_endpoints, ports_from_features, port_from_transport, map_route)
 
 __all__ = [
     "AccessDeniedError", "AsyncTokenBucket", "ClientClosedError", "NetworkError",
@@ -20,4 +22,6 @@ __all__ = [
     "Dataset", "DatasetLayer", "ArchiveReceipt", "VadaHubFileClient", "ArchiveLimits",
     "ArchiveError", "DownloadUnavailableError",
     "SpatialFeature", "SpatialDependencyError", "UnknownCrsError",
+    "PortReference", "EndpointCrosswalk", "RouteEndpoints", "EndpointMatch", "MappedRoute",
+    "route_endpoints", "ports_from_features", "port_from_transport", "map_route",
 ]

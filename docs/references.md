@@ -35,3 +35,13 @@ SHA의 파일을 출처로 사용해 VadaHub origin과 계약으로 수정했다
 추가 source는 `src/krits/_browser.py`, `src/krits/exceptions.py`,
 `tests/{conftest,test_client,test_ratelimit,test_live_browser}.py`다.
 VadaHub의 title·컨테이너·공개 페이지 검증은 이 저장소에서 직접 구현·live 확인했다.
+
+## T005 transport adapter
+
+현재 로컬 transport `19cabb8d602643ee77515169276bc0c47532b84f`의
+`backend/app/services/export_references.py`, `schemas.py`의 ferry-ports-v1 DTO를 확인했다.
+source/port_id/natural_key, name, nullable latitude/longitude/location_source,
+admin.legal_dong_code/road_address/parcel_address를 읽는다. guideline 좌표는 승선점으로 쓰지 않는다.
+소비자가 export를 가져와 DTO와 수집시점·출처를 명시해 `port_from_transport`로 전달한다.
+이 SDK는 transport DB·인증 서비스·환경설정에 직접 연결하지 않는다.
+지역 코드는 자릿수나 이름을 추정 변환하지 않으며 양쪽에 같은 코드 체계를 제공해야 한다.

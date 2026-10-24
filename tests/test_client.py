@@ -398,15 +398,20 @@ async def test_stalled_creation_has_finite_grace_and_late_page_is_closed(browser
 
 async def test_stalled_creation_late_failure_is_consumed(browser):
     release = asyncio.Event()
+    started = asyncio.Event()
 
     async def failed_later():
+        started.set()
         await release.wait()
         raise PlaywrightError("late private response")
 
     browser.context.new_page.side_effect = failed_later
-    client = VadaHubClient(timeout=0.01, cleanup_timeout=0.01)
-    with pytest.raises(NetworkError):
-        await asyncio.wait_for(client.get_page_snapshot(), 0.5)
+    client = VadaHubClient(timeout=10, cleanup_timeout=0.01)
+    operation = asyncio.create_task(client.get_page_snapshot())
+    await asyncio.wait_for(started.wait(), 1)
+    operation.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await operation
     release.set()
     await _drain_pending(client)
     browser.context.close.assert_awaited_once()
