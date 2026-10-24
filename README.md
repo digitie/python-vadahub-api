@@ -4,7 +4,7 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 키 없이 수집·해석하는 **비동기 Python provider 라이브러리**다.
 상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
 T003에서 공간자료 카탈로그·기초자료·공개 ZIP 다운로드를 구현했다.
-T004에서 GDAL 파싱과 async load/iter/local API를 구현 중이다. 매핑·버전 관리는 이후 task다.
+GDAL 파싱과 async load/iter/local API를 제공하며 T005 선착장 매핑을 구현 중이다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
 관광지정보, 여객터미널, 도선항로, 여객항로다. 웹 접근은 Chromium을 사용한다.
@@ -128,6 +128,11 @@ Windows에서 GDAL이 없으면 공간 호출만 `SpatialDependencyError`로 실
 [설치·ABI·필수 공간 CI](docs/gdal.md)를 따른다.
 
 ## 조사 재현
+
+선착장 상세는 `ports_from_features(pssh_rows)`로 제공한다. `port_from_transport(dto,
+collected_at=...,source_url=...)`는 transport ferry-ports-v1 개별 항구 DTO를 변환한다.
+`map_route(feature,ports=...)`는 전체 출도착지·구간명·기항 원문·각 endpoint 상태와
+후보/확정 선착장 상세를 반환한다. 자세한 계약과 예는 [매핑 문서](docs/mapping.md)에 있다.
 
 Python 3.11 이상에서 `python -m pip install playwright`와
 `python -m playwright install chromium`을 실행한다. 이미 설치된 Chromium은
