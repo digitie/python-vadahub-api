@@ -1,6 +1,7 @@
 """공개 UI로 ZIP을 받아 검증 후 호출자가 지정한 경로에 원자 공개한다."""
 import asyncio
 from datetime import datetime, timezone
+from dataclasses import replace
 import os
 from pathlib import Path
 import shutil
@@ -15,7 +16,7 @@ from ._browser import BASE_URL
 from ._catalog import identifier, history
 from ._io import run_io
 from .client import VadaHubClient, _open_page, _SPACE_PATH, _check_status
-from .exceptions import ArchiveError, DownloadUnavailableError, ProviderError, SchemaError
+from .exceptions import AccessDeniedError, ArchiveError, DownloadUnavailableError, ProviderError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer, SpatialFeature
 from .models import LibraryResource, LibraryArchiveReceipt
 from . import parse
@@ -92,6 +93,10 @@ class VadaHubFileClient(VadaHubClient):
             current = next((x for x in await self._layers(page, meta, hist) if x.layer_id == sid), None)
             if current is None or current.table_name != layer.table_name:
                 raise SchemaError('기초자료가 없거나 layer identity가 달라졌습니다')
+            if layer.require_public:
+                if current.service_auth != 'OPEN' or current.open_scope != 'ALL' or current.masked is not False:
+                    raise AccessDeniedError('공개/전체/비마스킹 API 공간 layer만 다운로드합니다')
+                current = replace(current,require_public=True)
             if not current.download_available:
                 raise DownloadUnavailableError('이 layer는 원천에서 다운로드를 제공하지 않습니다')
             await _open_page(page, current.source_url, '#metaSn')

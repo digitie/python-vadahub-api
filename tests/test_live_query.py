@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 import pytest
-from vadahub import VadaHubFileClient, DownloadUnavailableError
+from vadahub import VadaHubFileClient, DownloadUnavailableError, AccessDeniedError
 
 pytestmark=pytest.mark.live
 
@@ -20,17 +20,23 @@ async def test_live_api_backing_resources_and_bounded_query(tmp_path):
                 result={'api_id':dataset.api_id,'catalog':kind,'catalog_meta':dataset.dataset_id,'title':dataset.title,'resources':[]}
                 for resource in resources:
                     record={'resource_id':resource.resource_id,'backing_meta':resource.backing_dataset_id,'source_name':resource.source_name}
+                    if resource.service_auth!='OPEN' or resource.open_scope!='ALL' or resource.masked is not False:
+                        with pytest.raises(AccessDeniedError):await client.query_table(resource,page_size=1)
+                        record.update(status='access_restricted',service_auth=resource.service_auth,masked=resource.masked)
+                        result['resources'].append(record)
+                        continue
                     try:
                         page=await client.query_table(resource,page_size=1)
                         record.update(status='query_supported',total=page.total,rows=len(page.rows),columns=page.columns)
                     except DownloadUnavailableError as error:
                         record.update(status='source_grid_unavailable',reason=str(error))
                     result['resources'].append(record)
-                if dataset.api_id=='147':
+                if dataset.api_id=='144':
                     layers=await client.list_api_layers(dataset)
-                    receipt=await client.download(layers[0],root/'api147.zip')
+                    receipt=await client.download(layers[0],root/'api144.zip')
                     record=asdict(receipt);record['local_path']=receipt.local_path.name;record['collected_at']=receipt.collected_at.isoformat()
-                    (root/'api147-receipt.json').write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
+                    record['expected_rows']=result['resources'][0]['total']
+                    (root/'api144-receipt.json').write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
                 results.append(result)
                 print(dataset.api_id,[r['status'] for r in result['resources']],flush=True)
                 (root/'t007a2-live.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')

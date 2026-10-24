@@ -4,7 +4,8 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock
 import json
 import pytest
-from vadahub import VadaHubClient, Dataset, LibraryResource, AsyncTokenBucket, SchemaError, DownloadUnavailableError
+from vadahub import (VadaHubClient, VadaHubFileClient, Dataset, DatasetLayer, LibraryResource, AsyncTokenBucket,
+                     SchemaError, DownloadUnavailableError, AccessDeniedError)
 
 DATASET=Dataset('5241','2022-10-19','파랑 예측','설명','https://vadahub.go.kr',catalog='api_analysis',api_id='142')
 RESOURCE=LibraryResource(DATASET,'5248','예측','forecast_table','FORECAST_TABLE','ATTRIBUTE','OPEN','ALL',True,True,False,'5248')
@@ -41,6 +42,7 @@ async def test_invalid_query_no_browser(browser,kwargs):
     ({'tableInfo':[],'schemaInfo':[]},DownloadUnavailableError),({},SchemaError),
     (SCHEMA|{'schemaInfo':[{'attname':'wrong','description':'x'}]},SchemaError),
     (SCHEMA|{'schemaInfo':[{'attname':'code_name','description':'x'},{'attname':'codeName','description':'x'}]},SchemaError),
+    (SCHEMA|{'tableInfo':[{'codeName':'001','codename':'002'}]},SchemaError),
 ])
 async def test_bad_grid_schema(browser,monkeypatch,payload,error):
     browser.page.evaluate=AsyncMock(return_value=wire(payload))
@@ -78,3 +80,32 @@ async def test_api_resource_alias_preserves_catalog_meta(browser):
         assert values[0].dataset.dataset_id=='5241' and values[0].backing_dataset_id=='5248'
         assert await client.list_api_layers(DATASET)==()
     assert browser.page.evaluate.await_args_list[0].args[1]['data']['metaSn']=='5248'
+
+
+@pytest.mark.parametrize('change',[{'serviceAuthCd':'PRIVATE'},{'opnScopeSe':'MEMBER'},{'maskingYn':'Y'}])
+async def test_api_spatial_gate_at_discovery_and_download(browser,tmp_path,change):
+    async def goto(url,**kwargs):browser.page.url=url;return SimpleNamespace(status=200)
+    browser.page.goto.side_effect=goto
+    row=dict(metaSn=5248,histDe='2022-10-19',bsisDtaSn=5248,bsisDtaNm='예측',relateDtaNm='forecast_table',
+        orginlTableNm=None,atrbSpceSe='SPATIAL',serviceAuthCd='OPEN',opnScopeSe='ALL',gridOpenYn='Y',dwldPosblYn='Y',maskingYn='N')
+    payload={'resultList':[row|change],'resultListTotCnt':1}
+    browser.page.evaluate=AsyncMock(side_effect=[wire(payload),wire(payload)])
+    layer=DatasetLayer('5248','2022-10-19','5248','forecast_table','예측','OPEN','ALL',True,True,False,True)
+    async with VadaHubFileClient(rate_limiter=AsyncTokenBucket(100000)) as client:
+        assert await client.list_api_layers(DATASET)==()
+        with pytest.raises(AccessDeniedError):await client.download(layer,tmp_path/'blocked.zip')
+    assert not (tmp_path/'blocked.zip').exists()
+
+
+async def test_real_unknown_permission_values_are_preserved(browser):
+    async def goto(url,**kwargs):browser.page.url=url;return SimpleNamespace(status=200)
+    browser.page.goto.side_effect=goto
+    dataset=replace(DATASET,dataset_id='10077',api_id='147',catalog='api_original')
+    row=dict(metaSn=10077,histDe='2022-10-19',bsisDtaSn=520798,bsisDtaNm='목록공개',relateDtaNm='public_table',
+        orginlTableNm=None,atrbSpceSe='SPATIAL',serviceAuthCd='LIST_OPEN',opnScopeSe='ALL',gridOpenYn='N',dwldPosblYn=' ',maskingYn=' ')
+    browser.page.evaluate=AsyncMock(side_effect=[wire({'resultList':[row],'resultListTotCnt':1})]*2)
+    async with VadaHubClient(rate_limiter=AsyncTokenBucket(100000)) as client:
+        resource=(await client.list_resources(dataset))[0]
+        assert resource.masked is None and resource.download_available is None
+        assert dict(resource.raw_availability)['dwldPosblYn']==' '
+        with pytest.raises(AccessDeniedError):await client.query_table(resource)

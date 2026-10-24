@@ -45,7 +45,8 @@ async def query_table(client: VadaHubClient, resource: LibraryResource, *, start
         if len(columns)!=len(info) or not all(re.fullmatch('[A-Za-z][A-Za-z0-9_]*',name) for name in columns):
             raise SchemaError('공개 grid column 식별 오류')
         names = {item['attname'].replace('_','').casefold():item for item in info}
-        if len(names)!=len(info) or any(name.replace('_','').casefold() not in names for name in columns):
+        canonical = {name.replace('_','').casefold() for name in columns}
+        if len(names)!=len(info) or len(canonical)!=len(columns) or canonical != set(names):
             raise SchemaError('공개 grid schema와 JSON field가 일치하지 않습니다')
         ordered_info = [names[name.replace('_','').casefold()] for name in columns]
         if (filters and not set(filters).issubset(columns)) or (order_by is not None and order_by not in columns):

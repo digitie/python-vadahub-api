@@ -200,7 +200,7 @@ class VadaHubClient:
             await _open_page(page, BASE_URL + _SPACE_PATH)
             for current in await self._layers(page, meta, hist):
                 if current.layer_id == sid:
-                    return current
+                    return replace(current,require_public=layer.require_public)
             raise SchemaError('요청한 layer가 현재 meta 이력에 없습니다')
 
     async def _resources(self, page: Page, dataset: Dataset) -> tuple[LibraryResource, ...]:
@@ -233,7 +233,7 @@ class VadaHubClient:
         current = next((item for item in await self._resources(page,dataset) if item.resource_id == resource.resource_id),None)
         if current is None or current.source_name != resource.source_name:
             raise SchemaError('자료실 resource가 사라지거나 원본 이름이 변경됐습니다')
-        if current.service_auth != 'OPEN' or current.open_scope != 'ALL' or current.masked:
+        if current.service_auth != 'OPEN' or current.open_scope != 'ALL' or current.masked is not False:
             raise AccessDeniedError('공개/전체/비마스킹 resource만 조회합니다')
         return current
 
@@ -300,7 +300,10 @@ class VadaHubClient:
             rows = _catalog.rows(payload)
             if len(rows) != _catalog.count(payload.get('resultListTotCnt')):
                 raise SchemaError('OpenAPI backing layer 수량 불일치')
-            result = tuple(_catalog.parse_layer(row,meta,hist) for row in rows if row.get('atrbSpceSe')=='SPATIAL')
+            result = tuple(replace(_catalog.parse_layer(row,meta,hist),require_public=True) for row in rows
+                           if row.get('atrbSpceSe')=='SPATIAL' and row.get('serviceAuthCd')=='OPEN'
+                           and row.get('opnScopeSe')=='ALL' and row.get('maskingYn')=='N'
+                           and row.get('dwldPosblYn') in ('Y','N'))
             if len({item.layer_id for item in result}) != len(result):
                 raise SchemaError('OpenAPI backing layer 중복')
             return result

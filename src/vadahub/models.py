@@ -44,6 +44,8 @@ class DatasetLayer:
     open_scope: str
     grid_available: bool
     download_available: bool
+    masked: bool | None = None
+    require_public: bool = False
 
     @property
     def source_url(self) -> str:
@@ -89,12 +91,13 @@ class LibraryResource:
     source_name: str
     format: str | None
     attribute_kind: str
-    service_auth: str
+    service_auth: str | None
     open_scope: str
-    grid_available: bool
-    download_available: bool
-    masked: bool
+    grid_available: bool | None
+    download_available: bool | None
+    masked: bool | None
     backing_dataset_id: str | None = None
+    raw_availability: tuple[tuple[str, str | None], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
