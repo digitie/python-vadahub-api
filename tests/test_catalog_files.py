@@ -172,7 +172,7 @@ async def test_download_unavailable_rechecked_and_no_overwrite(browser,tmp_path)
     assert (tmp_path/'old.zip').read_bytes()==b'previous'
 
 
-@pytest.mark.parametrize('cancel',[False,'worker','click'])
+@pytest.mark.parametrize('cancel',[False,'worker','click','denial'])
 async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_path,monkeypatch,cancel):
     source=tmp_path/'browser.zip'; make_zip(source)
     browser.page.evaluate=AsyncMock(return_value=wire({'resultList':[ROW],'resultListTotCnt':1}))
@@ -189,7 +189,7 @@ async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_pa
     browser.page.get_by_role=Mock(return_value=SimpleNamespace(click=AsyncMock()))
     async with client(VadaHubFileClient) as c:
         if cancel:
-            if cancel=='worker':
+            if cancel in ('worker','denial'):
                 import threading
                 started,release=threading.Event(),threading.Event()
                 def slow_stage(*args):
@@ -197,7 +197,9 @@ async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_pa
                 monkeypatch.setattr('vadahub.files._stage',slow_stage)
                 task=asyncio.create_task(c.download(LAYER,tmp_path/'published.zip'))
                 await asyncio.to_thread(started.wait)
-                task.cancel(); await asyncio.sleep(0); release.set()
+                if cancel=='worker': task.cancel()
+                else: handlers['response'](SimpleNamespace(url='https://vadahub.go.kr/user/meta/shpDownload.do',status=429))
+                await asyncio.sleep(0); release.set()
             else:
                 started=asyncio.Event()
                 async def stalled_click():
@@ -205,7 +207,7 @@ async def test_download_real_state_machine_with_synthetic_browser(browser,tmp_pa
                 button.first.click.side_effect=stalled_click
                 task=asyncio.create_task(c.download(LAYER,tmp_path/'published.zip'))
                 await started.wait(); task.cancel()
-            with pytest.raises(asyncio.CancelledError): await task
+            with pytest.raises(RateLimitError if cancel=='denial' else asyncio.CancelledError): await task
             assert not (tmp_path/'published.zip').exists()
             assert not list(tmp_path.glob('.vadahub-*.part'))
         else:

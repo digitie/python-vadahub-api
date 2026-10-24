@@ -112,6 +112,8 @@ class VadaHubFileClient(VadaHubClient):
                 await _cleanup_download(item, self._browser.cleanup_timeout)
                 cleaned = True
                 item = None
+                if failure.done():
+                    raise failure.result()
                 os.link(temporary, path)
                 return ArchiveReceipt(current, current.source_url, datetime.now(timezone.utc), checksum, size, path, members)
             finally:
