@@ -91,6 +91,7 @@ class VadaHubFileClient(VadaHubClient):
             page.on('dialog', on_dialog)
             item = None
             temporary = None
+            cleaned = False
             try:
                 await button.first.click()
                 waiters: list[asyncio.Future[Any]] = [received, failure]
@@ -109,6 +110,7 @@ class VadaHubFileClient(VadaHubClient):
                 checksum, members, size = await run_io(_stage, Path(source), temporary, current.table_name, limits)
                 # worker 완료·취소 반영과 모든 await 정리 뒤에만 원자 commit한다.
                 await _cleanup_download(item, self._browser.cleanup_timeout)
+                cleaned = True
                 item = None
                 os.link(temporary, path)
                 return ArchiveReceipt(current, current.source_url, datetime.now(timezone.utc), checksum, size, path, members)
@@ -116,6 +118,8 @@ class VadaHubFileClient(VadaHubClient):
                 page.remove_listener('download', on_download)
                 page.remove_listener('response', on_response)
                 page.remove_listener('dialog', on_dialog)
+                if not cleaned and item is None and received.done() and not received.cancelled():
+                    item = received.result()
                 received.cancel()
                 failure.cancel()
                 if temporary is not None:
