@@ -1,8 +1,7 @@
 # 구조
 
 이 저장소는 Python provider SDK다. KRIC 저장소의 디렉터리 구조를 기반으로 한다.
-아래는 전체 목표 구조다. T002에서는 __init__/py.typed/client/_browser/_ratelimit/models/
-exceptions 및 기반 테스트를 구현했다. files/parse/mapping/storage는 후속 task다.
+아래는 T007B까지 구현한 구조다. 세부 계약은 실제 공개 타입·파일과 상세 사양을 기준으로 한다.
 
 ```text
 python-vadahub-api/
@@ -17,8 +16,11 @@ python-vadahub-api/
 │   ├── files.py           # UI 다운로드·load/iter
 │   ├── parse.py           # ZIP 검증·DBF/TXT/geometry
 │   ├── mapping.py         # 출도착지→선착장 매핑
-│   └── storage.py         # 원문·checksum·manifest, 선택적 S3
-├── tests/fixtures/        # 합성/비밀값 제거 fixture
+│   ├── storage.py         # 로컬 원문·checksum·manifest·복구
+│   ├── query.py           # 공개 웹 schema·bounded DataTables 질의
+│   └── tourism.py         # 관광9종 registry·요약·검색
+├── tests/                 # 합성 fixture·실제 live gate
+├── examples/              # 설치본 소비자·관광 수집
 ├── tools/probe_source.py  # 실제 공개 화면 조사
 └── docs/
     ├── architecture/ / runbooks/ / validation/
@@ -67,6 +69,6 @@ GDAL은 선택적 `spatial` 기능이며 시스템 GDAL과 binding 버전을 맞
 SHP 읽기는 `gdal.OpenEx`, 좌표변환은 `osr.CoordinateTransformation`, 필요 시
 포맷 변환은 `gdal.VectorTranslate`를 사용한다. 상세는 [GDAL 설계](../gdal.md)다.
 core에는 웹서버·Pandas·GeoPandas·DB·수집 스케줄러를 넣지 않는다.
-typed dataclass와 Protocol 경계로 browser/storage/참조 항구를 교체할 수 있게 한다.
+typed dataclass와 context/transport DTO 주입 경계로 외부 자원을 연결한다.
 원문 파일의 보관 정책과 주기 갱신은 소비자가 결정한다.
-S3 호환 저장소는 선택 기능이며 명시적으로 전달한 설정만 사용한다.
+S3 adapter는 구현하지 않았다. 운영 저장소·스케줄링·배포는 소비자가 결정한다.

@@ -1,4 +1,6 @@
+include README.md LICENSE
 include AGENTS.md CLAUDE.md SKILL.md
 recursive-include docs *.md *.json
+recursive-include examples *.py
 recursive-include tests *.py
 recursive-include tools *.py

@@ -2,9 +2,8 @@
 
 VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자료 ZIP/SHP를
 키 없이 수집·해석하는 **비동기 Python provider 라이브러리**다.
-상세 사양 문서 PR #1을 머지했고, 현재 T002 async 기반을 구현했다.
-T003에서 공간자료 카탈로그·기초자료·공개 ZIP 다운로드를 구현했다.
-GDAL 파싱과 async load/iter/local API, 선착장 상세·보수적 매핑을 제공한다.
+공간자료 카탈로그·공개 ZIP 다운로드, GDAL 파싱과 async load/iter/local API,
+선착장 상세·근거에 따른 매핑을 제공한다.
 원문 SHA 버전 보관과 manifest 복구, 공개 안내·자료실과 웹 테이블 질의를 제공한다.
 추가 [관광9종](docs/tourism.md)의 카탈로그·SHP·검색과 [실행 예제](examples/tourism.py)를 제공한다.
 
@@ -21,6 +20,9 @@ GDAL 파싱과 async load/iter/local API, 선착장 상세·보수적 매핑을 
   여객항로에는 `strpnt_nm`, `prtcl_nm`, `dstntn_nm`이 있다.
 - 조사한 SHP ZIP은 `c1..cN` DBF와 실제 필드명을 설명하는 CP949 TXT를 포함하고,
   `.prj`는 없다. 미확인 CRS를 EPSG:5179 등으로 추정하지 않는다.
+- OpenAPI 안내66개 중 실제 웹 조회 성공은49개 resource다. API139의 통신 실패와
+  권한 제한·연결자료/공개 grid 부재를 별도로 기록한다. 인증 API 동등 응답을 보장하지 않는다.
+- 과거 관광자료의 기준/제작일·조사년도와 이름 결측, 해수욕장의 invalid 도형2건을 보존한다.
 
 이 차이를 숨기지 않고 출처·원문·미매핑 상태를 제공하는 것이 구현 계약이다.
 사용자가 ITS는 오기임을 확인했으며 이번 대상은 VadaHub뿐이다.
@@ -28,6 +30,7 @@ GDAL 파싱과 async load/iter/local API, 선착장 상세·보수적 매핑을 
 ## 문서
 
 - [실제 제공자료 조사](docs/source-analysis.md)
+- [설치·wheel·실행 예제](docs/installation.md), [단계별 live 절차](docs/runbooks/live.md)
 - [기능·데이터·오류·보관 상세 사양](docs/specification.md)
 - [구조](docs/architecture/architecture.md)
 - [참조 저장소와 재사용 결정](docs/references.md)
@@ -99,11 +102,11 @@ async def download_ferry() -> None:
 python -m pip install -e '.[dev]'
 python -m pytest -m 'not live' --cov=vadahub --cov-fail-under=90
 python -m mypy src/vadahub
-python -m pytest -m live --run-live
 ```
 
 live 실행에 설치된 Chromium 경로를 지정하려면 `VADAHUB_CHROMIUM_EXECUTABLE` 환경변수를
 사용한다. SDK 자체는 이 변수를 자동 탐색하지 않고 테스트가 명시적으로 전달한다.
+실제 원문을 받는 단계와 GDAL 파싱 단계는 [live 실행 절차](docs/runbooks/live.md)를 따른다.
 
 ## GDAL 공간자료 로딩
 
