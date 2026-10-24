@@ -12,7 +12,8 @@ from urllib.parse import urlsplit
 from .exceptions import SchemaError
 from .models import SpatialFeature
 
-PortKind = Literal['port', 'pier', 'terminal']
+PortKind = Literal['port', 'pier', 'terminal', 'facility']
+EndpointKind = Literal['port', 'pier', 'terminal']
 EndpointRole = Literal['departure', 'arrival']
 MatchStatus = Literal['matched', 'ambiguous', 'unmatched', 'missing_endpoints']
 
@@ -42,12 +43,15 @@ class PortReference:
     source_url: str | None = None
     source_year: str | None = None
     feature: SpatialFeature | None = None
+    kind_evidence: str | None = None
 
     def __post_init__(self) -> None:
         if any(not _text(value) for value in (self.source, self.port_id, self.name)):
             raise SchemaError('선착장 source/ID/이름이 필요합니다')
-        if self.kind not in ('port', 'pier', 'terminal'):
+        if self.kind not in ('port', 'pier', 'terminal', 'facility'):
             raise SchemaError('알 수 없는 선착장 역할')
+        if self.kind in ('pier', 'terminal') and not _text(self.kind_evidence):
+            raise SchemaError('물리 선착장/터미널 역할의 검토 근거가 필요합니다')
         if self.collected_at is not None and (self.collected_at.tzinfo is None or self.collected_at.utcoffset() is None):
             raise SchemaError('수집시점은 timezone aware여야 합니다')
         if (self.latitude is None) != (self.longitude is None):
@@ -134,7 +138,7 @@ def ports_from_features(features: Iterable[SpatialFeature]) -> tuple[PortReferen
         code, name = _text(a.get('pssh_id')), _text(a.get('pssh_trml_nm'))
         if not code or not name:
             raise SchemaError('선착장 원천 ID/이름 누락')
-        port = PortReference('vadahub:pssh_p', code, name, _text(a.get('area_sclas_cd')), 'pier',
+        port = PortReference('vadahub:pssh_p', code, name, _text(a.get('area_sclas_cd')), 'facility',
                              _text(a.get('fcl_raddr')), _text(a.get('pssh_tno')),
                              collected_at=feature.source_collected_at, source_url=feature.layer.source_url,
                              source_year=_text(a.get('invs_yr')), feature=feature)
@@ -157,7 +161,7 @@ def port_from_transport(item: Mapping[str, Any], *, collected_at: datetime,
     # admin 이름/코드 체계를 임의 변환하지 않는다. caller가 동일한 코드 체계를 사용한다.
     region = _text(admin.get('legal_dong_code')) if admin else None
     latitude, longitude = item.get('latitude'), item.get('longitude')
-    if item.get('location_source') == 'data_go_kr_port_guideline':
+    if not _text(item.get('location_source')) or item.get('location_source') == 'data_go_kr_port_guideline':
         latitude = longitude = None
     return PortReference(source, code, name, region=region,
                          latitude=latitude, longitude=longitude,
@@ -169,7 +173,7 @@ def port_from_transport(item: Mapping[str, Any], *, collected_at: datetime,
 def map_route(feature: SpatialFeature, *, ports: Iterable[PortReference],
               crosswalk: Iterable[EndpointCrosswalk] = (),
               departure_region: str | None = None, arrival_region: str | None = None,
-              endpoint_kind: PortKind = 'port') -> MappedRoute:
+              endpoint_kind: EndpointKind = 'port') -> MappedRoute:
     """지역+이름 유일성 또는 버전 고정 crosswalk로만 확정한다. 거리/접미사 추정 없음."""
     endpoints = route_endpoints(feature)
     references = tuple(ports)
@@ -206,9 +210,9 @@ def map_route(feature: SpatialFeature, *, ports: Iterable[PortReference],
                                  (entry.evidence_url, entry.evidence_record, entry.revision, entry.endpoint_name))
         if not raw:
             return EndpointMatch(raw, 'missing_endpoints', None, (), 'source_missing')
-        candidates = tuple(p for p in references if p.kind == endpoint_kind and _text(p.name) == _text(raw)
+        candidates = tuple(p for p in references if p.kind in (endpoint_kind, 'facility') and _text(p.name) == _text(raw)
                            and (not region or _text(p.region) == _text(region)))
-        if region and len(candidates) == 1:
+        if region and len(candidates) == 1 and candidates[0].kind == endpoint_kind:
             return EndpointMatch(raw, 'matched', candidates[0], candidates, 'unique_region_name', ('caller_region:' + region,))
         status: MatchStatus = 'ambiguous' if len(candidates) > 1 else 'unmatched'
         return EndpointMatch(raw, status, None, candidates, 'name_candidates' if candidates else 'no_candidate')

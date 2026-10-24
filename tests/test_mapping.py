@@ -70,16 +70,19 @@ def test_crosswalk_conflict_role_duplicate():
     row=feature('piltg_rute_l')
     entry=crosswalk(row)
     with pytest.raises(SchemaError): map_route(row,ports=[port],crosswalk=[entry,entry])
-    with pytest.raises(SchemaError): map_route(row,ports=[replace(port,kind='terminal')],crosswalk=[entry])
+    with pytest.raises(SchemaError): map_route(row,ports=[replace(port,kind='terminal',kind_evidence='review1')],crosswalk=[entry])
 
 
 def test_pier_details_keep_raw_coordinates_and_year():
     row=feature('pssh_p',pssh_id='20150001',pssh_trml_nm='터미널',fcl_raddr='인천',pssh_tno='032001',
                 area_sclas_cd='2811000000',invs_yr='2014',x_crdn=126.5,y_crdn=37.5)
     port=ports_from_features([row])[0]
-    assert port.key==('vadahub:pssh_p','20150001') and port.kind=='pier'
+    assert port.key==('vadahub:pssh_p','20150001') and port.kind=='facility'
     assert port.telephone=='032001' and port.source_year=='2014'
     assert port.latitude is None and port.feature.attributes['x_crdn']==126.5
+    result=map_route(feature(strpnt_nm='터미널'),ports=[port],departure_region=port.region,endpoint_kind='pier')
+    assert result.departure.status=='unmatched' and result.departure.candidates==(port,)
+    with pytest.raises(SchemaError): replace(port,kind='pier')
     for rows in ([row,row],[feature()],[feature('pssh_p')]):
         with pytest.raises(SchemaError): ports_from_features(rows)
 
@@ -96,6 +99,9 @@ def test_transport_export_adapter():
         with pytest.raises(SchemaError): port_from_transport(item|change,collected_at=datetime.now(timezone.utc),source_url='https://example.org')
     assert port_from_transport(item|{'location_source':'data_go_kr_port_guideline'},
         collected_at=datetime.now(timezone.utc),source_url='https://example.org').latitude is None
+    unknown=port_from_transport(item|{'location_source':None,'admin':None},
+        collected_at=datetime.now(timezone.utc),source_url='https://example.org')
+    assert unknown.key==('tago','SEA001') and unknown.latitude is None and unknown.longitude is None
 
 
 @pytest.mark.parametrize('change',[{'name':''},{'kind':'bad'},{'latitude':37},

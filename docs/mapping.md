@@ -29,7 +29,11 @@ live 범위에 없으며 계약 fixture의 코드가 실제 운영 항구 코드
 근거를 확인한 동일 코드 체계 값이어야 한다. 지역이 없으면 이름이 하나여도 후보만 제공한다.
 다중 후보는 `ambiguous`, 후보 없는/미확정 이름은 `unmatched`, 원문 이름 부재는
 `missing_endpoints`다. 이름의 trim/NFC 외에는 `항`·`도`·`선착장` 접미사를 삭제하지 않는다.
-기본 endpoint_kind는 transport용 `port`이며 시설은 `pier`, 터미널은 `terminal`로 명시한다.
+기본 endpoint_kind는 transport용 `port`다. pssh_p는 역할이 미확정인 `facility`이며
+이름/지역 일치 시에도 후보만 제공한다. 이름 접미사로 역할을 추정하지 않는다.
+물리 선착장 `pier`·터미널 `terminal` 참조를 직접 구성할 때는 검토한 `kind_evidence`를
+필수로 제공해야 한다. 이 근거 없이 pssh_p를 승선 선착장으로 확정하지 않는다.
+transport DTO의 좌표 출처가 None이면 좌표만 None으로 두고 항구 코드/이름을 보존한다.
 
 검토된 외부 `EndpointCrosswalk`는 meta/history/layer/record/SHA와 departure/arrival 역할,
 endpoint_name, target_source/target_port_id, evidence_url/evidence_record/revision을 요구한다.
