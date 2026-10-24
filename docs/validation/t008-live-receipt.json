@@ -1,0 +1,310 @@
+{
+  "version": "0.1.0",
+  "collected_at": "2026-10-24T05:03:16.069763+00:00",
+  "module": "isolated-venv/site-packages/vadahub/__init__.py",
+  "downloads": [
+    {
+      "layer": {
+        "dataset_id": "52",
+        "history_date": "2019-12-10",
+        "layer_id": "500048",
+        "table_name": "piltg_rute_l",
+        "title": "도선항로",
+        "service_auth": "OPEN",
+        "open_scope": "ALL",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=52&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:33.122987+00:00",
+      "sha256": "bb54e52d257545693221bb0c9292cd3eab56b9d77ed7dc7edba5e04f924445eb",
+      "byte_size": 6992,
+      "local_path": "500048.zip",
+      "member_sha256": [
+        [
+          "piltg_rute_l.dbf",
+          "deca70b1d8a83bcb71aedf16037a7345df28bf9ec150a9881a1f0008a07795c8"
+        ],
+        [
+          "piltg_rute_l.shp",
+          "05d25a1cfdf50f09ade5fb151325f9a8593caa3118e9cd01b7d19bd0902a3881"
+        ],
+        [
+          "piltg_rute_l.shx",
+          "3ec696fb2f853597e422a55ccd121fa0862ed04e933343f420b5b708f386c227"
+        ],
+        [
+          "piltg_rute_l.txt",
+          "46984c3046af872642b6a8c822e84dd838920612414dcf136e82295d7bb74b0c"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 34
+    },
+    {
+      "layer": {
+        "dataset_id": "63",
+        "history_date": "2019-12-10",
+        "layer_id": "500059",
+        "table_name": "psnr_rute_l",
+        "title": "여객항로",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=63&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:36.709830+00:00",
+      "sha256": "d2a87a21233c0ae85f70a558d04b1dbbc13cd717c8b512487e3cefc24635376d",
+      "byte_size": 233748,
+      "local_path": "500059.zip",
+      "member_sha256": [
+        [
+          "psnr_rute_l.dbf",
+          "70478d9dabc8e2df3456721e13f85bbe79febc1e0089444a6ba2d035d2fe3814"
+        ],
+        [
+          "psnr_rute_l.shp",
+          "12085c121c6b75c96123b2dde5c960ccae23fa9c6827daab8673c8f2008c9894"
+        ],
+        [
+          "psnr_rute_l.shx",
+          "c40159f44a58072342f338f0326fcc47c3e8033402d2b536a1f1434aad068125"
+        ],
+        [
+          "psnr_rute_l.txt",
+          "d9285d651827591adc2a21a7319ea24204e9136d5564a308aeb0bad0800dca63"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 424
+    },
+    {
+      "layer": {
+        "dataset_id": "3076",
+        "history_date": "2019-12-10",
+        "layer_id": "501297",
+        "table_name": "scene_road_p",
+        "title": "경관도로",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:40.417100+00:00",
+      "sha256": "ade2328e5165bb808ba2332eab19428008d62f833468bb0730ba8a1ef5b43bc9",
+      "byte_size": 5193,
+      "local_path": "501297.zip",
+      "member_sha256": [
+        [
+          "scene_road_p.dbf",
+          "3e01104e68d4bdfd69b8b0497ffc3fa600825b9937ee4c6a04d2645983f7a926"
+        ],
+        [
+          "scene_road_p.shp",
+          "93ba47898b5472b87b470904a66a597cfd23c34eaf447e9554d079b34e77580b"
+        ],
+        [
+          "scene_road_p.shx",
+          "61ff828870753a6e16d0b37a6b758ec7a57197a8cd45771db2aa31fec855115a"
+        ],
+        [
+          "scene_road_p.txt",
+          "53d3bc512c1679ed2ea7813a7c304dfa7a0e6bc37aef3a4e7d683eaa0900b049"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 38
+    },
+    {
+      "layer": {
+        "dataset_id": "3076",
+        "history_date": "2019-12-10",
+        "layer_id": "501298",
+        "table_name": "trl_p",
+        "title": "산책로",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:43.462259+00:00",
+      "sha256": "acaf890ddfd6be2707c26babef8b82e8ce2082d2c97c6c07ebc0211693fdcb0b",
+      "byte_size": 12484,
+      "local_path": "501298.zip",
+      "member_sha256": [
+        [
+          "trl_p.dbf",
+          "5dc591b46916e0139eb5b934e57973d5226049c2ec2ca253124c6bde38796986"
+        ],
+        [
+          "trl_p.shp",
+          "3f014d0f820324ef195d41a60cfe4fb01a86fffad37a78d3fce9ffc9b0b9bfaf"
+        ],
+        [
+          "trl_p.shx",
+          "d34a06f8d58ce757bbdaf099a306c6b8d276424129858920e6c66e113095bb2d"
+        ],
+        [
+          "trl_p.txt",
+          "f2950e1be88d6a9e452a4530b819193f6f88dc8cc7bee682ca0fed9d3f3a87e5"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 142
+    },
+    {
+      "layer": {
+        "dataset_id": "3076",
+        "history_date": "2019-12-10",
+        "layer_id": "501304",
+        "table_name": "pssh_p",
+        "title": "여객선",
+        "service_auth": "OPEN",
+        "open_scope": "MEMBER",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:46.599786+00:00",
+      "sha256": "b7eee926d3d1c10cb7d4e48f1a7f9e688585f25d080ab7dea97de30d8ee2b049",
+      "byte_size": 12498,
+      "local_path": "501304.zip",
+      "member_sha256": [
+        [
+          "pssh_p.dbf",
+          "8f251eacf6c0959563df6774040f81f1c35ebcd8b211f5450b31fc4d34ed2681"
+        ],
+        [
+          "pssh_p.shp",
+          "e4ff66f692885b195cadcd2c63af81d000f37e1a3f36de96b3112eddf321445d"
+        ],
+        [
+          "pssh_p.shx",
+          "a2e740bad36d83ba6f7e23662dfbc5e3977adcfdc7958c718743cae0614c02ca"
+        ],
+        [
+          "pssh_p.txt",
+          "0e3a7fa49e32d0c50a1dd60bfd4d242460ec1af32bdbfbe44bceb113c4382600"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 109
+    },
+    {
+      "layer": {
+        "dataset_id": "3076",
+        "history_date": "2019-12-10",
+        "layer_id": "501991",
+        "table_name": "trrsrt_a",
+        "title": "관광지",
+        "service_auth": "OPEN",
+        "open_scope": "ADMIN",
+        "grid_available": true,
+        "download_available": true,
+        "masked": false,
+        "require_public": false
+      },
+      "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+      "collected_at": "2026-10-24T05:03:49.913727+00:00",
+      "sha256": "b8a3deb82ad1b606e0e9d4c2dd2c40833f2d360e05b6a8c03e7132b932e554d6",
+      "byte_size": 298125,
+      "local_path": "501991.zip",
+      "member_sha256": [
+        [
+          "trrsrt_a.dbf",
+          "945071d8f9831279d5a3071d0579b3c7b769951078f8c060427cc829a891f75f"
+        ],
+        [
+          "trrsrt_a.shp",
+          "98ec6c1fdaf832d9c981cedfc1a67aa27d023617de342fb05294059f52547bc2"
+        ],
+        [
+          "trrsrt_a.shx",
+          "03c0410bd6cac40ee29d9aba2f9afafb9e524ab54710b694986f3e720f9807eb"
+        ],
+        [
+          "trrsrt_a.txt",
+          "b620a58bb21fdddbe9147cd4b6fb061a101c16423a5997a1ffbbee83ac20e7a2"
+        ]
+      ],
+      "schema_version": "1",
+      "rows": 110
+    }
+  ],
+  "mapping": {
+    "do_seon_rows": 34,
+    "missing_endpoints": 34,
+    "passenger_rows": 424,
+    "facility_candidates": 109,
+    "actual_do_seon_mapping_verified": false
+  },
+  "terminal_download": "source_unavailable",
+  "tourism": {
+    "experience_village": 119,
+    "beach": 410,
+    "invalid_beach": 2,
+    "hashes": [
+      "71c5b1d4e55dff8be25bc78443b4092fb608059f655020f7a97e155ae99e2dcc",
+      "09c8ebf157bf52a5f3489bf27d4466f865e451a4362727088697b93e4a9aa373"
+    ]
+  },
+  "web_query": {
+    "api_id": "124",
+    "resource_id": "520005",
+    "total_raw": 4942850,
+    "filtered_total_raw": 1,
+    "filter_verified": true
+  },
+  "archive_rows": 857,
+  "store_idempotent": true,
+  "constraints": [
+    "T005E: 도선 출도착지/여객터미널 SHP 미확보",
+    "T007A2E: API139 조회 미확인"
+  ],
+  "source_sha": "6357c556193106a696591d5e3eacb34f9f1bcf68",
+  "build": {
+    "python_vadahub_api-0.1.0-py3-none-any.whl": {
+      "bytes": 60050,
+      "sha256": "0124f6d12066a06e4d10687d4c7dfd322be1ae3926730292101b51363bc7c45e"
+    },
+    "python_vadahub_api-0.1.0.tar.gz": {
+      "bytes": 157718,
+      "sha256": "bd68bc6c2333fc81c3262bd005ad4b93e21b336bd8cdfadc2745eb5e2cd793c2"
+    }
+  },
+  "windows_snapshot": {
+    "source_url": "https://vadahub.go.kr/renew/spaceData/index.do",
+    "title": "해양수산부 공동활용체계",
+    "collected_at": "2026-10-24T05:05:51.505453+00:00"
+  },
+  "environment": {
+    "windows_python": "3.14.3",
+    "wsl_python": "3.14.4",
+    "gdal": "3.12.2",
+    "chromium": "149.0.7827.55",
+    "playwright": "1.64.1",
+    "numpy": "2.5.4",
+    "pip_check": "pass in both isolated venvs",
+    "exports": 44,
+    "tourism_sources": 9
+  },
+  "tourism_example": {
+    "category": "experience_village",
+    "region": "삼척",
+    "rows": 3,
+    "exit_code": 0
+  }
+}

@@ -91,3 +91,7 @@ T007B 구현929a36b: 독립A/B 차단없음, 오프라인274/94.66%, 새9ZIP과 
 T007B PR #9를 d6ea2ea로 머지 확인 후 분기했다. wheel/sdist에 예제를 포함하고
 격리 설치 검사를 CI matrix에 추가했다. Linux/WSL·Windows 설치와 단계별 live 절차,
 실제 설치본 catalog→ZIP→GDAL→매핑→보관 재로딩 예제를 검증한다. 외부 미확보는 유지한다.
+
+T008 구현6357c55: A 문서P2 수정·재리뷰2 차단없음, unit274/94.66%,
+완전격리 wheel의 실제6ZIP857행/관광529행/API124필터·별도관광예제·Windows공개페이지 통과.
+새wheel SHA0124f6d…를 증빙했다. 최종증빙head CI·리뷰 정산 뒤 PR #10을 머지한다.

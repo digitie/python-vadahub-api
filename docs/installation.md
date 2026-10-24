@@ -24,6 +24,19 @@ Playwright 설치는 브라우저와 OS 실행 의존성을 준비한다. 이미
 예제의 `--chromium /absolute/path/to/chrome`으로 지정할 수 있다.
 Windows와 WSL에서 같은 LocalArchiveStore에 동시 write하지 않는다.
 
+시스템 Python 패키지가 많아 완전 격리가 필요하면 libgdal-dev·컴파일러·Python 개발
+헤더가 준비된 환경에서 새 venv를 만들고 **gdal-config와 정확히 같은 버전**을 빌드할 수 있다.
+
+```bash
+/usr/bin/python3 -m venv /tmp/vadahub-isolated
+/tmp/vadahub-isolated/bin/python -m pip install numpy "GDAL==$(gdal-config --version)"
+/tmp/vadahub-isolated/bin/python -m pip install .
+/tmp/vadahub-isolated/bin/python -m pip check
+```
+
+numpy는 이 native 환경의 GDAL 드라이버/배열 모듈 준비용이며 SDK core 의존성은 아니다.
+시스템 GDAL3.12.2와 일치하는 binding을 빌드한 완전 격리 환경에서도 검증했다.
+
 ## Windows: core 설치와 웹 확인
 
 ```powershell
