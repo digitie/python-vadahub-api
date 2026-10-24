@@ -1,0 +1,197 @@
+{
+  "source_sha": "bb2c7f1ac25733c366e5f9cbca545d90e0a2b80f",
+  "collected_at": "2026-10-24T02:49:56.952233+00:00",
+  "datasets": [
+    {
+      "meta_id": "52",
+      "title": "도선항로",
+      "history_date": "2019-12-10",
+      "layers": [
+        {
+          "bsisDtaSn": 500048,
+          "bsisDtaNm": "도선항로",
+          "relateDtaNm": "piltg_rute_l",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "ALL",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "piltg_rute_l.dbf",
+            "piltg_rute_l.shx",
+            "piltg_rute_l.shp",
+            "piltg_rute_l.txt"
+          ],
+          "member_sha256": {
+            "piltg_rute_l.dbf": "deca70b1d8a83bcb71aedf16037a7345df28bf9ec150a9881a1f0008a07795c8",
+            "piltg_rute_l.shx": "3ec696fb2f853597e422a55ccd121fa0862ed04e933343f420b5b708f386c227",
+            "piltg_rute_l.shp": "05d25a1cfdf50f09ade5fb151325f9a8593caa3118e9cd01b7d19bd0902a3881",
+            "piltg_rute_l.txt": "46984c3046af872642b6a8c822e84dd838920612414dcf136e82295d7bb74b0c"
+          },
+          "download_status": "downloaded",
+          "byte_size": 6992,
+          "sha256": "cfa588163098028b4fac07674bde0e90c1f1b86adc00432f26b8edabdee7d782"
+        }
+      ]
+    },
+    {
+      "meta_id": "63",
+      "title": "여객항로",
+      "history_date": "2019-12-10",
+      "layers": [
+        {
+          "bsisDtaSn": 500059,
+          "bsisDtaNm": "여객항로",
+          "relateDtaNm": "psnr_rute_l",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "MEMBER",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "psnr_rute_l.shx",
+            "psnr_rute_l.shp",
+            "psnr_rute_l.txt",
+            "psnr_rute_l.dbf"
+          ],
+          "member_sha256": {
+            "psnr_rute_l.shx": "c40159f44a58072342f338f0326fcc47c3e8033402d2b536a1f1434aad068125",
+            "psnr_rute_l.shp": "12085c121c6b75c96123b2dde5c960ccae23fa9c6827daab8673c8f2008c9894",
+            "psnr_rute_l.txt": "d9285d651827591adc2a21a7319ea24204e9136d5564a308aeb0bad0800dca63",
+            "psnr_rute_l.dbf": "70478d9dabc8e2df3456721e13f85bbe79febc1e0089444a6ba2d035d2fe3814"
+          },
+          "download_status": "downloaded",
+          "byte_size": 233748,
+          "sha256": "8950d09247aa36cbb892a2f4404c1166fc2d7f4c9d921becb60229ed775d3759"
+        }
+      ]
+    },
+    {
+      "meta_id": "3076",
+      "title": "관광지정보",
+      "history_date": "2019-12-10",
+      "layers": [
+        {
+          "bsisDtaSn": 501297,
+          "bsisDtaNm": "경관도로",
+          "relateDtaNm": "scene_road_p",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "MEMBER",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "scene_road_p.shp",
+            "scene_road_p.txt",
+            "scene_road_p.dbf",
+            "scene_road_p.shx"
+          ],
+          "member_sha256": {
+            "scene_road_p.shp": "93ba47898b5472b87b470904a66a597cfd23c34eaf447e9554d079b34e77580b",
+            "scene_road_p.txt": "53d3bc512c1679ed2ea7813a7c304dfa7a0e6bc37aef3a4e7d683eaa0900b049",
+            "scene_road_p.dbf": "3e01104e68d4bdfd69b8b0497ffc3fa600825b9937ee4c6a04d2645983f7a926",
+            "scene_road_p.shx": "61ff828870753a6e16d0b37a6b758ec7a57197a8cd45771db2aa31fec855115a"
+          },
+          "download_status": "downloaded",
+          "byte_size": 5193,
+          "sha256": "7afb3f7ef3c066b494184eca3577e1bb12548bda207ae21c7b2c6df0aa55ca28"
+        },
+        {
+          "bsisDtaSn": 501298,
+          "bsisDtaNm": "산책로",
+          "relateDtaNm": "trl_p",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "MEMBER",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "trl_p.shp",
+            "trl_p.shx",
+            "trl_p.txt",
+            "trl_p.dbf"
+          ],
+          "member_sha256": {
+            "trl_p.shp": "3f014d0f820324ef195d41a60cfe4fb01a86fffad37a78d3fce9ffc9b0b9bfaf",
+            "trl_p.shx": "d34a06f8d58ce757bbdaf099a306c6b8d276424129858920e6c66e113095bb2d",
+            "trl_p.txt": "f2950e1be88d6a9e452a4530b819193f6f88dc8cc7bee682ca0fed9d3f3a87e5",
+            "trl_p.dbf": "5dc591b46916e0139eb5b934e57973d5226049c2ec2ca253124c6bde38796986"
+          },
+          "download_status": "downloaded",
+          "byte_size": 12484,
+          "sha256": "bf5cd0105bf72d238dc1963f80c62efdf27eabc303c535949b67ef7d416b95c0"
+        },
+        {
+          "bsisDtaSn": 501304,
+          "bsisDtaNm": "여객선",
+          "relateDtaNm": "pssh_p",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "MEMBER",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "pssh_p.dbf",
+            "pssh_p.shp",
+            "pssh_p.txt",
+            "pssh_p.shx"
+          ],
+          "member_sha256": {
+            "pssh_p.dbf": "8f251eacf6c0959563df6774040f81f1c35ebcd8b211f5450b31fc4d34ed2681",
+            "pssh_p.shp": "e4ff66f692885b195cadcd2c63af81d000f37e1a3f36de96b3112eddf321445d",
+            "pssh_p.txt": "0e3a7fa49e32d0c50a1dd60bfd4d242460ec1af32bdbfbe44bceb113c4382600",
+            "pssh_p.shx": "a2e740bad36d83ba6f7e23662dfbc5e3977adcfdc7958c718743cae0614c02ca"
+          },
+          "download_status": "downloaded",
+          "byte_size": 12498,
+          "sha256": "f97684f3348e6b6b1c89bbdba5de1b3ae7c5c6ffe0c4674c496eb9a7e3f983a1"
+        },
+        {
+          "bsisDtaSn": 501991,
+          "bsisDtaNm": "관광지",
+          "relateDtaNm": "trrsrt_a",
+          "serviceAuthCd": "OPEN",
+          "opnScopeSe": "ADMIN",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "Y",
+          "download_button_count": 1,
+          "members": [
+            "trrsrt_a.txt",
+            "trrsrt_a.shp",
+            "trrsrt_a.dbf",
+            "trrsrt_a.shx"
+          ],
+          "member_sha256": {
+            "trrsrt_a.txt": "b620a58bb21fdddbe9147cd4b6fb061a101c16423a5997a1ffbbee83ac20e7a2",
+            "trrsrt_a.shp": "98ec6c1fdaf832d9c981cedfc1a67aa27d023617de342fb05294059f52547bc2",
+            "trrsrt_a.dbf": "945071d8f9831279d5a3071d0579b3c7b769951078f8c060427cc829a891f75f",
+            "trrsrt_a.shx": "03c0410bd6cac40ee29d9aba2f9afafb9e524ab54710b694986f3e720f9807eb"
+          },
+          "download_status": "downloaded",
+          "byte_size": 298125,
+          "sha256": "7acb465c4628ba8fabb60c1acfd6d86642b0a8a65f8d30d4b8c536bd94f0a367"
+        }
+      ]
+    },
+    {
+      "meta_id": "5055",
+      "title": "여객터미널",
+      "history_date": "2019-12-10",
+      "layers": [
+        {
+          "bsisDtaSn": 501880,
+          "bsisDtaNm": "여객터미널",
+          "relateDtaNm": "psnr_trml_p",
+          "serviceAuthCd": "PARTIAL",
+          "opnScopeSe": "ALL",
+          "gridOpenYn": "Y",
+          "dwldPosblYn": "N",
+          "download_button_count": 0,
+          "download_status": "unavailable"
+        }
+      ]
+    }
+  ],
+  "chromium": "149.0.7827.55",
+  "catalog_total": 183
+}
