@@ -2,6 +2,7 @@
 
 | ID | 완료·머지 | 검증 |
 |---|---|---|
+| T005E1 | 2026-10-24, [PR #14](https://github.com/digitie/python-vadahub-api/pull/14), `7f74917fb7d44b82096dfdbc62af694f02296654` | [증빙](validation/t005e1.md); 독립리뷰2/P2세건해소,unit370/95.02%,최종Win live6·동일원문GDAL/보관live3(skip0),격리wheel51exports/76행,최종head0b3961a CI7개 통과. 원터미널SHP·도선 실매핑 미완료 유지 |
 | T007A2E1 | 2026-10-24, [PR #13](https://github.com/digitie/python-vadahub-api/pull/13), `37e0ced04c322a9156692daaf9900e426d5fa65b` | [증빙](validation/t007a2e1.md); 독립리뷰2,unit309/94.82%,2일파고/주기실제live1(skip0),최종CI7개 통과. 일반DataTables API139 실패는 별도 미해결 |
 | 보완 사양 | 2026-10-24, [PR #12](https://github.com/digitie/python-vadahub-api/pull/12), `c376b275b7d1636af51b8967c0f0e1b8933fa09f` | [증빙](validation/remaining-source-spec.md); 독립리뷰2/B P2 수정, 새6ZIP/GDAL857행 live2(skip0), 실제공식CSV76/KHOASHP16/NTM3·파랑통계, 최종CI7개 통과. 기존외부제약 미완료 유지 |
 | T001 | 2026-10-24, [PR #1](https://github.com/digitie/python-vadahub-api/pull/1), `9d73701b2a96ffefab12f4db5677f2f3fd999775` | [증빙](validation/t001.md); 독립 리뷰 2명 지적 해소, Chromium 6 ZIP, GDAL 전 행, 최종 CI 통과 |
