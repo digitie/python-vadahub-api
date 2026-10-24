@@ -40,6 +40,7 @@ async def test_invalid_query_no_browser(browser,kwargs):
 
 @pytest.mark.parametrize('payload,error',[
     ({'tableInfo':[],'schemaInfo':[]},DownloadUnavailableError),({},SchemaError),
+    ({'tableInfo':'','schemaInfo':''},DownloadUnavailableError),
     (SCHEMA|{'schemaInfo':[{'attname':'wrong','description':'x'}]},SchemaError),
     (SCHEMA|{'schemaInfo':[{'attname':'code_name','description':'x'},{'attname':'codeName','description':'x'}]},SchemaError),
     (SCHEMA|{'tableInfo':[{'codeName':'001','codename':'002'}]},SchemaError),

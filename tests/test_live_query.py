@@ -35,6 +35,11 @@ async def test_live_api_backing_resources_and_bounded_query(tmp_path):
                         print('query',dataset.api_id,resource.resource_id,flush=True)
                         page=await client.query_table(resource,page_size=1)
                         record.update(status='query_supported',total=page.total,rows=len(page.rows),columns=page.columns)
+                        if dataset.api_id=='124':
+                            gid=page.rows[0]['gid']
+                            filtered=await client.query_table(resource,page_size=1,filters={'gid':str(gid)})
+                            assert filtered.rows[0]['gid']==gid and 0<filtered.filtered_total<page.total
+                            record['filter_verified']=True
                     except DownloadUnavailableError as error:
                         record.update(status='source_grid_unavailable',reason=str(error))
                     except NetworkError as error:

@@ -34,7 +34,7 @@ async def query_table(client: VadaHubClient, resource: LibraryResource, *, start
         schema = await client._post(page,'/user/meta/selectSankeyTableInfo.do',
                                     {'relateDtaNm':current.source_name,'gubun':'map'})
         sample, info = schema.get('tableInfo'), schema.get('schemaInfo')
-        if sample == [] and info == []:
+        if (sample == [] and info == []) or (sample == '' and info == ''):
             raise DownloadUnavailableError('원천 grid에 공개된 schema/행이 없습니다')
         if (not isinstance(sample,list) or not sample or not isinstance(sample[0],dict)
                 or not isinstance(info,list) or not info or len(info)>200
