@@ -6,14 +6,14 @@
 
 | 순서 | ID | 작업·산출물 | 의존 | 완료 기준·live 검증 | 상태 |
 |---|---|---|---|---|---|
-| 2 | T002 | KRIC src layout 카피/이름변경·패키징·모델 기초·예외·async Chromium 생명주기·공유 제한·CI | T001 머지 | [PR #2](https://github.com/digitie/python-vadahub-api/pull/2), [검증](validation/t002.md). 독립 리뷰·live·설치본 통과, 최종 CI와 머지 상태 확인 후 T003 | 검증완료·머지확인 |
-| 3 | T003 | 전체 카탈로그·페이지네이션·기초 layer 발견·공개상태·UI ZIP 다운로드 | T002 머지 | 4 meta/7 layer·6 ZIP 다운로드·terminal DownloadUnavailable, 전체보기 클릭, 생성/다운로드 직렬화, quota/timeout 실패 테스트·2리뷰·live·CI·머지 | 예정 |
+| 3 | T003 | 전체 카탈로그·페이지네이션·기초 layer 발견·공개상태·UI ZIP 다운로드 | T002 머지 | 4 meta/7 layer·6 ZIP 다운로드·terminal DownloadUnavailable, 전체보기 클릭, 생성/다운로드 직렬화, quota/timeout 실패 테스트·2리뷰·live·CI·머지 | 진행 |
 | 4 | T004 | GDAL 기반 ZIP/SHP/DBF/TXT loader·geometry·좌표근거·async load/iter/local 파일 | T003 머지 | 실제 6 ZIP 전 행(34/424/38/142/109/110) 대조, CP949·c2 누락·CRS None·손상/zipbomb·취소 검증, GDAL 필수 CI·2리뷰·live·머지 | 예정 |
 | 5 | T005 | transport 참조 typed adapter·선착장 모델·출도착지 매핑·근거/crosswalk | T004 머지 | 실제 도선 전건 missing_endpoints, 여객 전체/구간 구분, pssh 후보, 동명/지역미상 오매핑 없음, 실제 원문+참조 fixture 매핑 E2E·2리뷰·CI·머지 | 예정 |
 | 5a | T005E | 도선 출도착지 외부 근거 및 여객터미널 원격 SHP 확보 | T005 계약 | 공개된 새 원문 또는 검토된 외부 crosswalk/수동 SHP의 출처·버전 확보 후 실제 연결; 근거 없으면 미해결 유지 | 외부제약 |
 | 6 | T006 | 원문 immutable 파일·SHA-256·원자 manifest·중복/갱신/고아복구·선택 S3 adapter | T005 머지 | 실제 ZIP 보관→재실행→hash 대조→변경 버전/실패·취소 보존, S3 추가 시 별도 실제 roundtrip·2리뷰·CI·머지 | 예정 |
-| 7 | T007 | VadaHub OpenAPI 전체 사양과 웹 대응표·자료실 파일 탐색/지원 확대 | T006 머지 | 3종 OpenAPI 안내와 문서/통계자료실 실제 Chromium 조사, 기능별 지원/부분/미지원, 확인한 범위만 메서드/fixture 추가·2리뷰·live·CI·머지 | 예정 |
-| 8 | T008 | 설치 문서·사용 예·패키지 빌드·최종 소비자 계약 검증 | T007 머지 | clean install, 키 없이 catalog→ZIP→GDAL→mapping→원문 재로딩, 제한/누락 공개, 2리뷰·live·CI·머지 | 예정 |
+| 7a | T007A | VadaHub OpenAPI 전체 사양과 웹 대응표·자료실 파일 탐색/지원 확대 | T006 머지 | 3종 OpenAPI 안내와 문서/통계자료실 실제 Chromium 조사, 기능별 지원/부분/미지원, 확인한 범위만 메서드/fixture 추가·2리뷰·live·CI·머지 | 예정 |
+| 7b | T007B | 추가 관광자료(숙박·체험·해수욕장·마리나 등) 조사·카탈로그·파일/GDAL 제공 | T007A 머지 | 사용자 추가지시 반영. 실제 가용자료의 필드·시점·공개/다운로드·CRS를 조사해 유용한 자료를 registry/조회/파싱 API와 예제로 제공, 2리뷰·live·CI·머지 | 예정 |
+| 8 | T008 | 설치 문서·사용 예·패키지 빌드·최종 소비자 계약 검증 | T007B 머지 | clean install, 키 없이 catalog→ZIP→GDAL→mapping→원문 재로딩, 제한/누락 공개, 2리뷰·live·CI·머지 | 예정 |
 
 T005E는 원천 제약을 숨기지 않기 위한 별도 항목이다. 이를 완료하지 않고 도선 실매핑 또는
 여객터미널 원격 SHP 확보 완료로 보고하지 않는다. 해당 제약과 무관한 T006 이후 작업은 가능하다.

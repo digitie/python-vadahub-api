@@ -1,5 +1,9 @@
 # 재개 지점
 
+T002 PR #2 머지 확인 완료. 현재 `codex/t003-catalog-download`에서 카탈로그와 다운로드를
+구현했다. 초기 live SDK 183 meta/7 layer/6 ZIP/terminal 미제공을 확인했다.
+T003의 최종 리뷰2/live/CI 및 머지 후 T004 GDAL parser로 진행한다.
+
 T001 문서 PR #1은 `9d73701`로 머지했다. T002 브랜치 `codex/t002-async-foundation`에서
 패키지 기초·async Chromium session·공유 제한·예외·CI를 구현했다.
 현재 unit 72개/98.29%, 타입·컴파일·빌드·설치본의 실제 VadaHub 조회와

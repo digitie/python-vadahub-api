@@ -27,3 +27,11 @@ class SchemaError(VadaHubError):
 
 class ProviderError(VadaHubError):
     """공개 웹 응답이 명시적으로 제공자 처리 실패를 보고함."""
+
+
+class ArchiveError(VadaHubError):
+    """원문 압축 형식·크기·CRC·sidecar 오류."""
+
+
+class DownloadUnavailableError(VadaHubError):
+    """실제 공개 UI에서 다운로드를 제공하지 않음."""
