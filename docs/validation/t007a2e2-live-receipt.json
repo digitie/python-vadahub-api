@@ -1,0 +1,143 @@
+{
+  "source_sha": "10a24532d332c50f497585fdb2559374a83a79be",
+  "observed_on": "2026-10-25 17:59~18:01 KST",
+  "live": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 62.43
+  },
+  "offline": {
+    "passed": 448,
+    "coverage_percent": 95.46
+  },
+  "hourly": [
+    {
+      "grid_code": "GR3_F4J12_H",
+      "analysis_date": "2018-06-10",
+      "hour": 18,
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "type_names": [
+        "ofbd-DB:tb_grid_cont_wv_wvhgh_3min",
+        "ofbd-DB:tb_grid_cont_wv_pd_3min"
+      ],
+      "collected_at": "2026-10-25T08:59:55.790574+00:00",
+      "rows": [
+        {
+          "height": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "wvdrct": 132.001,
+            "wvhgh": 1.351
+          },
+          "period": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "avg_wv_pd": 12.2,
+            "wvdrct": 132.001
+          },
+          "height_fid": "tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_109d",
+          "period_fid": "tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_109e",
+          "height_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_109d\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[801318.22142205,1552879.48519078],[805939.52177683,1552783.7214982],[805826.03854405,1547238.47305881],[801202.03224659,1547334.1685859],[801318.22142205,1552879.48519078]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_H\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"18\",\"wvdrct\":132.001,\"wvhgh\":1.351}}",
+          "period_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_109e\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[801318.22142205,1552879.48519078],[805939.52177683,1552783.7214982],[805826.03854405,1547238.47305881],[801202.03224659,1547334.1685859],[801318.22142205,1552879.48519078]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_H\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"18\",\"avg_wv_pd\":12.2,\"wvdrct\":132.001}}"
+        }
+      ]
+    },
+    {
+      "grid_code": "GR3_F4J12_H",
+      "analysis_date": "2018-06-10",
+      "hour": 21,
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "type_names": [
+        "ofbd-DB:tb_grid_cont_wv_wvhgh_3min",
+        "ofbd-DB:tb_grid_cont_wv_pd_3min"
+      ],
+      "collected_at": "2026-10-25T09:00:06.894739+00:00",
+      "rows": [
+        {
+          "height": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "21",
+            "wvdrct": 136.32,
+            "wvhgh": 1.296
+          },
+          "period": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "21",
+            "avg_wv_pd": 12.268,
+            "wvdrct": 136.32
+          },
+          "height_fid": "tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_109f",
+          "period_fid": "tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_10a0",
+          "height_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_109f\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[801318.22142205,1552879.48519078],[805939.52177683,1552783.7214982],[805826.03854405,1547238.47305881],[801202.03224659,1547334.1685859],[801318.22142205,1552879.48519078]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_H\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"21\",\"wvdrct\":136.32,\"wvhgh\":1.296}}",
+          "period_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_10a0\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[801318.22142205,1552879.48519078],[805939.52177683,1552783.7214982],[805826.03854405,1547238.47305881],[801202.03224659,1547334.1685859],[801318.22142205,1552879.48519078]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_H\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"21\",\"avg_wv_pd\":12.268,\"wvdrct\":136.32}}"
+        }
+      ]
+    },
+    {
+      "grid_code": "GR3_F4J12_G",
+      "analysis_date": "2018-06-10",
+      "hour": 18,
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "type_names": [
+        "ofbd-DB:tb_grid_cont_wv_wvhgh_3min",
+        "ofbd-DB:tb_grid_cont_wv_pd_3min"
+      ],
+      "collected_at": "2026-10-25T09:00:18.094102+00:00",
+      "rows": [
+        {
+          "height": {
+            "grid_cd": "GR3_F4J12_G",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "wvdrct": 131.269,
+            "wvhgh": 1.355
+          },
+          "period": {
+            "grid_cd": "GR3_F4J12_G",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "avg_wv_pd": 12.2,
+            "wvdrct": 131.269
+          },
+          "height_fid": "tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_10a1",
+          "period_fid": "tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_10a2",
+          "height_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_10a1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[796696.86371571,1552977.50552496],[801318.22142205,1552879.48519078],[801202.03224659,1547334.1685859],[796577.96831783,1547432.11915355],[796696.86371571,1552977.50552496]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_G\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"18\",\"wvdrct\":131.269,\"wvhgh\":1.355}}",
+          "period_feature_json": "{\"type\":\"Feature\",\"id\":\"tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_10a2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[796696.86371571,1552977.50552496],[801318.22142205,1552879.48519078],[801202.03224659,1547334.1685859],[796577.96831783,1547432.11915355],[796696.86371571,1552977.50552496]]]]},\"geometry_name\":\"geom\",\"properties\":{\"grid_cd\":\"GR3_F4J12_G\",\"anals_ymd\":\"20180610\",\"anals_hhs\":\"18\",\"avg_wv_pd\":12.2,\"wvdrct\":131.269}}"
+        }
+      ]
+    },
+    {
+      "grid_code": "GR3_F4J12_H",
+      "analysis_date": "1900-01-01",
+      "hour": 18,
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "type_names": [
+        "ofbd-DB:tb_grid_cont_wv_wvhgh_3min",
+        "ofbd-DB:tb_grid_cont_wv_pd_3min"
+      ],
+      "collected_at": "2026-10-25T09:00:29.248245+00:00",
+      "rows": []
+    }
+  ],
+  "wheel": {
+    "sha256": "700217a646cff13bee8b5be43d2daf598b5408c9a486882bc4a12b58b49fcfdd",
+    "exports": 53,
+    "isolated": true,
+    "result": {
+      "api": "139",
+      "grid": "GR3_F4J12_H",
+      "date": "2018-06-10",
+      "hour": 18,
+      "height": 1.351,
+      "direction": 132.001,
+      "period": 12.2,
+      "source_url": "https://vadahub.go.kr/analyze/marine/aipast/index.do",
+      "collected_at": "2026-10-25T09:01:25.208797+00:00"
+    }
+  }
+}
