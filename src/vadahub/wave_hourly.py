@@ -98,15 +98,22 @@ def _finite(value: Any) -> bool:
         return False
 
 
-def _geometry(value: Any, depth: int = 0) -> None:
-    """좌표변환 없이 제한된 JSON 좌표의 형식·유한성만 검증한다."""
-    if depth > 5 or not isinstance(value, list) or not value or len(value) > 10000:
-        raise SchemaError('WFS geometry 좌표 구조 오류')
-    for item in value:
-        if isinstance(item, list):
-            _geometry(item, depth + 1)
-        elif not _finite(item):
-            raise SchemaError('WFS geometry 비유한 좌표')
+def _geometry(value: Any) -> None:
+    """MultiPolygon의 2D 계층만 검증한다. 위상 해석/보정·좌표변환은 하지 않는다."""
+    if not isinstance(value, list) or not 1 <= len(value) <= 10000:
+        raise SchemaError('WFS MultiPolygon 목록 오류')
+    for polygon in value:
+        if not isinstance(polygon, list) or not 1 <= len(polygon) <= 10000:
+            raise SchemaError('WFS polygon 목록 오류')
+        for ring in polygon:
+            if not isinstance(ring, list) or not 4 <= len(ring) <= 10000:
+                raise SchemaError('WFS ring 최소4점/상한 오류')
+            for position in ring:
+                if (not isinstance(position, list) or len(position) != 2
+                        or not all(_finite(number) for number in position)):
+                    raise SchemaError('WFS 2D position/유한 좌표 오류')
+            if ring[0] != ring[-1]:
+                raise SchemaError('WFS ring 폐쇄 오류')
 
 
 def _feature(body: str, index: int, grid: str, day: str, hour: str) -> dict | None:

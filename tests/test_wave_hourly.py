@@ -193,3 +193,12 @@ async def test_timeout_and_cancellation_cover_discovery_and_cleanup(browser, mon
         await started.wait(); task.cancel()
         with pytest.raises(asyncio.CancelledError): await task
     browser.context.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize('coords', [[1, 2], [[[[1]]]], [[[[1, 2], [3, 4], [1, 2]]]],
+    [[[[1, 2], [3, 4], [5, 6], [7, 8]]]], [None], [[None]],
+    [[[[1, 2, 3], [3, 4], [5, 6], [1, 2]]]], [[[[1, 2], [3, True], [5, 6], [1, 2]]]]])
+def test_malformed_multipolygon_never_becomes_success(coords):
+    payload = collection()
+    payload['features'][0]['geometry']['coordinates'] = coords
+    with pytest.raises(SchemaError): _feature(json.dumps(payload), 0, GRID, '20180610', '18')
