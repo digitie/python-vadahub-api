@@ -16,4 +16,4 @@
 | T007B | 2026-10-24, [PR #9](https://github.com/digitie/python-vadahub-api/pull/9), `d6ea2ea905957b99a906b31f2b9d17201229c32d` | [증빙](validation/t007b.md); 독립 리뷰2, unit274/94.66%, 새9ZIP/GDAL2897행 live2(skip0), 최종CI7개 통과 |
 | T008 | 2026-10-24, [PR #10](https://github.com/digitie/python-vadahub-api/pull/10), `bc92785ae688fddb7f2ecea52679a2e2b7282eaa` | [증빙](validation/t008.md); 독립 리뷰2/P2수정, unit274/94.66%, Windows core·완전격리WSL wheel설치, 실제6ZIP857행/관광529행/API124필터·예제 통과, 최종CI7개 통과. 외부제약T005E/T007A2E는 미해결 |
 
-T007A2E2는 [검증 증빙](validation/t007a2e2.md)의 구현10a2453에서 리뷰2/live/wheel/CI를 통과했으며 PR #17 최종증빙head 검증·머지확인 대기다. 완료 행은 머지확인 뒤 기록한다.
+| T007A2E2 | 2026-10-25, [PR #17](https://github.com/digitie/python-vadahub-api/pull/17), `5635609bce1e8fc38de0afd07f5a19992fb5674e` | [증빙](validation/t007a2e2.md); 독립리뷰2/P2해소,unit448/95.46%,최종Chromium live2(skip0),격리wheel53exports/실제시각값,최종head53c1949 CI7개 통과. 원DataTables13필드 동등성은 미해결 |
