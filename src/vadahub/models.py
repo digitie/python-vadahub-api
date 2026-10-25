@@ -64,6 +64,36 @@ class WaveStatistics:
 
 
 @dataclass(frozen=True, slots=True)
+class WaveHourlyRecord:
+    """두 공개 WFS 뷰의 같은 시각 값. 원 opn gid/전체13필드는 아니다."""
+    grid_code: str
+    analysis_date: date
+    hour: int
+    wave_height: float | None
+    wave_direction: float | None
+    mean_wave_period: float | None
+    height_fid: str
+    period_fid: str
+    height_attributes: Mapping[str, Any]
+    period_attributes: Mapping[str, Any]
+    height_feature_json: str
+    period_feature_json: str
+
+
+@dataclass(frozen=True, slots=True)
+class WaveHourlySnapshot:
+    """시각별 재분석 값과 현재 공개 resource·질의·원문 계보."""
+    resource: 'LibraryResource'
+    grid_code: str
+    analysis_date: date
+    hour: int
+    rows: tuple[WaveHourlyRecord, ...]
+    source_url: str
+    type_names: tuple[str, str]
+    collected_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
 class PageSnapshot:
     """실제 접근한 공개 페이지의 주소·제목·UTC 수집시점."""
 
