@@ -153,3 +153,10 @@ fixture 성공은 live 성공을 대체하지 않는다. 실제 원천 제약이
 
 공간 파싱은 사용자 추가 지시에 따라 [kor-travel-geo 방식 GDAL](gdal.md)로 구현한다.
 기존 pyshp 조사는 원문 구조를 확인한 사전 조사이며 production parser 결정이 아니다.
+
+## 2026-10-25 공식 보완 제공 범위
+
+[시각별 파랑 원값](wave-hourly.md)과 [공식 선착장·검토 매핑](reviewed-pier-mapping.md)을
+추가했다. 전자는 고정 두 WFS 뷰의 같은 시각 측정값, 후자는340시설과 역사적 도선1건이다.
+원13필드 전체/나머지33도선/원터미널SHP로 지원을 확대 해석하지 않는다. 실제 완료/제약은
+[tasks-done](tasks-done.md)과 [tasks](tasks.md)의 머지·증빙을 기준으로 한다.

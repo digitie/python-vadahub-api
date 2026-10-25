@@ -8,7 +8,7 @@ VadaHub(해양수산부 공동활용체계)의 공개 웹페이지와 공간자�
 추가 [관광9종](docs/tourism.md)의 카탈로그·SHP·검색과 [실행 예제](examples/tourism.py)를 제공한다.
 [시각별 파랑 원값](docs/wave-hourly.md)과 [파랑 날짜·격자 웹 통계](docs/wave-statistics.md)는 일반 테이블 원행과 구분해 제공한다.
 [공식 터미널 CSV 보완](docs/terminal-supplement.md)은 별도 출처로 명시적으로 선택할 수 있다.
-T008까지 구현 PR 머지와 격리 설치본 검증을 완료했다. [완료 기록](docs/tasks-done.md)과
+T008과 추가 시각별 파랑·공식 선착장/검토 매핑의 PR 머지와 격리 설치본 검증을 완료했다. [완료 기록](docs/tasks-done.md)과
 [외부 미해결 항목](docs/tasks.md)을 구분해 확인할 수 있다.
 
 주요 대상은 [공간 데이터](https://vadahub.go.kr/renew/spaceData/index.do)의
@@ -21,10 +21,12 @@ T008까지 구현 PR 머지와 격리 설치본 검증을 완료했다. [완료 
 - 여객터미널(`psnr_trml_p`)은 현재 부분 공개·다운로드 미제공이다.
   관광지정보 아래의 여객선(`pssh_p`) 자료와 별도 원본으로 취급한다.
 - 실제 도선항로 SHP 34건에는 출도착지 필드와 이름이 없다.
+  외부 공식 근거로 검토한gid2 국동→외동1건만 연결하고 나머지33건은 미확정이다.
   여객항로에는 `strpnt_nm`, `prtcl_nm`, `dstntn_nm`이 있다.
 - 조사한 SHP ZIP은 `c1..cN` DBF와 실제 필드명을 설명하는 CP949 TXT를 포함하고,
   `.prj`는 없다. 미확인 CRS를 EPSG:5179 등으로 추정하지 않는다.
 - OpenAPI 안내66개 중 실제 웹 조회 성공은49개 resource다. API139의 통신 실패와
+  일반표13필드 조회는 여전히 실패하며, 별도 공개WFS의 실제 시각별 값은 지원한다.
   권한 제한·연결자료/공개 grid 부재를 별도로 기록한다. 인증 API 동등 응답을 보장하지 않는다.
 - 과거 관광자료의 기준/제작일·조사년도와 이름 결측, 해수욕장의 invalid 도형2건을 보존한다.
 
