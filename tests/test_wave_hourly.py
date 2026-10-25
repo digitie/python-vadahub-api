@@ -202,3 +202,21 @@ def test_malformed_multipolygon_never_becomes_success(coords):
     payload = collection()
     payload['features'][0]['geometry']['coordinates'] = coords
     with pytest.raises(SchemaError): _feature(json.dumps(payload), 0, GRID, '20180610', '18')
+
+
+async def test_same_broken_geometry_on_both_views_is_rejected(browser, monkeypatch):
+    a, b = collection(), collection(1)
+    for payload in (a, b): payload['features'][0]['geometry']['coordinates'] = [1, 2]
+    async with VadaHubClient(rate_limiter=AsyncTokenBucket(100000)) as client:
+        setup(monkeypatch, client, browser, height=a, period=b)
+        with pytest.raises(SchemaError): await client.get_wave3min_hourly(GRID, analysis_date=DAY, hour=18)
+
+
+async def test_changed_schema_and_unbounded_capabilities(browser, monkeypatch):
+    async with VadaHubClient(rate_limiter=AsyncTokenBucket(100000)) as client:
+        setup(monkeypatch, client, browser)
+        browser.page.evaluate.side_effect = [{'status': 200, 'text': CAP}, {'status': 200, 'text': schema('other')}]
+        with pytest.raises(SchemaError): await client.get_wave3min_hourly(GRID, analysis_date=DAY, hour=18)
+        browser.page.evaluate.side_effect = None
+        browser.page.evaluate.return_value = {'status': 200, 'text': '<WFS_Capabilities xmlns="http://www.opengis.net/wfs" version="1.1.0"><FeatureTypeList>' + '<FeatureType/>' * 5001 + '</FeatureTypeList></WFS_Capabilities>'}
+        with pytest.raises(SchemaError): await client.get_wave3min_hourly(GRID, analysis_date=DAY, hour=18)
