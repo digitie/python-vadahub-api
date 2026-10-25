@@ -106,9 +106,11 @@ TAGO/KOMSA 코드와 같다고 하지 않는다. transport DB·비밀값·환경
 `reviewed_route_crosswalks(feature, *, receipt, piers)`는 검토된 gid2에만 두 EndpointCrosswalk를
 반환한다. 호출자는 기존 `map_route(..., endpoint_kind='pier')`로 실제 두 선착장 정보를 얻는다.
 
-- layer/meta/history/record·제작일·객체/ENC와 원 WKB/원문 속성의 검토 fingerprint를 확인한다.
-- feature와 ArchiveReceipt의 layer/SHA를 대조한다. ZIP 생성 헤더 시각만 달라진 파일도
-  동일한 검토 레코드인지 fingerprint로 확인하고 새 Archive SHA에 근거를 바인딩한다.
+- layer/meta/history/record·제작일·객체/ENC와 원 WKB·원문 속성·정규화 속성의 검토 fingerprint를 확인한다.
+- feature와 ArchiveReceipt의 layer/SHA를 대조한다. Archive SHA가 달라도 위 레코드 전체가
+  같으면 동일한 레코드 검토 revision으로 현재 Archive SHA에 연결한다. 이는 해당 레코드만의
+  판정이며 다른 행·ZIP 전체 멤버의 동일성이나 검토를 주장하지 않는다. DBF 헤더 날짜 등
+  ZIP 재생성 차이를 전체 파일 동등성으로 간주하지 않는다.
 - pier source/date/전체 원문 SHA와 해당 row의 이름/정확 주소·파생 ID를 확인한다.
 - 검토 revision/evidence URL·파일버전·해시·면허행·시설행·품질 차이를 증거에 보존한다.
 - 다른33행은 빈 crosswalk로 남긴다. 검토 대상gid2의 내용/원천 버전 변경·중복 target·
