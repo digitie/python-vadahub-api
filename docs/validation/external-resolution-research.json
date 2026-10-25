@@ -1,0 +1,355 @@
+{
+  "research_base_sha": "4bc0164e48799bba5488f91ea1a06b5e2e86de78",
+  "observed_on": "2026-10-25 KST",
+  "hourly_feature_values": [
+    {
+      "request": {
+        "service": "WFS",
+        "version": "1.1.0",
+        "request": "GetFeature",
+        "typeName": "ofbd-DB:tb_grid_cont_wv_wvhgh_3min",
+        "outputFormat": "application/json",
+        "srsName": "EPSG:5179",
+        "maxFeatures": "2",
+        "viewparams": "anals_ymd:20180610;anals_hhs:18",
+        "cql_filter": "grid_cd='GR3_F4J12_H'"
+      },
+      "status": 200,
+      "elapsed_seconds": 0.09884180035442114,
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "urn:ogc:def:crs:EPSG::5179"
+        }
+      },
+      "totalFeatures": 1,
+      "features": [
+        {
+          "id": "tb_grid_cont_wv_wvhgh_3min.fid--34a55b87_1a1719deb5e_108d",
+          "properties": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "wvdrct": 132.001,
+            "wvhgh": 1.351
+          },
+          "geometry_sha256": "615ffa83cb470e7f50bde71a30b2495c19d28e31286df969581c89662c411fe2"
+        }
+      ]
+    },
+    {
+      "request": {
+        "service": "WFS",
+        "version": "1.1.0",
+        "request": "GetFeature",
+        "typeName": "ofbd-DB:tb_grid_cont_wv_pd_3min",
+        "outputFormat": "application/json",
+        "srsName": "EPSG:5179",
+        "maxFeatures": "2",
+        "viewparams": "anals_ymd:20180610;anals_hhs:18",
+        "cql_filter": "grid_cd='GR3_F4J12_H'"
+      },
+      "status": 200,
+      "elapsed_seconds": 0.14792999997735023,
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "urn:ogc:def:crs:EPSG::5179"
+        }
+      },
+      "totalFeatures": 1,
+      "features": [
+        {
+          "id": "tb_grid_cont_wv_pd_3min.fid--34a55b87_1a1719deb5e_108e",
+          "properties": {
+            "grid_cd": "GR3_F4J12_H",
+            "anals_ymd": "20180610",
+            "anals_hhs": "18",
+            "avg_wv_pd": 12.2,
+            "wvdrct": 132.001
+          },
+          "geometry_sha256": "615ffa83cb470e7f50bde71a30b2495c19d28e31286df969581c89662c411fe2"
+        }
+      ]
+    }
+  ],
+  "api139_original_query": {
+    "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=5243&histDe=2022-10-19",
+    "shp_size_check": {
+      "status": 200,
+      "text": "fail"
+    },
+    "datatable_request_filters": {
+      "gridCd": "((((GR3_F4J12_H))))",
+      "analsYmd": "((((20180610))))",
+      "analsHhs": "((((18))))",
+      "regex": true
+    },
+    "result": "NetworkError: Chromium operation 시간 제한을 초과했습니다",
+    "operation_timeout_seconds": 70,
+    "note": "SHP check와schema조회후 UI동일필터요청을시도했으나전체operation제한도달. 요청단독70초라고해석하지않는다. 응답total이나maxLength를만들지않았다."
+  },
+  "extended_datatable": {
+    "result": "NetworkError",
+    "elapsed_seconds": 127.78755820030347,
+    "budget_seconds": 255,
+    "success": false
+  },
+  "generic_click_read": {
+    "status": 200,
+    "response_kind": "HTML",
+    "adopted": false
+  },
+  "piltg_crs": {
+    "source_url": "https://vadahub.go.kr/imap/proxyRun.do",
+    "map_dataset": "52",
+    "map_history": "2019-12-10",
+    "map_layer": "500048",
+    "registered_type": "ofbd-DB:piltg_rute_l",
+    "declared_crs": {
+      "type": "name",
+      "properties": {
+        "name": "urn:ogc:def:crs:EPSG::5179"
+      }
+    },
+    "matched_records": 34,
+    "maximum_coordinate_difference_metres": 5.122274160385132e-09
+  },
+  "reviewed_candidate": {
+    "scope": {
+      "route_scope": "whole_route",
+      "no_generalization": [
+        "다른 gid/제조일/ENC/원문 해시/선 geometry로 확장하지 않는다",
+        "gid1 및 차트 조각13/14/그 외33개를 이 pair로 대체하지 않는다",
+        "현재 운항/시간표/현행 면허 유효성을 보장하지 않는다"
+      ],
+      "direction_source": "KCG 20221007 출발항로명 국동, 도착항로명 외동의 명시적 필드. 원선 vertex 순서를 출발/도착 근거로 사용하지 않음",
+      "reviewed_candidate_records": 1,
+      "implemented_or_live_mapped_records": 0,
+      "remaining_without_reviewed_pair": 33
+    },
+    "route_identity": {
+      "dataset_id": "52",
+      "history_date": "2019-12-10",
+      "layer_id": "500048",
+      "table_name": "piltg_rute_l",
+      "record_id": "2",
+      "manufactured_date": "2022-08-25",
+      "enc_no": "KR64755B",
+      "oc_spce_obj_no": "600024",
+      "source_zip_sha256": "e66be963488fed9ce1c72668beec20b1ae298fffa4db32130a308c3e1bcf78e7",
+      "geometry_wkb_sha256": "e094fc6f27101a9cf722d7a546780e65b47d1b206b4fa831b4d5243e5207905e",
+      "geometry_wkb_hex": "010200000002000000cd939ea474232f412c5096532ffa38414800c896b7232f41b949f6c842f83841",
+      "layer": "DatasetLayer(dataset_id='52', history_date='2019-12-10', layer_id='500048', table_name='piltg_rute_l', title='도선항로', service_auth='OPEN', open_scope='ALL', grid_available=True, download_available=True, masked=False, require_public=False)",
+      "attributes": {
+        "gid": 2,
+        "oc_spce_obj_no": "600024",
+        "oc_invs_inst_cd": "1192136",
+        "oc_invs_bsns_zn_cd1": null,
+        "oc_invs_bsns_zn_cd2": null,
+        "oc_invs_bsns_zn_cd3": null,
+        "mfgg_ymd": "2022-08-25",
+        "oc_invs_cl_cd": "COD007",
+        "enc_step_cd": "6",
+        "enc_no": "KR64755B",
+        "obj_spcqlt_cd": "GBN095",
+        "pssh_ster_spcqlt_cd": "CTY001",
+        "eymd": null,
+        "symd": null,
+        "oc_spce_obj_stt_cd": null,
+        "oc_spce_obj_krnm": null,
+        "oc_spce_obj_ennm": null,
+        "cycle_eymd": null,
+        "cycle_symd": null,
+        "etc_info_en_cn": null,
+        "etc_info_kr_cn": null,
+        "cn": null,
+        "mim_scl_cnt": 17999.0,
+        "piltg_rute_dc": null,
+        "mtr_creat_ymd": null,
+        "og_mtr_cn": null,
+        "lvl_se_cd": "6"
+      }
+    },
+    "licensed_route_evidence": [
+      {
+        "version": "20210928",
+        "artifact": "artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20210928.csv",
+        "sha256": "a5a942354b3fc04b7276eef31985e947d3f686acd9c0ac72ca3bd819463b04e9",
+        "encoding": "cp949",
+        "total_rows": 113,
+        "matching_rows": [
+          {
+            "data_row_1based": 55,
+            "raw": {
+              "항로명": "국동 - 경호 외동",
+              "출발항로명": "국동",
+              "도착항로명": "외동",
+              "출발항로주소": "여수시 국동 37-542항만",
+              "도착항로주소": "여수시 경호동 614-14지선",
+              "구간거리": "0.5",
+              "정박지명": "국동"
+            }
+          }
+        ]
+      },
+      {
+        "version": "20221007",
+        "artifact": "artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20221007.csv",
+        "sha256": "5d125d56ddb12e04dc8b7a5f346dd4247425495692f80acae8ddc545deeb9c1f",
+        "encoding": "utf-8-sig",
+        "total_rows": 77,
+        "matching_rows": [
+          {
+            "data_row_1based": 29,
+            "raw": {
+              "항로명": "국동-경호-외동",
+              "출발항로명": "국동",
+              "도착항로명": "외동",
+              "출발항로_주소": "전남 여수시 국동 37-542항만",
+              "도착항로_주소": "여수시 경호동 614-14지선",
+              "구간거리": "0.5",
+              "정박지명": "국동"
+            }
+          }
+        ]
+      },
+      {
+        "version": "20231011",
+        "artifact": "artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20231011.csv",
+        "sha256": "72c5f5041680ba8f61fdc86951e011d203ac965d15a0e5a96491f3adc0843341",
+        "encoding": "cp949",
+        "total_rows": 89,
+        "matching_rows": [
+          {
+            "data_row_1based": 14,
+            "raw": {
+              "면허항로명": "국동-경호 외동",
+              "주정박지(선착장)": "국동",
+              "출항 선착장": "국동",
+              "출항 선착장 주소": "여수시 국동 37-542항만",
+              "입항 선착장": "외동",
+              "입항 선착장 주소": "여수시 경호동 614-14지선",
+              "구간거리": "0.5"
+            }
+          }
+        ]
+      }
+    ],
+    "port_reference_source": {
+      "page": "https://www.data.go.kr/data/15070386/fileData.do",
+      "onclick": "fileDetailObj.fn_fileDataDown('15070386', 'uddi:9c74b381-ddba-4c21-abd4-b3ef26596cfc', '','1', '3')",
+      "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000002322901&fileDetailSn=1&dataNm=%ED%95%B4%EC%96%91%EA%B2%BD%EC%B0%B0%EC%B2%AD_%EC%84%A0%EC%B0%A9%EC%9E%A5%20%EC%A0%95%EB%B3%B4_10/20/2020",
+      "filename": "해양경찰청_선착장 정보_10_20_2020.csv",
+      "sha256": "2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662",
+      "bytes": 23800
+    },
+    "official_city_evidence": {
+      "url": "https://m.yeosu.go.kr/tour/travel/island_beach?idx=446&mode=view",
+      "artifact": "yeosu-daegyeong.json",
+      "actual_chromium_http_status": 200,
+      "verified_facts": [
+        "국동 ~ 대경도 여객선",
+        "대경도 대합실: 여수시 어항단지로124(국동)",
+        "차량탑재 가능, 소요시간5분"
+      ],
+      "representative_tourism_coord_excluded": [
+        127.72563,
+        34.708187
+      ],
+      "status_page_url": "https://www.yeosu.go.kr/www/sphere/traffic/marine/ship/status",
+      "status_page_live_result": "20261025 13~18시 임시점검 안내. 검색색인의 도선운항현황 본문을 live 검증 성공으로 집계하지 않음.",
+      "explicit_doseon_role": {
+        "url": "https://yeosu.go.kr/tour/information/news/tour_news?idx=15859&mode=view",
+        "artifact": "yeosu-2026-ferry-subsidy.json",
+        "actual_chromium_http_status": 200,
+        "posted_at": "2026-08-28 09:47",
+        "verified_fact": "제2월호호·여수경도골프앤리조트호·부도호는 한국해운조합 여객선 운임지원시스템 미사용 도선 3척으로 명시된다. 이 사실만으로 gid2의 현재 운항 상태를 보장하지 않는다."
+      }
+    },
+    "temporal_comparison": {
+      "2021_2022_2023_same_endpoint_names_and_parcel_addresses": true,
+      "normalization_only": "비교할 때 앞의 전남 공백만 제거. 원문은 각 CSV 그대로 보존. 국동/경호/외동/대경도 명칭은 정부의 도선안내와 면허에서 별도 확인.",
+      "caution": "전후 수집 버전이 같다는 사실이 20220825 당시 유효기간을 법적으로 확정하지 않는다. 역사적 공간참조 대응이며 현행 운항 보장 없음."
+    },
+    "quality_flags": [
+      "선착장외동의 도선기착지유무=N, 국동은 공란. 면허/시 안내와 불일치를 원문 그대로 노출하고 덮어쓰지 않는다.",
+      "선착장 CSV에 공식 고유 ID 없음. 파생 ID를 정부 항구코드로 부르지 않는다.",
+      "2020 선착장 DMS 정수초, datum 미상. source/year/raw DMS와 좌표 결측 보존.",
+      "Archive SHA가 달라도 layer/meta/history/record와 원 WKB·원문 및 정규화 속성 전체가 같을 때만 동일 레코드 검토 revision으로 현재 Archive SHA에 연결한다. 다른 행·ZIP 전체 멤버의 동일성이나 검토는 주장하지 않으며, 해당 레코드 변경은 새 검토/revision이 필요하다.",
+      "2021/2022/2023 면허 CSV 거리 header에는 단위가 명시되지 않는다. 거리 원문 0.5를 보존하고 당시 공식 km 단위 확정으로 과장하지 않는다. 495m 공간 비교는 독립 비교 근거이다."
+    ],
+    "ports": [
+      {
+        "source": "data_go_kr:kcg:15070386",
+        "port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:row:85",
+        "name": "국동",
+        "region": "전라남도 여수시",
+        "kind": "pier",
+        "address": "여수시 국동 37-542항만",
+        "latitude": null,
+        "longitude": null,
+        "location_source": null,
+        "source_url": "https://www.data.go.kr/data/15070386/fileData.do",
+        "source_year": "2020",
+        "kind_evidence": "공식 데이터셋 제목과 선착장명/선착장주소 필드로 물리 선착장 역할을 확인했다. 도선기착지유무는 별도 원문 상태이며 수정하지 않는다.",
+        "government_port_code": false,
+        "identity_method": "공식 원천에 고유 ID가 없어 버전/파일 SHA256/1-based data row를 결합한 로컬 파생 참조",
+        "data_row_1based": 85,
+        "csv_physical_line_if_no_embedded_newline": 86,
+        "raw": {
+          "선착장명": "국동",
+          "위도도": "34",
+          "위도분": "43",
+          "위도초": "36",
+          "경도도": "127",
+          "경도분": "43",
+          "경도초": "20",
+          "주정박지유무": "Y",
+          "유선기착지유무": "",
+          "도선기착지유무": "",
+          "도서지역유무": "",
+          "도서지역명": "",
+          "출장소유무": "",
+          "서센터유무": "",
+          "선착장주소": "여수시 국동 37-542항만"
+        }
+      },
+      {
+        "source": "data_go_kr:kcg:15070386",
+        "port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:row:84",
+        "name": "외동",
+        "region": "전라남도 여수시",
+        "kind": "pier",
+        "address": "여수시 경호동 614-14지선",
+        "latitude": null,
+        "longitude": null,
+        "location_source": null,
+        "source_url": "https://www.data.go.kr/data/15070386/fileData.do",
+        "source_year": "2020",
+        "kind_evidence": "공식 데이터셋 제목과 선착장명/선착장주소 필드로 물리 선착장 역할을 확인했다. 도선기착지유무는 별도 원문 상태이며 수정하지 않는다.",
+        "government_port_code": false,
+        "identity_method": "공식 원천에 고유 ID가 없어 버전/파일 SHA256/1-based data row를 결합한 로컬 파생 참조",
+        "data_row_1based": 84,
+        "csv_physical_line_if_no_embedded_newline": 85,
+        "raw": {
+          "선착장명": "외동",
+          "위도도": "34",
+          "위도분": "43",
+          "위도초": "19",
+          "경도도": "127",
+          "경도분": "43",
+          "경도초": "22",
+          "주정박지유무": "Y",
+          "유선기착지유무": "",
+          "도선기착지유무": "N",
+          "도서지역유무": "Y",
+          "도서지역명": "Y",
+          "출장소유무": "",
+          "서센터유무": "",
+          "선착장주소": "여수시 경호동 614-14지선"
+        }
+      }
+    ]
+  }
+}
