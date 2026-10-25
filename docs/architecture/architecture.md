@@ -1,7 +1,7 @@
 # 구조
 
 이 저장소는 Python provider SDK다. KRIC 저장소의 디렉터리 구조를 기반으로 한다.
-아래는 T007B까지 구현한 구조다. 세부 계약은 실제 공개 타입·파일과 상세 사양을 기준으로 한다.
+아래는 공식 보완 파일과 시각별 파랑·검토 매핑을 포함한 구조다. 세부 계약은 실제 공개 타입·파일과 상세 사양을 기준으로 한다.
 
 ```text
 python-vadahub-api/
@@ -18,6 +18,9 @@ python-vadahub-api/
 │   ├── mapping.py         # 출도착지→선착장 매핑
 │   ├── storage.py         # 로컬 원문·checksum·manifest·복구
 │   ├── query.py           # 공개 웹 schema·bounded DataTables 질의
+│   ├── wave.py / wave_hourly.py # 일별 통계·시각별 재분석 값
+│   ├── terminal.py / pier.py  # 공식 고정 CSV 수집/시설 참조
+│   ├── reviewed.py          # 한 레코드의 검토된 crosswalk
 │   └── tourism.py         # 관광9종 registry·요약·검색
 ├── tests/                 # 합성 fixture·실제 live gate
 ├── examples/              # 설치본 소비자·관광 수집

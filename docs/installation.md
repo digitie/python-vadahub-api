@@ -103,3 +103,10 @@ Playwright 지원 하한은1.64.1이다. Windows/Python3.14에서1.63.0은 실�
 Chromium을 사용하는 새1.64.1 환경은 live6개가 정상 종료했다. upstream 수정 원인을
 확정한 것은 아니며 재현된 호환성 차이를 근거로 설치 범위를 제한한다. 기존 환경은
 `python -m pip install --upgrade .`로 선언된 의존성을 함께 갱신한다.
+
+## 실제 선착장 연결 소비 예제
+
+GDAL binding을준비한격리wheel환경에서 `python -I examples/reviewed_pier_mapping.py NEW_DIRECTORY`를
+실행한다. 필요하면VADAHUB_CHROMIUM_EXECUTABLE을지정한다. 공식CSV340행과새도선SHP를
+직접받아보관하고gid2두시설을연결하며,33건미확정/원문결측·좌표None은보존한다.
+[시각별 파랑](wave-hourly.md)의설치본예제도별도로실행할수있다.

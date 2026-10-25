@@ -157,3 +157,7 @@ piltg34행의공식map/meta/CRS와동일SHP좌표를검증했다. 해경면허4�
 2026-10-25: 사양 PR #16(8fddde9) 머지 확인 뒤 T007A2E2 구현. 고정WFS두뷰·현재공개상태·시각identity/일치검사·원속성/FID 계보·전체timeout을 추가하고 검증중이다.
 
 2026-10-25: T007A2E2 소스10a2453에서 독립 A/B의 MultiPolygon P2를 해소했다. unit448/95.46%, 실제복수시각/격자/빈결과와 일별회귀live2·격리wheel·CI7개 통과. 최종증빙head 검증 뒤 PR #17 머지 예정.
+
+2026-10-25: PR #17 최종증빙53c1949의리뷰2/CI7개통과와5635609머지확인후T005E2착수. 공식선착장CSV340행·파생ID/rawDMS·원자보관과gid2한건의검토지문/crosswalk구현,단위/live/리뷰를진행한다.
+
+2026-10-25: T005E2 source9cf979c에서독립A/B차단없음,unit504/95.81%·새CSV340/6ZIP의Win7·동일GDAL/native3·격리wheel실제1매핑/33미확정·CI7개통과. source/quality/원문결측을보존하고증빙head검증후머지한다.

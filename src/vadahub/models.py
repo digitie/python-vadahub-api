@@ -25,6 +25,35 @@ class TerminalFileReceipt:
 
 
 @dataclass(frozen=True, slots=True)
+class PierFileReceipt:
+    """공식 해경 선착장 원문 CSV의 출처·고정 버전."""
+    source_url: str
+    download_url: str
+    collected_at: datetime
+    sha256: str
+    byte_size: int
+    local_path: Path
+    source: Literal['data.go.kr:15070386'] = 'data.go.kr:15070386'
+    content_date: date = date(2020, 10, 20)
+    schema_version: str = '1'
+
+
+@dataclass(frozen=True, slots=True)
+class OfficialPier:
+    """공식 ID가 없는 시설의 파생 참조와 원 DMS/flag. 좌표 datum은 미선언이다."""
+    source: str
+    record_id: str
+    row_number: int
+    name: str | None
+    address: str | None
+    raw_attributes: Mapping[str, str]
+    source_sha256: str
+    source_url: str | None
+    source_collected_at: datetime | None
+    content_date: date | None
+
+
+@dataclass(frozen=True, slots=True)
 class PassengerTerminal:
     """보완 파일의 터미널 정보와 미확인 CRS·원문 계보."""
     source: str

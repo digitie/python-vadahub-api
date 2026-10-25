@@ -17,7 +17,9 @@ from .mapping import (PortReference, EndpointCrosswalk, RouteEndpoints, Endpoint
 from .storage import LocalArchiveStore, StoredArchive
 from .models import CatalogKind, LibraryResource, LibraryArchiveReceipt, DocumentPreview, TablePreview, WebTablePage
 from .models import WaveMeasure, WaveStatistic, WaveStatistics, WaveHourlyRecord, WaveHourlySnapshot
-from .models import TerminalFileReceipt, PassengerTerminal
+from .models import TerminalFileReceipt, PassengerTerminal, PierFileReceipt, OfficialPier
+from .pier import OfficialPierClient, pier_to_port
+from .reviewed import reviewed_route_crosswalks
 from .terminal import OfficialTerminalClient, terminal_to_port
 from .tourism import (TOURISM_SOURCES, TourismSource, TourismLayer, TourismPlace,
                       tourism_source, tourism_from_feature, search_tourism)
@@ -38,4 +40,5 @@ __all__ = [
     "tourism_source", "tourism_from_feature", "search_tourism",
     "WaveMeasure", "WaveStatistic", "WaveStatistics", "WaveHourlyRecord", "WaveHourlySnapshot",
     "TerminalFileReceipt", "PassengerTerminal", "OfficialTerminalClient", "terminal_to_port",
+    "PierFileReceipt", "OfficialPier", "OfficialPierClient", "pier_to_port", "reviewed_route_crosswalks",
 ]

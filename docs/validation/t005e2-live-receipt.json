@@ -1,0 +1,395 @@
+{
+  "source_sha": "9cf979c36937f4fb367dc04275f022c9f0bc03f8",
+  "observed_on": "2026-10-25 18:11~18:13 KST",
+  "unit": {
+    "passed": 504,
+    "coverage_percent": 95.81
+  },
+  "windows_live": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 48.1
+  },
+  "native_live": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 3.62
+  },
+  "pier_receipt": {
+    "source_url": "https://www.data.go.kr/data/15070386/fileData.do",
+    "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000002322901&fileDetailSn=1&dataNm=%ED%95%B4%EC%96%91%EA%B2%BD%EC%B0%B0%EC%B2%AD_%EC%84%A0%EC%B0%A9%EC%9E%A5%20%EC%A0%95%EB%B3%B4_10/20/2020",
+    "collected_at": "2026-10-25 09:12:21.787722+00:00",
+    "sha256": "2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662",
+    "byte_size": 23800,
+    "local_path": "piers.csv",
+    "source": "data.go.kr:15070386",
+    "content_date": "2020-10-20",
+    "schema_version": "1",
+    "rows": 340
+  },
+  "spatial_downloads": {
+    "catalog_total": 183,
+    "downloads": [
+      {
+        "layer": {
+          "dataset_id": "52",
+          "history_date": "2019-12-10",
+          "layer_id": "500048",
+          "table_name": "piltg_rute_l",
+          "title": "도선항로",
+          "service_auth": "OPEN",
+          "open_scope": "ALL",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=52&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:41.447102+00:00",
+        "sha256": "d2c221d343e374fbeaa6266a9902d98760ab5c0c3fe488737aa5ec98fae682e1",
+        "byte_size": 6992,
+        "local_path": "500048.zip",
+        "member_sha256": [
+          [
+            "piltg_rute_l.dbf",
+            "3f076d703f3b5b434f5e78f6a349cb98e332ec7e7df7a7818fa60a35363384a0"
+          ],
+          [
+            "piltg_rute_l.shp",
+            "05d25a1cfdf50f09ade5fb151325f9a8593caa3118e9cd01b7d19bd0902a3881"
+          ],
+          [
+            "piltg_rute_l.shx",
+            "3ec696fb2f853597e422a55ccd121fa0862ed04e933343f420b5b708f386c227"
+          ],
+          [
+            "piltg_rute_l.txt",
+            "46984c3046af872642b6a8c822e84dd838920612414dcf136e82295d7bb74b0c"
+          ]
+        ],
+        "schema_version": "1"
+      },
+      {
+        "layer": {
+          "dataset_id": "63",
+          "history_date": "2019-12-10",
+          "layer_id": "500059",
+          "table_name": "psnr_rute_l",
+          "title": "여객항로",
+          "service_auth": "OPEN",
+          "open_scope": "MEMBER",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=63&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:44.351743+00:00",
+        "sha256": "c5beb1b785bf5b7ee4f1934c0432e9368870633db81e86b98717f9d7fac3ad39",
+        "byte_size": 233748,
+        "local_path": "500059.zip",
+        "member_sha256": [
+          [
+            "psnr_rute_l.dbf",
+            "156bd3ab2b668c63412c7d05d5f98357f2c340644ff6b161988b3d3ea8f77c57"
+          ],
+          [
+            "psnr_rute_l.shp",
+            "12085c121c6b75c96123b2dde5c960ccae23fa9c6827daab8673c8f2008c9894"
+          ],
+          [
+            "psnr_rute_l.shx",
+            "c40159f44a58072342f338f0326fcc47c3e8033402d2b536a1f1434aad068125"
+          ],
+          [
+            "psnr_rute_l.txt",
+            "d9285d651827591adc2a21a7319ea24204e9136d5564a308aeb0bad0800dca63"
+          ]
+        ],
+        "schema_version": "1"
+      },
+      {
+        "layer": {
+          "dataset_id": "3076",
+          "history_date": "2019-12-10",
+          "layer_id": "501297",
+          "table_name": "scene_road_p",
+          "title": "경관도로",
+          "service_auth": "OPEN",
+          "open_scope": "MEMBER",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:47.045691+00:00",
+        "sha256": "75b1c26edcf8e8cbe5eacf868c65994db1c15bc1785d028f8b43d5b4976bbbc3",
+        "byte_size": 5193,
+        "local_path": "501297.zip",
+        "member_sha256": [
+          [
+            "scene_road_p.dbf",
+            "9c9ea54069f99dd266f058f73e93f544b904cf17e032ef720ede73ceeb8065b6"
+          ],
+          [
+            "scene_road_p.shp",
+            "93ba47898b5472b87b470904a66a597cfd23c34eaf447e9554d079b34e77580b"
+          ],
+          [
+            "scene_road_p.shx",
+            "61ff828870753a6e16d0b37a6b758ec7a57197a8cd45771db2aa31fec855115a"
+          ],
+          [
+            "scene_road_p.txt",
+            "53d3bc512c1679ed2ea7813a7c304dfa7a0e6bc37aef3a4e7d683eaa0900b049"
+          ]
+        ],
+        "schema_version": "1"
+      },
+      {
+        "layer": {
+          "dataset_id": "3076",
+          "history_date": "2019-12-10",
+          "layer_id": "501298",
+          "table_name": "trl_p",
+          "title": "산책로",
+          "service_auth": "OPEN",
+          "open_scope": "MEMBER",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:49.663385+00:00",
+        "sha256": "642f2105d62f5d559d97ce548010bcf4fd4149f64602f70caaf7f8fbfa89eefe",
+        "byte_size": 12484,
+        "local_path": "501298.zip",
+        "member_sha256": [
+          [
+            "trl_p.dbf",
+            "bf1af64d5500a6ab77df8a43a44eb1475c7588bb2be5f76dd2642a2031e3d844"
+          ],
+          [
+            "trl_p.shp",
+            "3f014d0f820324ef195d41a60cfe4fb01a86fffad37a78d3fce9ffc9b0b9bfaf"
+          ],
+          [
+            "trl_p.shx",
+            "d34a06f8d58ce757bbdaf099a306c6b8d276424129858920e6c66e113095bb2d"
+          ],
+          [
+            "trl_p.txt",
+            "f2950e1be88d6a9e452a4530b819193f6f88dc8cc7bee682ca0fed9d3f3a87e5"
+          ]
+        ],
+        "schema_version": "1"
+      },
+      {
+        "layer": {
+          "dataset_id": "3076",
+          "history_date": "2019-12-10",
+          "layer_id": "501304",
+          "table_name": "pssh_p",
+          "title": "여객선",
+          "service_auth": "OPEN",
+          "open_scope": "MEMBER",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:52.200119+00:00",
+        "sha256": "8c7040eaae5c5c33443cb37f46081dde475e7d0cc86ce322c2469254f0871cab",
+        "byte_size": 12498,
+        "local_path": "501304.zip",
+        "member_sha256": [
+          [
+            "pssh_p.dbf",
+            "4706d193e5a7b1fdbb2dedfa5d3703b8fc9a6a9ad5fc94e2d9ce144370c4c7e3"
+          ],
+          [
+            "pssh_p.shp",
+            "e4ff66f692885b195cadcd2c63af81d000f37e1a3f36de96b3112eddf321445d"
+          ],
+          [
+            "pssh_p.shx",
+            "a2e740bad36d83ba6f7e23662dfbc5e3977adcfdc7958c718743cae0614c02ca"
+          ],
+          [
+            "pssh_p.txt",
+            "0e3a7fa49e32d0c50a1dd60bfd4d242460ec1af32bdbfbe44bceb113c4382600"
+          ]
+        ],
+        "schema_version": "1"
+      },
+      {
+        "layer": {
+          "dataset_id": "3076",
+          "history_date": "2019-12-10",
+          "layer_id": "501991",
+          "table_name": "trrsrt_a",
+          "title": "관광지",
+          "service_auth": "OPEN",
+          "open_scope": "ADMIN",
+          "grid_available": true,
+          "download_available": true,
+          "masked": false,
+          "require_public": false
+        },
+        "source_url": "https://vadahub.go.kr/renew/spaceData/detail.do?metaSn=3076&histDe=2019-12-10",
+        "collected_at": "2026-10-25 09:12:54.724221+00:00",
+        "sha256": "c69642d24daad8c734f10db3084c046c2776024088d479d235000f5e13b4a332",
+        "byte_size": 298124,
+        "local_path": "501991.zip",
+        "member_sha256": [
+          [
+            "trrsrt_a.dbf",
+            "e33b49cb4d6e198ac140ce28788d375737a6dba62738b4b08baadac8c989fe07"
+          ],
+          [
+            "trrsrt_a.shp",
+            "98ec6c1fdaf832d9c981cedfc1a67aa27d023617de342fb05294059f52547bc2"
+          ],
+          [
+            "trrsrt_a.shx",
+            "03c0410bd6cac40ee29d9aba2f9afafb9e524ab54710b694986f3e720f9807eb"
+          ],
+          [
+            "trrsrt_a.txt",
+            "b620a58bb21fdddbe9147cd4b6fb061a101c16423a5997a1ffbbee83ac20e7a2"
+          ]
+        ],
+        "schema_version": "1"
+      }
+    ],
+    "unavailable": [
+      "501880"
+    ]
+  },
+  "reviewed_mapping": {
+    "pier_csv_sha256": "2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662",
+    "archive_sha256": "d2c221d343e374fbeaa6266a9902d98760ab5c0c3fe488737aa5ec98fae682e1",
+    "mapped": 1,
+    "unresolved": 33,
+    "pier_rows": 340,
+    "results": [
+      {
+        "record_id": "2",
+        "departure": {
+          "source": "data.go.kr:15070386",
+          "port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:85",
+          "name": "국동",
+          "region": null,
+          "kind": "pier",
+          "address": "여수시 국동 37-542항만",
+          "telephone": null,
+          "latitude": null,
+          "longitude": null,
+          "location_source": null,
+          "collected_at": "2026-10-25 09:12:21.787722+00:00",
+          "source_url": "https://www.data.go.kr/data/15070386/fileData.do",
+          "source_year": "2020",
+          "feature": null,
+          "kind_evidence": "https://www.data.go.kr/data/15070386/fileData.do#derived-row=85"
+        },
+        "arrival": {
+          "source": "data.go.kr:15070386",
+          "port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:84",
+          "name": "외동",
+          "region": null,
+          "kind": "pier",
+          "address": "여수시 경호동 614-14지선",
+          "telephone": null,
+          "latitude": null,
+          "longitude": null,
+          "location_source": null,
+          "collected_at": "2026-10-25 09:12:21.787722+00:00",
+          "source_url": "https://www.data.go.kr/data/15070386/fileData.do",
+          "source_year": "2020",
+          "feature": null,
+          "kind_evidence": "https://www.data.go.kr/data/15070386/fileData.do#derived-row=84"
+        },
+        "crosswalk": [
+          {
+            "dataset_id": "52",
+            "history_date": "2019-12-10",
+            "layer_id": "500048",
+            "record_id": "2",
+            "source_sha256": "d2c221d343e374fbeaa6266a9902d98760ab5c0c3fe488737aa5ec98fae682e1",
+            "role": "departure",
+            "endpoint_name": "국동",
+            "target_source": "data.go.kr:15070386",
+            "target_port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:85",
+            "evidence_url": "https://www.data.go.kr/data/15068276/fileData.do",
+            "evidence_record": "{\"license\":{\"source_url\":\"https://www.data.go.kr/data/15068276/fileData.do\",\"geometry_contract\":{\"native_crs\":\"EPSG:5179\",\"crs_evidence\":\"parent/public-imap-state.json + wfs-capabilities.json + piltg-wfs-rows.json + piltg-native-cross-source-comparison.json; 동일34행 속성/좌표 직접 대조, 별도자료 CRS 전이 아님\",\"source_endpoints_missing\":true,\"native_geometry_is_historical_chart_representation\":true,\"comparative_spatial_check\":{\"gid\":\"2\",\"vertices_undirected\":[[127.72223200000002,34.72641189999897],[127.7225857,34.72196959999897]],\"line_direct_end_distance_m\":495.01846785546826,\"caution\":\"거리 계산은 비교 조사만을 위한 DMS의 임시 경위도 해석이며 CSV는 datum/CRS를 선언하지 않는다. 근접만으로 매핑 확정하지 않는다.\",\"ports\":[{\"raw\":{\"선착장명\":\"국동\",\"위도도\":\"34\",\"위도분\":\"43\",\"위도초\":\"36\",\"경도도\":\"127\",\"경도분\":\"43\",\"경도초\":\"20\",\"주정박지유무\":\"Y\",\"유선기착지유무\":\"\",\"도선기착지유무\":\"\",\"도서지역유무\":\"\",\"도서지역명\":\"\",\"출장소유무\":\"\",\"서센터유무\":\"\",\"선착장주소\":\"여수시 국동 37-542항만\"},\"dms_decimal_for_comparison_only\":[127.72222222222223,34.72666666666667],\"distances_to_undirected_vertices_m\":[28.342889776523084,523.3460305958389]},{\"raw\":{\"선착장명\":\"외동\",\"위도도\":\"34\",\"위도분\":\"43\",\"위도초\":\"19\",\"경도도\":\"127\",\"경도분\":\"43\",\"경도초\":\"22\",\"주정박지유무\":\"Y\",\"유선기착지유무\":\"\",\"도선기착지유무\":\"N\",\"도서지역유무\":\"Y\",\"도서지역명\":\"Y\",\"출장소유무\":\"\",\"서센터유무\":\"\",\"선착장주소\":\"여수시 경호동 614-14지선\"},\"dms_decimal_for_comparison_only\":[127.72277777777778,34.721944444444446],\"distances_to_undirected_vertices_m\":[499.2569981333601,17.776230756790994]}]},\"not_automatic_nearest_matching\":true,\"csv_datum\":null,\"target_coordinates_policy\":\"공식 선착장 CSV는 datum/CRS 미명시: 원문 DMS 보존, PortReference latitude/longitude=None. 비교용 임시 경위도 계산을 공개좌표 확정으로 승격하지 않는다.\"},\"licensed_route_evidence\":[{\"version\":\"20210928\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20210928.csv\",\"sha256\":\"a5a942354b3fc04b7276eef31985e947d3f686acd9c0ac72ca3bd819463b04e9\",\"encoding\":\"cp949\",\"total_rows\":113,\"matching_rows\":[{\"data_row_1based\":55,\"raw\":{\"항로명\":\"국동 - 경호 외동\",\"출발항로명\":\"국동\",\"도착항로명\":\"외동\",\"출발항로주소\":\"여수시 국동 37-542항만\",\"도착항로주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\",\"정박지명\":\"국동\"}}]},{\"version\":\"20221007\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20221007.csv\",\"sha256\":\"5d125d56ddb12e04dc8b7a5f346dd4247425495692f80acae8ddc545deeb9c1f\",\"encoding\":\"utf-8-sig\",\"total_rows\":77,\"matching_rows\":[{\"data_row_1based\":29,\"raw\":{\"항로명\":\"국동-경호-외동\",\"출발항로명\":\"국동\",\"도착항로명\":\"외동\",\"출발항로_주소\":\"전남 여수시 국동 37-542항만\",\"도착항로_주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\",\"정박지명\":\"국동\"}}]},{\"version\":\"20231011\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20231011.csv\",\"sha256\":\"72c5f5041680ba8f61fdc86951e011d203ac965d15a0e5a96491f3adc0843341\",\"encoding\":\"cp949\",\"total_rows\":89,\"matching_rows\":[{\"data_row_1based\":14,\"raw\":{\"면허항로명\":\"국동-경호 외동\",\"주정박지(선착장)\":\"국동\",\"출항 선착장\":\"국동\",\"출항 선착장 주소\":\"여수시 국동 37-542항만\",\"입항 선착장\":\"외동\",\"입항 선착장 주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\"}}]}],\"official_city_evidence\":{\"url\":\"https://m.yeosu.go.kr/tour/travel/island_beach?idx=446&mode=view\",\"artifact\":\"yeosu-daegyeong.json\",\"actual_chromium_http_status\":200,\"verified_facts\":[\"국동 ~ 대경도 여객선\",\"대경도 대합실: 여수시 어항단지로124(국동)\",\"차량탑재 가능, 소요시간5분\"],\"representative_tourism_coord_excluded\":[127.72563,34.708187],\"status_page_url\":\"https://www.yeosu.go.kr/www/sphere/traffic/marine/ship/status\",\"status_page_live_result\":\"20261025 13~18시 임시점검 안내. 검색색인의 도선운항현황 본문을 live 검증 성공으로 집계하지 않음.\",\"explicit_doseon_role\":{\"url\":\"https://yeosu.go.kr/tour/information/news/tour_news?idx=15859&mode=view\",\"artifact\":\"yeosu-2026-ferry-subsidy.json\",\"actual_chromium_http_status\":200,\"posted_at\":\"2026-08-28 09:47\",\"verified_fact\":\"제2월호호·여수경도골프앤리조트호·부도호는 한국해운조합 여객선 운임지원시스템 미사용 도선 3척으로 명시된다. 이 사실만으로 gid2의 현재 운항 상태를 보장하지 않는다.\"}},\"temporal_comparison\":{\"2021_2022_2023_same_endpoint_names_and_parcel_addresses\":true,\"normalization_only\":\"비교할 때 앞의 전남 공백만 제거. 원문은 각 CSV 그대로 보존. 국동/경호/외동/대경도 명칭은 정부의 도선안내와 면허에서 별도 확인.\",\"caution\":\"전후 수집 버전이 같다는 사실이 20220825 당시 유효기간을 법적으로 확정하지 않는다. 역사적 공간참조 대응이며 현행 운항 보장 없음.\"}},\"pier_row\":85,\"pier_csv_sha256\":\"2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662\",\"quality\":[\"원문 출도착지는 결측이며 면허의 출발/도착 필드에 근거한 검토이다\",\"2020 시설의 도선기착지 N/공란과 후속 면허의 시점 차이를 보존한다\",\"DMS datum 미선언으로 구조화 경위도는 제공하지 않는다\",\"정부 시설 코드 없이 파생 source/version/hash/row ID를 쓴다\",\"한 레코드의 동일성만 검토하며 다른 행/ZIP 전체 동일성·현재 운항을 보장하지 않는다\"]}",
+            "revision": "20261025-gid2-record-v1",
+            "region": null
+          },
+          {
+            "dataset_id": "52",
+            "history_date": "2019-12-10",
+            "layer_id": "500048",
+            "record_id": "2",
+            "source_sha256": "d2c221d343e374fbeaa6266a9902d98760ab5c0c3fe488737aa5ec98fae682e1",
+            "role": "arrival",
+            "endpoint_name": "외동",
+            "target_source": "data.go.kr:15070386",
+            "target_port_id": "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:84",
+            "evidence_url": "https://www.data.go.kr/data/15068276/fileData.do",
+            "evidence_record": "{\"license\":{\"source_url\":\"https://www.data.go.kr/data/15068276/fileData.do\",\"geometry_contract\":{\"native_crs\":\"EPSG:5179\",\"crs_evidence\":\"parent/public-imap-state.json + wfs-capabilities.json + piltg-wfs-rows.json + piltg-native-cross-source-comparison.json; 동일34행 속성/좌표 직접 대조, 별도자료 CRS 전이 아님\",\"source_endpoints_missing\":true,\"native_geometry_is_historical_chart_representation\":true,\"comparative_spatial_check\":{\"gid\":\"2\",\"vertices_undirected\":[[127.72223200000002,34.72641189999897],[127.7225857,34.72196959999897]],\"line_direct_end_distance_m\":495.01846785546826,\"caution\":\"거리 계산은 비교 조사만을 위한 DMS의 임시 경위도 해석이며 CSV는 datum/CRS를 선언하지 않는다. 근접만으로 매핑 확정하지 않는다.\",\"ports\":[{\"raw\":{\"선착장명\":\"국동\",\"위도도\":\"34\",\"위도분\":\"43\",\"위도초\":\"36\",\"경도도\":\"127\",\"경도분\":\"43\",\"경도초\":\"20\",\"주정박지유무\":\"Y\",\"유선기착지유무\":\"\",\"도선기착지유무\":\"\",\"도서지역유무\":\"\",\"도서지역명\":\"\",\"출장소유무\":\"\",\"서센터유무\":\"\",\"선착장주소\":\"여수시 국동 37-542항만\"},\"dms_decimal_for_comparison_only\":[127.72222222222223,34.72666666666667],\"distances_to_undirected_vertices_m\":[28.342889776523084,523.3460305958389]},{\"raw\":{\"선착장명\":\"외동\",\"위도도\":\"34\",\"위도분\":\"43\",\"위도초\":\"19\",\"경도도\":\"127\",\"경도분\":\"43\",\"경도초\":\"22\",\"주정박지유무\":\"Y\",\"유선기착지유무\":\"\",\"도선기착지유무\":\"N\",\"도서지역유무\":\"Y\",\"도서지역명\":\"Y\",\"출장소유무\":\"\",\"서센터유무\":\"\",\"선착장주소\":\"여수시 경호동 614-14지선\"},\"dms_decimal_for_comparison_only\":[127.72277777777778,34.721944444444446],\"distances_to_undirected_vertices_m\":[499.2569981333601,17.776230756790994]}]},\"not_automatic_nearest_matching\":true,\"csv_datum\":null,\"target_coordinates_policy\":\"공식 선착장 CSV는 datum/CRS 미명시: 원문 DMS 보존, PortReference latitude/longitude=None. 비교용 임시 경위도 계산을 공개좌표 확정으로 승격하지 않는다.\"},\"licensed_route_evidence\":[{\"version\":\"20210928\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20210928.csv\",\"sha256\":\"a5a942354b3fc04b7276eef31985e947d3f686acd9c0ac72ca3bd819463b04e9\",\"encoding\":\"cp949\",\"total_rows\":113,\"matching_rows\":[{\"data_row_1based\":55,\"raw\":{\"항로명\":\"국동 - 경호 외동\",\"출발항로명\":\"국동\",\"도착항로명\":\"외동\",\"출발항로주소\":\"여수시 국동 37-542항만\",\"도착항로주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\",\"정박지명\":\"국동\"}}]},{\"version\":\"20221007\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20221007.csv\",\"sha256\":\"5d125d56ddb12e04dc8b7a5f346dd4247425495692f80acae8ddc545deeb9c1f\",\"encoding\":\"utf-8-sig\",\"total_rows\":77,\"matching_rows\":[{\"data_row_1based\":29,\"raw\":{\"항로명\":\"국동-경호-외동\",\"출발항로명\":\"국동\",\"도착항로명\":\"외동\",\"출발항로_주소\":\"전남 여수시 국동 37-542항만\",\"도착항로_주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\",\"정박지명\":\"국동\"}}]},{\"version\":\"20231011\",\"artifact\":\"artifacts/20261025-source-research/reviewer-a/kcg-ui-15068276-20231011.csv\",\"sha256\":\"72c5f5041680ba8f61fdc86951e011d203ac965d15a0e5a96491f3adc0843341\",\"encoding\":\"cp949\",\"total_rows\":89,\"matching_rows\":[{\"data_row_1based\":14,\"raw\":{\"면허항로명\":\"국동-경호 외동\",\"주정박지(선착장)\":\"국동\",\"출항 선착장\":\"국동\",\"출항 선착장 주소\":\"여수시 국동 37-542항만\",\"입항 선착장\":\"외동\",\"입항 선착장 주소\":\"여수시 경호동 614-14지선\",\"구간거리\":\"0.5\"}}]}],\"official_city_evidence\":{\"url\":\"https://m.yeosu.go.kr/tour/travel/island_beach?idx=446&mode=view\",\"artifact\":\"yeosu-daegyeong.json\",\"actual_chromium_http_status\":200,\"verified_facts\":[\"국동 ~ 대경도 여객선\",\"대경도 대합실: 여수시 어항단지로124(국동)\",\"차량탑재 가능, 소요시간5분\"],\"representative_tourism_coord_excluded\":[127.72563,34.708187],\"status_page_url\":\"https://www.yeosu.go.kr/www/sphere/traffic/marine/ship/status\",\"status_page_live_result\":\"20261025 13~18시 임시점검 안내. 검색색인의 도선운항현황 본문을 live 검증 성공으로 집계하지 않음.\",\"explicit_doseon_role\":{\"url\":\"https://yeosu.go.kr/tour/information/news/tour_news?idx=15859&mode=view\",\"artifact\":\"yeosu-2026-ferry-subsidy.json\",\"actual_chromium_http_status\":200,\"posted_at\":\"2026-08-28 09:47\",\"verified_fact\":\"제2월호호·여수경도골프앤리조트호·부도호는 한국해운조합 여객선 운임지원시스템 미사용 도선 3척으로 명시된다. 이 사실만으로 gid2의 현재 운항 상태를 보장하지 않는다.\"}},\"temporal_comparison\":{\"2021_2022_2023_same_endpoint_names_and_parcel_addresses\":true,\"normalization_only\":\"비교할 때 앞의 전남 공백만 제거. 원문은 각 CSV 그대로 보존. 국동/경호/외동/대경도 명칭은 정부의 도선안내와 면허에서 별도 확인.\",\"caution\":\"전후 수집 버전이 같다는 사실이 20220825 당시 유효기간을 법적으로 확정하지 않는다. 역사적 공간참조 대응이며 현행 운항 보장 없음.\"}},\"pier_row\":84,\"pier_csv_sha256\":\"2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662\",\"quality\":[\"원문 출도착지는 결측이며 면허의 출발/도착 필드에 근거한 검토이다\",\"2020 시설의 도선기착지 N/공란과 후속 면허의 시점 차이를 보존한다\",\"DMS datum 미선언으로 구조화 경위도는 제공하지 않는다\",\"정부 시설 코드 없이 파생 source/version/hash/row ID를 쓴다\",\"한 레코드의 동일성만 검토하며 다른 행/ZIP 전체 동일성·현재 운항을 보장하지 않는다\"]}",
+            "revision": "20261025-gid2-record-v1",
+            "region": null
+          }
+        ],
+        "source_crs": null,
+        "original_endpoints": {
+          "departure": null,
+          "arrival": null,
+          "calls_raw": null,
+          "route_name": null,
+          "segment_name": null,
+          "scope": "unknown"
+        }
+      }
+    ]
+  },
+  "isolated_wheel": {
+    "sha256": "2d405abdee3cadaf0b322632d28a413947d7a06b1e48bdb3d60cdfc70b3b60d7",
+    "exports": 58,
+    "python": "3.14.4",
+    "gdal": "3.12.2",
+    "example": {
+      "mapped": [
+        {
+          "record": "2",
+          "departure": {
+            "key": [
+              "data.go.kr:15070386",
+              "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:85"
+            ],
+            "name": "국동",
+            "address": "여수시 국동 37-542항만"
+          },
+          "arrival": {
+            "key": [
+              "data.go.kr:15070386",
+              "derived:20201020:2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662:84"
+            ],
+            "name": "외동",
+            "address": "여수시 경호동 614-14지선"
+          },
+          "revision": "20261025-gid2-record-v1"
+        }
+      ],
+      "unresolved": 33,
+      "pier_rows": 340,
+      "pier_sha256": "2faedac785b47f1582d4c6fa36d68f2418d2840251bff75324e8d943d0106662",
+      "archive_sha256": "c181d739a446538b3584e309827fdefeb05ff4c29d4d0620c8a2bf123489191c"
+    }
+  }
+}

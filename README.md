@@ -175,3 +175,6 @@ python tools/probe_source.py --output-dir artifacts/t001 --download
 공간 파서는 `kor-travel-geo`와 같이 **GDAL Python binding**을 사용한다.
 `ogr2ogr` subprocess는 사용하지 않는다. 시스템 GDAL과 Python binding의 ABI를 맞추는
 방법과 async worker 계약은 [GDAL 설계](docs/gdal.md)를 따른다.
+
+[공식 선착장·검토된 도선 연결](docs/reviewed-pier-mapping.md)은 공식CSV340행과
+독립 검토한 국동→외동1건을 제공하며, 다른33도선은 미확정으로 보존한다.

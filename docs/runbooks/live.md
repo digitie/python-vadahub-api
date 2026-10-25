@@ -45,3 +45,12 @@ live skip은 성공이 아니다. transport 연결의 기존 live fixture는 계
 Linux에서 웹과 GDAL을 함께 준비했다면 두 단계를 같은 환경에서 실행할 수 있다.
 PowerShell의 변수 설정을 `export`로 바꾸고 Python/Chromium 경로를 해당 환경에 맞춘다.
 원문·프로필·쿠키는 커밋하지 않고 sanitized receipt와 실행 SHA·성공/실패/skip을 기록한다.
+
+## 공식 선착장과 검토 매핑
+
+신규 VADAHUB_PIER_ARTIFACTS 경로에 `tests/test_live_pier_download.py --run-live`로
+실제 공식CSV를 받는다. 같은 실행의 신규 VADAHUB_LIVE_ARTIFACTS에서test_live_files를실행한다.
+GDAL환경의VADAHUB_LIVE_ARCHIVES를그동일경로로설정하고
+`tests/test_live_reviewed_mapping.py --run-live`를실행한다. 결과는선착장340/도선34/검토1/미확정33과
+원문출도착지결측·DMS미선언/구조좌표None·보관/멱등/복구를함께검증한다.
+[설치 예제](../../examples/reviewed_pier_mapping.py)의새경로실행으로격리wheel소비도확인한다.

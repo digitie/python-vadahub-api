@@ -21,11 +21,11 @@ from ._catalog import identifier, history
 from ._io import run_io
 from .exceptions import ArchiveError, SchemaError
 from .models import ArchiveReceipt, DatasetLayer, Dataset, LibraryResource, LibraryArchiveReceipt
-from .models import TerminalFileReceipt
+from .models import TerminalFileReceipt, PierFileReceipt
 from ._terminal_file import SOURCE_URL as TERMINAL_URL, inspect_terminal
 
-Receipt = ArchiveReceipt | LibraryArchiveReceipt | TerminalFileReceipt
-Scope = DatasetLayer | LibraryResource | TerminalFileReceipt
+Receipt = ArchiveReceipt | LibraryArchiveReceipt | TerminalFileReceipt | PierFileReceipt
+Scope = DatasetLayer | LibraryResource | TerminalFileReceipt | PierFileReceipt
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,6 +37,16 @@ class StoredArchive:
 
 
 def _key(layer: Scope) -> str:
+    if isinstance(layer, PierFileReceipt):
+        from ._pier_file import SOURCE, SOURCE_URL, CONTENT_DATE, attachment
+        from .exceptions import AccessDeniedError
+        if layer.source != SOURCE or layer.source_url != SOURCE_URL or layer.content_date != CONTENT_DATE:
+            raise ArchiveError('공식 선착장 보관 출처/버전 오류')
+        try:
+            attachment(layer.download_url, final=True)
+        except (AccessDeniedError, SchemaError):
+            raise ArchiveError('공식 선착장 다운로드 출처 오류') from None
+        return 'official/data-go/15070386/' + layer.content_date.isoformat()
     if isinstance(layer, TerminalFileReceipt):
         from ._terminal_source import _attachment
         from .exceptions import AccessDeniedError
@@ -68,7 +78,7 @@ def _fingerprint(members: tuple[tuple[str, str], ...]) -> str:
 
 
 def _receipt_key(receipt: Receipt) -> str:
-    if isinstance(receipt, TerminalFileReceipt): return _key(receipt)
+    if isinstance(receipt, (TerminalFileReceipt, PierFileReceipt)): return _key(receipt)
     return _key(receipt.layer if isinstance(receipt,ArchiveReceipt) else receipt.resource)
 
 
@@ -76,7 +86,7 @@ def _serialize(receipt: Receipt) -> dict:
     item = asdict(receipt)
     item['collected_at'] = receipt.collected_at.isoformat()
     item.pop('local_path')
-    if isinstance(receipt, TerminalFileReceipt): item['content_date'] = receipt.content_date.isoformat()
+    if isinstance(receipt, (TerminalFileReceipt, PierFileReceipt)): item['content_date'] = receipt.content_date.isoformat()
     return item
 
 
@@ -145,14 +155,15 @@ class LocalArchiveStore:
         try:
             if not isinstance(item,dict) or item.get('schema_version') != '1':
                 raise ArchiveError('receipt schema 오류')
-            if item.get('source') == 'data.go.kr:15148558':
+            if item.get('source') in ('data.go.kr:15148558', 'data.go.kr:15070386'):
                 collected = datetime.fromisoformat(item['collected_at'])
                 size = item['byte_size']
                 if (collected.tzinfo is None or collected.utcoffset() is None or isinstance(size, bool)
                         or not isinstance(size, int) or size <= 0):
                     raise ArchiveError('공식 터미널 receipt 시점/크기 오류')
                 checksum = _sha(item['sha256'])
-                terminal = TerminalFileReceipt(item['source_url'], item['download_url'], collected, checksum,
+                factory = PierFileReceipt if item['source'] == 'data.go.kr:15070386' else TerminalFileReceipt
+                terminal = factory(item['source_url'], item['download_url'], collected, checksum,
                     size, Path('source.csv'), content_date=date.fromisoformat(item['content_date']))
                 object_key = 'objects/' + _key(terminal) + '/' + checksum
                 terminal = replace(terminal, local_path=self.root/object_key/'source.csv')
@@ -190,10 +201,11 @@ class LocalArchiveStore:
         if sidecar and self._decode(_json(receipt.local_path.parent/'receipt.json',1024*1024)) != stored:
             raise ArchiveError('manifest와 object receipt 불일치')
         try:
-            if isinstance(receipt, TerminalFileReceipt):
-                checksum, size = inspect_terminal(receipt.local_path)
+            if isinstance(receipt, (TerminalFileReceipt, PierFileReceipt)):
+                from ._pier_file import inspect_pier
+                checksum, size = (inspect_pier if isinstance(receipt, PierFileReceipt) else inspect_terminal)(receipt.local_path)
                 if checksum != receipt.sha256 or size != receipt.byte_size:
-                    raise ArchiveError('보관 터미널 CSV 해시/크기 불일치')
+                    raise ArchiveError('보관 공식 CSV 해시/크기 불일치')
                 return
             checksum,members = inspect_archive(receipt.local_path,self.limits,
                                                 receipt.layer.table_name if isinstance(receipt,ArchiveReceipt) else None,
@@ -201,7 +213,7 @@ class LocalArchiveStore:
         except OSError:
             raise ArchiveError('보관 원문 누락/읽기 오류') from None
         except SchemaError:
-            raise ArchiveError('보관 터미널 CSV 형식 오류') from None
+            raise ArchiveError('보관 공식 CSV 형식 오류') from None
         if (checksum != receipt.sha256 or members != receipt.member_sha256
                 or receipt.local_path.stat().st_size != receipt.byte_size):
             raise ArchiveError('보관 원문/receipt 해시·멤버·크기 불일치')
@@ -212,7 +224,7 @@ class LocalArchiveStore:
         if receipt.local_path.stat().st_size > self.limits.archive_bytes:
             raise ArchiveError('원문 보관 크기 상한 초과')
         copied = 0
-        filename = 'source.csv' if isinstance(receipt, TerminalFileReceipt) else 'archive.zip'
+        filename = 'source.csv' if isinstance(receipt, (TerminalFileReceipt, PierFileReceipt)) else 'archive.zip'
         with receipt.local_path.open('rb') as source, (stage/filename).open('xb') as output:
             while block := source.read(1024*1024):
                 copied += len(block)
@@ -222,7 +234,7 @@ class LocalArchiveStore:
             output.flush()
             os.fsync(output.fileno())
         candidate = replace(receipt,local_path=stage/filename)
-        fingerprint = candidate.sha256 if isinstance(candidate, TerminalFileReceipt) else _fingerprint(candidate.member_sha256)
+        fingerprint = candidate.sha256 if isinstance(candidate, (TerminalFileReceipt, PierFileReceipt)) else _fingerprint(candidate.member_sha256)
         self._verify(StoredArchive(candidate,fingerprint,''))
         _atomic_json(stage/'receipt.json',_serialize(candidate))
 
