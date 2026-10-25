@@ -66,7 +66,7 @@ def reviewed_route_crosswalks(feature: SpatialFeature, *, receipt: ArchiveReceip
         expected_id = f"derived:20201020:{_REVIEW['pier_csv_sha256']}:{target['row_number']}"
         if (pier.source != SOURCE or pier.source_url != SOURCE_URL or pier.content_date != CONTENT_DATE
                 or pier.source_sha256 != _REVIEW['pier_csv_sha256'] or pier.record_id != expected_id
-                or pier.name != target['name'] or pier.address != target['address']
+                or pier.name is None or pier.name != target['name'] or pier.address != target['address']
                 or not isinstance(pier.source_collected_at, datetime) or pier.source_collected_at.tzinfo is None
                 or pier.source_collected_at.utcoffset() is None
                 or _fingerprint(pier.raw_attributes) != target['raw_attributes_sha256']):
