@@ -129,3 +129,47 @@ def test_bad_lock_timeout(tmp_path,timeout):
 ])
 def test_bad_receipt_schema(tmp_path,value):
     with pytest.raises(ArchiveError): LocalArchiveStore(tmp_path)._decode(value)
+
+
+@pytest.mark.parametrize("operation", ["put", "versions", "recover"])
+async def test_other_process_lock_timeout_preserves_previous_archive(tmp_path, operation):
+    """다른 프로세스의 OS lock을 우회하지 않고 실패·해제 뒤 원문을 보존한다."""
+    import subprocess
+    import sys
+    from filelock import Timeout
+
+    store = LocalArchiveStore(tmp_path / "store", lock_timeout=0.05)
+    first = await store.put(receipt(tmp_path))
+    previous = (store.root / "manifest.json").read_bytes()
+    second = receipt(tmp_path, year=2021, payload=b"changed")
+    code = (
+        "import sys,threading; from filelock import FileLock; "
+        "release=threading.Event(); "
+        "threading.Thread(target=lambda:(sys.stdin.read(1),release.set()),daemon=True).start(); "
+        "lock=FileLock(sys.argv[1],timeout=2); lock.acquire(); "
+        "print('LOCKED',flush=True); release.wait(10); lock.release()"
+    )
+    process = subprocess.Popen(
+        [sys.executable, "-c", code, str(store.root / ".store.lock")],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+    )
+    assert process.stdout is not None
+    try:
+        ready = await asyncio.wait_for(asyncio.to_thread(process.stdout.readline), timeout=5)
+        assert ready.strip() == "LOCKED"
+        with pytest.raises(Timeout):
+            if operation == "put":
+                await store.put(second)
+            elif operation == "versions":
+                await store.versions(LAYER)
+            else:
+                await store.recover()
+        assert (store.root / "manifest.json").read_bytes() == previous
+        assert first.receipt.local_path.read_bytes() == receipt(tmp_path).local_path.read_bytes()
+        assert list((store.root / ".staging").iterdir()) == []
+    finally:
+        process.communicate(input="release", timeout=5)
+    assert process.returncode == 0
+    assert await store.versions(LAYER) == (first,)
+    assert await store.recover() == ()
+    assert (await store.put(second)).receipt.sha256 == second.sha256
