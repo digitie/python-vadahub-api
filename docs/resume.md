@@ -63,3 +63,15 @@ T005E 외부 제약은 미해결 유지한다.
 
 범위는 VadaHub만(ITS 오기 확인). API 키 없음. GDAL Python binding 필수.
 여객터미널 원격 SHP 미제공·도선 출도착지 부재·CRS 부재를 숨기지 않는다.
+
+
+## 2026-11-20 — filelock 4 호환 범위
+
+저장소가 사용하는 FileLock 경로/timeout/context manager API와 OS 프로세스 배타성을
+filelock 4.2.12에서도 확인하고 의존 범위를 >=3.16,<5로 연다. 기존 3.x 호환과
+SDK Python>=3.11을 유지한다(filelock4.2.12도 Python>=3.11). consumer의 강제
+requirements override 없이 공식 resolver가 4.x를 선택할 수 있게 하는 metadata 수정이다.
+원문/manifest/복구/취소·잠금 timeout·browser/GDAL/parser 구현은 변경하지 않는다.
+운영 VadaHub 요청·browser live·Map/Transport 배포는 실행하지 않았다.
+
+로컬 저장 회귀21건은 기존 filelock3.32.7에서21 PASS(1.66초),4.2.12에서21 PASS(1.27초)다. 같은21건의 두 의존 환경 검증이며42개 독립 시험으로 세지 않는다. 새3건은 실제 다른 프로세스 lock의 put/versions/recover timeout, 기존 bytes/manifest·staging 보존, 해제 뒤 정상 재개를 확인한다. 새 wheel의 공식 resolver는 Python3.11/3.12와 filelock4.2.12를 override 없이 함께 수용했다. live/공간 parser/운영 성능은 이번에 재측정하지 않았다.
